@@ -1,0 +1,66 @@
+{% extends "global/Page.html" %}
+{% block content %}
+<h2>Example</h2>
+<p>Consider the following example:
+<table class="table">
+    <thead>
+        <tr>
+            <th>Player</th>
+            <th>Contribution</th>
+            <th>Cost per Data Point</th>
+            <th>Total Cost</th>
+            <th>Total Benefit</th>
+            <th><strong>Net Benefit</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>1</strong></td>
+            <td>80</td>
+            <td>-1</td>
+            <td>-80</td>
+            <td>250 x 0,5 = 125</td>
+            <td><strong>45</strong></td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>50</td>
+            <td>-1</td>
+            <td>-50</td>
+            <td>250 x 0,4 = 100</td>
+            <td><strong>50</strong></td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>100</td>
+            <td>-1</td>
+            <td>-100</td>
+            <td>250 x 0,4 = 100</td>
+            <td><strong>0</strong></td>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>20</td>
+            <td>-2</td>
+            <td>-40</td>
+            <td>250 x 0,3 = 75</td>
+            <td><strong>35</strong></td>
+        </tr>
+        <tr>
+            <td><strong>Sum:</strong></td>
+            <td><strong>250</strong></td>
+            <td></td>
+            <td></td>
+            <td><strong>250 x 1,6 = 400</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<strong>Reminder:</strong>
+<div style="text-align: center;">
+    <img src="{% static 'global/Game.png' %}" alt="Game Summary" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+</div>
+
+{{ next_button }}
+{% endblock %}
+

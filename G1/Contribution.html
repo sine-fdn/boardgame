@@ -1,0 +1,43 @@
+{% extends "global/Page.html" %}
+{% block content %}
+<h2>Data sharing</h2>
+<p>You are Player {{ player.id_in_group }} and this is round {{ round_number }} of {{ C.NUM_ROUNDS }}. Your current balance is <strong>{{ current_balance }}</strong>.</p>
+{% if round_number >= 2 %}
+{% if cost_eliminated %}
+    <p>The amount invested to decrease the data sharing costs have been high enough. Therefore, each players' costs have been
+    reduced.</p>
+{% else %}
+    <p>The amount invested to decrease the data sharing costs have not been high enough. Therefore, each players' costs remain
+        the same.</p>
+{% endif %}
+{% endif %}
+<p>You can contribute up to {{ C.DATA_POINTS }} data points to the project. Please note that each data point you contribute
+    decreases your utility by {% if cost_eliminated %} -1 {% else %} {{ contribution_effect }} {% endif %} and increases the utility of all players by {{ contribution_effect_other }}.
+
+<div style="display: flex; align-items: center;">
+    {{ formfield 'contribution' }}
+    <span style="margin-left: 8px; padding: 5px; background-color: #e9ecef; border: 1px solid #ccc; border-radius: 4px;">
+        data points
+    </span>
+</div>
+
+
+{{ next_button }}
+
+<strong>Reminder:</strong>
+{% if cost_eliminated %}
+<div style="text-align: center;">
+<img src="{% static 'global/Game_Inv.png' %}" alt="Game Summary" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+</div>
+    {% else %}
+<div style="text-align: center;">
+    <img src="{% static 'global/Game.png' %}" alt="Game Summary" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+</div>
+{% endif %}
+
+<div style="text-align: center;">
+
+    </div>
+{% endblock %}
+
+

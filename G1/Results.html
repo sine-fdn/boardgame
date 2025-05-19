@@ -1,0 +1,46 @@
+{% extends "global/Page.html" %}
+{% block content %}
+    <h2>Results</h2>
+    <p>You are Player {{ player.id_in_group }} and this is round {{ round_number }} of {{ C.NUM_ROUNDS }}.</p>
+<p>In total, all players contributed <strong>{{ total_contribution }} data points</strong>. In more detail:</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Player</th>
+            <th>Contribution</th>
+            <th>Contribution Cost</th>
+            <th>Public Good Share</th>
+            <th>New Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in players_data %}
+        <tr>
+            <td>Player {{ p.id_in_group }}</td>
+            <td>{{ p.contribution }} Data Points</td>
+            <td>-{{ p.contribution_cost }}</td>
+            <td>{{ p.public_good_share }}</td>
+            <td>{{ p.current_balance }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+    {{ next_button }}
+<strong>Reminder:</strong>
+{% if cost_eliminated %}
+<div style="text-align: center;">
+<img src="{% static 'global/Game_Inv.png' %}" alt="Game Summary" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+</div>
+    {% else %}
+<div style="text-align: center;">
+    <img src="{% static 'global/Game.png' %}" alt="Game Summary" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+
