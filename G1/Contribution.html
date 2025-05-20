@@ -18,7 +18,11 @@
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
     const cards = document.querySelectorAll(".selectable-card");
-    const input = document.getElementById("contribution");
+    const contribution_input = document.getElementById("contribution");
+    const costs_input = document.getElementById("contribution_cost");
+
+    const costDisplay = document.getElementById("cost-display");
+    let costs = 0;
 
     cards.forEach((card) => {
       card.addEventListener("click", function (e) {
@@ -26,16 +30,24 @@
 
         card.classList.toggle("selected");
 
-        if (!input.value) {
-          input.value = 0;
+        if (!contribution_input.value) {
+          contribution_input.value = 0;
         }
 
         if (card.classList.contains("selected")) {
-          input.value =
-            parseInt(input.value || "0") + parseInt(card.dataset.points);
+          contribution_input.value =
+            parseInt(contribution_input.value || "0") +
+            parseInt(card.dataset.points);
+          costs += parseInt(card.dataset.cost) * parseInt(card.dataset.points);
+          costs_input.value = costs;
+          costDisplay.textContent = costs;
         } else {
-          input.value =
-            parseInt(input.value || "0") - parseInt(card.dataset.points);
+          contribution_input.value =
+            parseInt(contribution_input.value || "0") -
+            parseInt(card.dataset.points);
+          costs -= parseInt(card.dataset.cost) * parseInt(card.dataset.points);
+          costs_input.value = costs;
+          costDisplay.textContent = costs;
         }
       });
     });
@@ -83,11 +95,21 @@
       {% endfor %}
     </div>
   </div>
+  <p>
+    The combination of the selected data sets will cost you:
+    <span id="cost-display">0</span>
+  </p>
   <input
     type="hidden"
     class="hidden-input"
     name="contribution"
     id="contribution"
+  />
+  <input
+    type="hidden"
+    class="hidden-input"
+    name="contribution_cost"
+    id="contribution_cost"
   />
   {{ next_button }}
 </form>

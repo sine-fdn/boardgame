@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import json
 from typing import List
 from otree.api import *
 
@@ -21,7 +20,7 @@ class DataSet:
 
 class C(BaseConstants):
     NAME_IN_URL = "data_sharing"
-    PLAYERS_PER_GROUP = None
+    PLAYERS_PER_GROUP = 4
     NUM_ROUNDS = 5
     DATA_POINTS = 100  # Tokens to be contributed for the public good mechanism
     PLAYER_SHARES = [0.5, 0.4, 0.4, 0.3]  # Shares from the public good
@@ -35,7 +34,7 @@ class C(BaseConstants):
         1,
         1,
         2,
-    ]  # Costs (per data point contributed) deducted from INITIAL_UTILITY
+    ]  # DEPRECATED. TODO: Remove entirely. Costs (per data point contributed) deducted from INITIAL_UTILITY
     THRESHOLD = cu(150)  # Threshold to remove contribution costs
     MAX_INVESTMENT = cu(100)  # Maximum amount that one player can invest
     DATA_SETS: dict[str, List[DataSet]] = {
@@ -78,6 +77,82 @@ class C(BaseConstants):
             ),
         ],
         "player 2": [
+            DataSet(
+                name="Education Data",
+                icon="🎓",
+                data_points=10,
+                description="Data about educational attainment and performance.",
+                initial_sharing_costs=2,
+                post_invest_sharing_costs=1,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Social Media Data",
+                icon="📱",
+                data_points=20,
+                description="Data about social media usage and interactions.",
+                initial_sharing_costs=3,
+                post_invest_sharing_costs=2,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Financial Data",
+                icon="💰",
+                data_points=15,
+                description="Data about financial transactions and investments.",
+                initial_sharing_costs=4,
+                post_invest_sharing_costs=2,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Environmental Data",
+                icon="🌍",
+                data_points=25,
+                description="Data about environmental conditions and changes.",
+                initial_sharing_costs=2,
+                post_invest_sharing_costs=1,
+                cost_description="Privacy concerns and data security.",
+            ),
+        ],
+        "player 3": [
+            DataSet(
+                name="Mobility Data",
+                icon="🚎",
+                data_points=10,
+                description="Data about mobility patterns in urban areas.",
+                initial_sharing_costs=2,
+                post_invest_sharing_costs=1,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Health Data",
+                icon="🏥",
+                data_points=20,
+                description="Data about health and wellness.",
+                initial_sharing_costs=3,
+                post_invest_sharing_costs=2,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Weather Data",
+                icon="☀️",
+                data_points=15,
+                description="Data about weather patterns and forecasts.",
+                initial_sharing_costs=1,
+                post_invest_sharing_costs=0,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Traffic Data",
+                icon="🚦",
+                data_points=25,
+                description="Data about traffic patterns and congestion.",
+                initial_sharing_costs=2,
+                post_invest_sharing_costs=1,
+                cost_description="Privacy concerns and data security.",
+            ),
+        ],
+        "player 4": [
             DataSet(
                 name="Education Data",
                 icon="🎓",
@@ -204,14 +279,7 @@ def set_payoffs(group: Group):
 
     group.total_contribution = sum(p.contribution for p in players)
 
-    # Retrieve the session-wide cost_eliminated status
-    cost_eliminated = group.session.vars.get("cost_eliminated", False)
-
     for i, player in enumerate(players):
-        if cost_eliminated:
-            player.contribution_cost = player.contribution
-        else:
-            player.contribution_cost = C.CONTRIBUTION_COSTS[i] * player.contribution
 
         player.public_good_share = C.PLAYER_SHARES[i] * group.total_contribution
 
@@ -336,7 +404,7 @@ class ThresholdExceeded(Page):
 
 class Contribution(Page):
     form_model = "player"
-    form_fields = ["contribution"]
+    form_fields = ["contribution", "contribution_cost"]
 
     @staticmethod
     def vars_for_template(player: Player):
