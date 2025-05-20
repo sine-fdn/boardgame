@@ -40,7 +40,7 @@ class C(BaseConstants):
         DataSet(
             name="Data Set 1",
             icon="1️⃣",
-            data_points=110,
+            data_points=10,
             description="Data Set 1 description.",
             sharing_costs=10,
             cost_description="Sharing costs description",
@@ -48,7 +48,7 @@ class C(BaseConstants):
         DataSet(
             name="Data Set 2",
             icon="2️⃣",
-            data_points=120,
+            data_points=20,
             description="Data Set 2 description.",
             sharing_costs=20,
             cost_description="Sharing costs description",
@@ -56,7 +56,7 @@ class C(BaseConstants):
         DataSet(
             name="Data Set 3",
             icon="3️⃣",
-            data_points=130,
+            data_points=30,
             description="Data Set 3 description.",
             sharing_costs=30,
             cost_description="Sharing costs description",
@@ -64,7 +64,7 @@ class C(BaseConstants):
         DataSet(
             name="Data Set 4",
             icon="4️⃣",
-            data_points=140,
+            data_points=40,
             description="Data Set 4 description.",
             sharing_costs=40,
             cost_description="Sharing costs description",
@@ -102,8 +102,6 @@ class Player(BasePlayer):
         initial=0.00
     )  # Marginal costs coming from CONTRIBUTION_COSTS
 
-    selected_datasets = models.LongStringField(blank=True)  # Store selected datasets
-
 
 def set_endowments(group: Group):
     # Set current balance initally
@@ -139,10 +137,7 @@ def set_investments(group: Group):
 
 def set_payoffs(group: Group):
     players = group.get_players()
-    for player in players:
-        print(
-            f"Player {player.id_in_group} selected datasets: {player.selected_datasets}"
-        )
+
     group.total_contribution = sum(p.contribution for p in players)
 
     # Retrieve the session-wide cost_eliminated status
@@ -277,7 +272,7 @@ class ThresholdExceeded(Page):
 
 class Contribution(Page):
     form_model = "player"
-    form_fields = ["selected_datasets"]
+    form_fields = ["contribution"]
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -297,15 +292,6 @@ class Contribution(Page):
             "round_number": player.round_number,
             "data_sets": C.DATASETS,
         }
-
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        player.contribution = 10
-        selected = player.session.vars.get("_form_data", {}).get("selected_data_sets")
-        if isinstance(selected, list):
-            player.selected_data_sets = ",".join(selected)
-        elif selected:
-            player.selected_data_sets = selected  # if it's a single string
 
 
 class ResultsWaitPage(WaitPage):

@@ -1,8 +1,5 @@
 {% extends "global/Page.html" %} {% block content %}
 <style>
-  .hidden-checkbox {
-    display: none;
-  }
   .selectable-card {
     cursor: pointer;
     border-color: #ffc107; /* yellow */
@@ -19,20 +16,27 @@
 </style>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
     const cards = document.querySelectorAll(".selectable-card");
+    const input = document.getElementById("contribution");
 
     cards.forEach((card) => {
-      card.addEventListener("click", (e) => {
-        // Prevent double toggling if the user clicks directly on the checkbox
+      card.addEventListener("click", function (e) {
         if (e.target.tagName === "INPUT") return;
 
-        const checkbox = card.querySelector("input[type='checkbox']");
-        if (!checkbox) return;
+        card.classList.toggle("selected");
 
-        // Let the checkbox toggle happen first
-        setTimeout(() => {
-          card.classList.toggle("selected", checkbox.checked);
-        }, 0);
+        if (!input.value) {
+          input.value = 0;
+        }
+
+        if (card.classList.contains("selected")) {
+          input.value =
+            parseInt(input.value || "0") + parseInt(card.dataset.points);
+        } else {
+          input.value =
+            parseInt(input.value || "0") - parseInt(card.dataset.points);
+        }
       });
     });
   });
@@ -58,32 +62,33 @@
 {% endif %} {% endif %}
 <form method="post">
   <div class="container">
+    <h2>Your Data Sets</h2>
     <div class="row">
-      <h2>Your Data Sets</h2>
       {% for data_set in data_sets %}
-      <div class="col">
-        <label class="card selectable-card border-4">
-          <input
-            type="checkbox"
-            class="hidden-checkbox"
-            name="selected_dataset"
-            value="{{ data_set.name }}"
-          />
-          <div class="card-body" style="margin-bottom: 10px">
-            <p><strong>Data Set: </strong> {{ data_set.name }}</p>
-            <p>{{ data_set.icon }}</p>
-            <p>{{ data_set.data_points }} data points</p>
-            <p><strong>Description:</strong> {{ data_set.description }}</p>
-            <p>{{ data_set.sharing_costs }} sharing costs</p>
-            <p>
-              <strong>Cost description:</strong> {{ data_set.cost_description }}
-            </p>
-          </div>
-        </label>
+      <div
+        class="col card selectable-card border-4"
+        style="margin-bottom: 10px; margin-right: 5px; margin-left: 5px"
+        data-points="{{ data_set.data_points }}"
+        data-cost="{{ data_set.sharing_costs }}"
+      >
+        <p><strong>Data Set: </strong> {{ data_set.name }}</p>
+        <p>{{ data_set.icon }}</p>
+        <p>{{ data_set.data_points }} data points</p>
+        <p><strong>Description:</strong> {{ data_set.description }}</p>
+        <p>{{ data_set.sharing_costs }} sharing costs</p>
+        <p>
+          <strong>Cost description:</strong> {{ data_set.cost_description }}
+        </p>
       </div>
       {% endfor %}
     </div>
   </div>
+  <input
+    type="hidden"
+    class="hidden-input"
+    name="contribution"
+    id="contribution"
+  />
   {{ next_button }}
 </form>
 <p>
