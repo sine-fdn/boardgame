@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import json
 from typing import List
 from otree.api import *
 
@@ -13,7 +14,8 @@ class DataSet:
     icon: str
     data_points: int
     description: str
-    sharing_costs: int
+    initial_sharing_costs: int
+    post_invest_sharing_costs: int
     cost_description: str
 
 
@@ -36,40 +38,84 @@ class C(BaseConstants):
     ]  # Costs (per data point contributed) deducted from INITIAL_UTILITY
     THRESHOLD = cu(150)  # Threshold to remove contribution costs
     MAX_INVESTMENT = cu(100)  # Maximum amount that one player can invest
-    DATASETS: List[DataSet] = [
-        DataSet(
-            name="Data Set 1",
-            icon="1️⃣",
-            data_points=10,
-            description="Data Set 1 description.",
-            sharing_costs=10,
-            cost_description="Sharing costs description",
-        ),
-        DataSet(
-            name="Data Set 2",
-            icon="2️⃣",
-            data_points=20,
-            description="Data Set 2 description.",
-            sharing_costs=20,
-            cost_description="Sharing costs description",
-        ),
-        DataSet(
-            name="Data Set 3",
-            icon="3️⃣",
-            data_points=30,
-            description="Data Set 3 description.",
-            sharing_costs=30,
-            cost_description="Sharing costs description",
-        ),
-        DataSet(
-            name="Data Set 4",
-            icon="4️⃣",
-            data_points=40,
-            description="Data Set 4 description.",
-            sharing_costs=40,
-            cost_description="Sharing costs description",
-        ),
-    ]
+    DATA_SETS: dict[str, List[DataSet]] = {
+        "player 1": [
+            DataSet(
+                name="Mobility Data",
+                icon="🚎",
+                data_points=10,
+                description="Data about mobility patterns in urban areas.",
+                initial_sharing_costs=2,
+                post_invest_sharing_costs=1,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Health Data",
+                icon="🏥",
+                data_points=20,
+                description="Data about health and wellness.",
+                initial_sharing_costs=3,
+                post_invest_sharing_costs=2,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Weather Data",
+                icon="☀️",
+                data_points=15,
+                description="Data about weather patterns and forecasts.",
+                initial_sharing_costs=1,
+                post_invest_sharing_costs=0,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Traffic Data",
+                icon="🚦",
+                data_points=25,
+                description="Data about traffic patterns and congestion.",
+                initial_sharing_costs=2,
+                post_invest_sharing_costs=1,
+                cost_description="Privacy concerns and data security.",
+            ),
+        ],
+        "player 2": [
+            DataSet(
+                name="Education Data",
+                icon="🎓",
+                data_points=10,
+                description="Data about educational attainment and performance.",
+                initial_sharing_costs=2,
+                post_invest_sharing_costs=1,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Social Media Data",
+                icon="📱",
+                data_points=20,
+                description="Data about social media usage and interactions.",
+                initial_sharing_costs=3,
+                post_invest_sharing_costs=2,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Financial Data",
+                icon="💰",
+                data_points=15,
+                description="Data about financial transactions and investments.",
+                initial_sharing_costs=4,
+                post_invest_sharing_costs=2,
+                cost_description="Privacy concerns and data security.",
+            ),
+            DataSet(
+                name="Environmental Data",
+                icon="🌍",
+                data_points=25,
+                description="Data about environmental conditions and changes.",
+                initial_sharing_costs=2,
+                post_invest_sharing_costs=1,
+                cost_description="Privacy concerns and data security.",
+            ),
+        ],
+    }
 
 
 class Subsession(BaseSubsession):
@@ -101,6 +147,24 @@ class Player(BasePlayer):
     contribution_cost_per = models.FloatField(
         initial=0.00
     )  # Marginal costs coming from CONTRIBUTION_COSTS
+
+    def get_data_sets(self):
+        data_sets = C.DATA_SETS.get(f"player {self.id_in_group}", [])
+        return [
+            {
+                "name": ds.name,
+                "icon": ds.icon,
+                "data_points": ds.data_points,
+                "description": ds.description,
+                "sharing_costs": (
+                    ds.post_invest_sharing_costs
+                    if self.session.vars.get("cost_eliminated", False)
+                    else ds.initial_sharing_costs
+                ),
+                "cost_description": ds.cost_description,
+            }
+            for ds in data_sets
+        ]
 
 
 def set_endowments(group: Group):
@@ -284,13 +348,14 @@ class Contribution(Page):
                     "id_in_group": p.id_in_group,
                 }
             )
+
         return {
             "current_balance": player.participant.vars.get("current_balance", 0),
             "cost_eliminated": player.session.vars.get("cost_eliminated", False),
             "contribution_effect": f"{-player.contribution_cost_per:.2f}",
             "contribution_effect_other": f"{C.MULTIPLIER:.2f}",
             "round_number": player.round_number,
-            "data_sets": C.DATASETS,
+            "data_sets": player.get_data_sets(),
         }
 
 
