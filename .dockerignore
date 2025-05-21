@@ -1,0 +1,34 @@
+# flyctl launch added from .gitignore
+**/venv
+**/staticfiles
+**/db.sqlite3
+**/.idea
+**/*~
+**/*.sqlite3
+**/_static_root
+**/_bots*s
+**/__temp*
+**/__pycache__
+**/*.py[cod]
+**/.DS_Store
+**/*.otreezip
+
+# flyctl launch added from venv/.gitignore
+# created by virtualenv automatically
+venv/**/*
+
+# flyctl launch added from venv/lib/python3.12/site-packages/otree/project_template/.gitignore
+venv/lib/python3.12/site-packages/otree/project_template/**/venv
+venv/lib/python3.12/site-packages/otree/project_template/**/staticfiles
+venv/lib/python3.12/site-packages/otree/project_template/**/db.sqlite3
+venv/lib/python3.12/site-packages/otree/project_template/**/.idea
+venv/lib/python3.12/site-packages/otree/project_template/**/*~
+venv/lib/python3.12/site-packages/otree/project_template/**/*.sqlite3
+venv/lib/python3.12/site-packages/otree/project_template/**/_static_root
+venv/lib/python3.12/site-packages/otree/project_template/**/_bots*s
+venv/lib/python3.12/site-packages/otree/project_template/**/__temp*
+venv/lib/python3.12/site-packages/otree/project_template/**/__pycache__
+venv/lib/python3.12/site-packages/otree/project_template/**/*.py[cod]
+venv/lib/python3.12/site-packages/otree/project_template/**/.DS_Store
+venv/lib/python3.12/site-packages/otree/project_template/**/*.otreezip
+fly.toml
