@@ -1,10 +1,21 @@
 from dataclasses import dataclass
 from typing import List
 from otree.api import *
+import json
+import os
 
 doc = """
 Your app description
 """
+
+
+def load_data_sets():
+    path = os.path.join(os.path.dirname(__file__), "../game_config/data_sets.json")
+    with open(path, "r", encoding="utf-8") as f:
+        raw = json.load(f)
+    return {
+        player: [DataSet(**ds) for ds in ds_list] for player, ds_list in raw.items()
+    }
 
 
 @dataclass
@@ -20,7 +31,7 @@ class DataSet:
 
 class C(BaseConstants):
     NAME_IN_URL = "data_sharing"
-    PLAYERS_PER_GROUP = 4
+    PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 5
     DATA_POINTS = 100  # Tokens to be contributed for the public good mechanism
     PLAYER_SHARES = [0.5, 0.4, 0.4, 0.3]  # Shares from the public good
@@ -37,160 +48,7 @@ class C(BaseConstants):
     ]  # DEPRECATED. TODO: Remove entirely. Costs (per data point contributed) deducted from INITIAL_UTILITY
     THRESHOLD = cu(150)  # Threshold to remove contribution costs
     MAX_INVESTMENT = cu(100)  # Maximum amount that one player can invest
-    DATA_SETS: dict[str, List[DataSet]] = {
-        "player 1": [
-            DataSet(
-                name="Mobility Data",
-                icon="🚎",
-                data_points=10,
-                description="Data about mobility patterns in urban areas.",
-                initial_sharing_costs=2,
-                post_invest_sharing_costs=1,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Health Data",
-                icon="🏥",
-                data_points=20,
-                description="Data about health and wellness.",
-                initial_sharing_costs=3,
-                post_invest_sharing_costs=2,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Weather Data",
-                icon="☀️",
-                data_points=15,
-                description="Data about weather patterns and forecasts.",
-                initial_sharing_costs=1,
-                post_invest_sharing_costs=0,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Traffic Data",
-                icon="🚦",
-                data_points=25,
-                description="Data about traffic patterns and congestion.",
-                initial_sharing_costs=2,
-                post_invest_sharing_costs=1,
-                cost_description="Privacy concerns and data security.",
-            ),
-        ],
-        "player 2": [
-            DataSet(
-                name="Education Data",
-                icon="🎓",
-                data_points=10,
-                description="Data about educational attainment and performance.",
-                initial_sharing_costs=2,
-                post_invest_sharing_costs=1,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Social Media Data",
-                icon="📱",
-                data_points=20,
-                description="Data about social media usage and interactions.",
-                initial_sharing_costs=3,
-                post_invest_sharing_costs=2,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Financial Data",
-                icon="💰",
-                data_points=15,
-                description="Data about financial transactions and investments.",
-                initial_sharing_costs=4,
-                post_invest_sharing_costs=2,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Environmental Data",
-                icon="🌍",
-                data_points=25,
-                description="Data about environmental conditions and changes.",
-                initial_sharing_costs=2,
-                post_invest_sharing_costs=1,
-                cost_description="Privacy concerns and data security.",
-            ),
-        ],
-        "player 3": [
-            DataSet(
-                name="Mobility Data",
-                icon="🚎",
-                data_points=10,
-                description="Data about mobility patterns in urban areas.",
-                initial_sharing_costs=2,
-                post_invest_sharing_costs=1,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Health Data",
-                icon="🏥",
-                data_points=20,
-                description="Data about health and wellness.",
-                initial_sharing_costs=3,
-                post_invest_sharing_costs=2,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Weather Data",
-                icon="☀️",
-                data_points=15,
-                description="Data about weather patterns and forecasts.",
-                initial_sharing_costs=1,
-                post_invest_sharing_costs=0,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Traffic Data",
-                icon="🚦",
-                data_points=25,
-                description="Data about traffic patterns and congestion.",
-                initial_sharing_costs=2,
-                post_invest_sharing_costs=1,
-                cost_description="Privacy concerns and data security.",
-            ),
-        ],
-        "player 4": [
-            DataSet(
-                name="Education Data",
-                icon="🎓",
-                data_points=10,
-                description="Data about educational attainment and performance.",
-                initial_sharing_costs=2,
-                post_invest_sharing_costs=1,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Social Media Data",
-                icon="📱",
-                data_points=20,
-                description="Data about social media usage and interactions.",
-                initial_sharing_costs=3,
-                post_invest_sharing_costs=2,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Financial Data",
-                icon="💰",
-                data_points=15,
-                description="Data about financial transactions and investments.",
-                initial_sharing_costs=4,
-                post_invest_sharing_costs=2,
-                cost_description="Privacy concerns and data security.",
-            ),
-            DataSet(
-                name="Environmental Data",
-                icon="🌍",
-                data_points=25,
-                description="Data about environmental conditions and changes.",
-                initial_sharing_costs=2,
-                post_invest_sharing_costs=1,
-                cost_description="Privacy concerns and data security.",
-            ),
-        ],
-    }
+    DATA_SETS: dict[str, List[DataSet]] = load_data_sets()
 
 
 class Subsession(BaseSubsession):
