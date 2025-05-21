@@ -2,7 +2,12 @@
 <style>
   .selectable-card {
     cursor: pointer;
-    border-color: #ffc107; /* yellow */
+    border-color: #ffc107;
+    margin-bottom: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+    padding: 15px;
+    border-radius: 10px;
   }
   .selectable-card:hover {
     background-color: #ffc10745;
@@ -78,16 +83,72 @@
     <div class="row">
       {% for data_set in data_sets %}
       <div
-        class="col card selectable-card border-4"
-        style="margin-bottom: 10px; margin-right: 5px; margin-left: 5px"
+        class="col card selectable-card border-4 justify-content-between"
         data-points="{{ data_set.data_points }}"
         data-cost="{{ data_set.sharing_costs }}"
       >
         <p><strong>Data Set: </strong> {{ data_set.name }}</p>
-        <p>{{ data_set.icon }}</p>
-        <p>{{ data_set.data_points }} data points</p>
+        <div class="d-flex justify-content-between">
+          <img src="{{ static data_set.icon }}" width="40" height="40" />
+          <div>
+            <svg
+              height="40"
+              width="40"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 40 40"
+              style="display: block"
+            >
+              <circle
+                r="18"
+                cx="20"
+                cy="20"
+                fill="none"
+                stroke="black"
+                stroke-width="3"
+              />
+              <text
+                x="20"
+                y="25"
+                text-anchor="middle"
+                font-size="12"
+                fill="black"
+              >
+                {{ data_set.data_points }}
+              </text>
+            </svg>
+            <p class="text-center" style="font-size: 0.5rem">data points</p>
+          </div>
+        </div>
+
         <p><strong>Description:</strong> {{ data_set.description }}</p>
-        <p>{{ data_set.sharing_costs }} sharing costs</p>
+        <div class="d-flex flex-column align-items-center">
+          <svg
+            height="40"
+            width="40"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 40 40"
+            style="display: block"
+          >
+            <circle
+              r="18"
+              cx="20"
+              cy="20"
+              fill="none"
+              stroke="red"
+              stroke-width="3"
+            />
+            <text
+              x="20"
+              y="25"
+              text-anchor="middle"
+              font-size="12"
+              fill="black"
+            >
+              x{{ data_set.sharing_costs }}
+            </text>
+          </svg>
+          <p class="text-center" style="font-size: 0.5rem">sharing costs</p>
+        </div>
         <p>
           <strong>Cost description:</strong> {{ data_set.cost_description }}
         </p>

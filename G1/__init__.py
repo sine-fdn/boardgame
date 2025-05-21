@@ -31,7 +31,7 @@ class DataSet:
 
 class C(BaseConstants):
     NAME_IN_URL = "data_sharing"
-    PLAYERS_PER_GROUP = None
+    PLAYERS_PER_GROUP = None # Set to 4 when not developing
     NUM_ROUNDS = 5
     DATA_POINTS = 100  # Tokens to be contributed for the public good mechanism
     PLAYER_SHARES = [0.5, 0.4, 0.4, 0.3]  # Shares from the public good

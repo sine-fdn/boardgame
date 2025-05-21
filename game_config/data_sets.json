@@ -2,7 +2,7 @@
   "player 1": [
     {
       "name": "Mobility Data",
-      "icon": "🚎",
+      "icon": "global/icons/transport.svg",
       "data_points": 10,
       "description": "Data about mobility patterns in urban areas.",
       "initial_sharing_costs": 2,
@@ -11,7 +11,7 @@
     },
     {
       "name": "Health Data",
-      "icon": "🏥",
+      "icon": "global/icons/health.svg",
       "data_points": 20,
       "description": "Data about health and wellness.",
       "initial_sharing_costs": 3,
@@ -20,7 +20,7 @@
     },
     {
       "name": "Weather Data",
-      "icon": "☀️",
+      "icon": "global/icons/weather.svg",
       "data_points": 15,
       "description": "Data about weather patterns and forecasts.",
       "initial_sharing_costs": 1,
@@ -29,7 +29,7 @@
     },
     {
       "name": "Traffic Data",
-      "icon": "🚦",
+      "icon": "global/icons/traffic.svg",
       "data_points": 25,
       "description": "Data about traffic patterns and congestion.",
       "initial_sharing_costs": 2,
@@ -40,7 +40,7 @@
   "player 2": [
     {
       "name": "Education Data",
-      "icon": "🎓",
+      "icon": "global/icons/education.svg",
       "data_points": 10,
       "description": "Data about educational attainment and performance.",
       "initial_sharing_costs": 2,
@@ -49,7 +49,7 @@
     },
     {
       "name": "Social Media Data",
-      "icon": "📱",
+      "icon": "global/icons/social_media.svg",
       "data_points": 20,
       "description": "Data about social media usage and interactions.",
       "initial_sharing_costs": 3,
@@ -58,7 +58,7 @@
     },
     {
       "name": "Financial Data",
-      "icon": "💰",
+      "icon": "global/icons/finances.svg",
       "data_points": 15,
       "description": "Data about financial transactions and investments.",
       "initial_sharing_costs": 4,
@@ -67,7 +67,7 @@
     },
     {
       "name": "Environmental Data",
-      "icon": "🌍",
+      "icon": "global/icons/environment.svg",
       "data_points": 25,
       "description": "Data about environmental conditions and changes.",
       "initial_sharing_costs": 2,
@@ -78,7 +78,7 @@
   "player 3": [
     {
       "name": "Mobility Data",
-      "icon": "🚎",
+      "icon": "global/icons/transport.svg",
       "data_points": 10,
       "description": "Data about mobility patterns in urban areas.",
       "initial_sharing_costs": 2,
@@ -87,7 +87,7 @@
     },
     {
       "name": "Health Data",
-      "icon": "🏥",
+      "icon": "global/icons/health.svg",
       "data_points": 20,
       "description": "Data about health and wellness.",
       "initial_sharing_costs": 3,
@@ -96,7 +96,7 @@
     },
     {
       "name": "Weather Data",
-      "icon": "☀️",
+      "icon": "global/icons/weather.svg",
       "data_points": 15,
       "description": "Data about weather patterns and forecasts.",
       "initial_sharing_costs": 1,
@@ -105,7 +105,7 @@
     },
     {
       "name": "Traffic Data",
-      "icon": "🚦",
+      "icon": "global/icons/traffic.svg",
       "data_points": 25,
       "description": "Data about traffic patterns and congestion.",
       "initial_sharing_costs": 2,
@@ -116,7 +116,7 @@
   "player 4": [
     {
       "name": "Education Data",
-      "icon": "🎓",
+      "icon": "global/icons/education.svg",
       "data_points": 10,
       "description": "Data about educational attainment and performance.",
       "initial_sharing_costs": 2,
@@ -125,7 +125,7 @@
     },
     {
       "name": "Social Media Data",
-      "icon": "📱",
+      "icon": "global/icons/social_media.svg",
       "data_points": 20,
       "description": "Data about social media usage and interactions.",
       "initial_sharing_costs": 3,
@@ -134,7 +134,7 @@
     },
     {
       "name": "Financial Data",
-      "icon": "💰",
+      "icon": "global/icons/finances.svg",
       "data_points": 15,
       "description": "Data about financial transactions and investments.",
       "initial_sharing_costs": 4,
@@ -143,7 +143,7 @@
     },
     {
       "name": "Environmental Data",
-      "icon": "🌍",
+      "icon": "global/icons/environment.svg",
       "data_points": 25,
       "description": "Data about environmental conditions and changes.",
       "initial_sharing_costs": 2,
