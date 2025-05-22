@@ -9,15 +9,6 @@ Your app description
 """
 
 
-def load_data_sets():
-    path = os.path.join(os.path.dirname(__file__), "../game_config/data_sets.json")
-    with open(path, "r", encoding="utf-8") as f:
-        raw = json.load(f)
-    return {
-        player: [DataSet(**ds) for ds in ds_list] for player, ds_list in raw.items()
-    }
-
-
 @dataclass
 class DataSet:
     name: str
@@ -29,15 +20,60 @@ class DataSet:
     cost_description: str
 
 
+@dataclass
+class Player:
+    id: str
+    player_benefit: float
+    data_sets: List[DataSet]
+
+
+@dataclass
+class GameConfig:
+    intro: str
+    num_of_players: int
+    initial_utility: float
+    investment_threshold: int
+    players: List[Player]
+
+
+def load_game_config():
+    path = os.path.join(os.path.dirname(__file__), "../game_config.json")
+    with open(path, "r", encoding="utf-8") as f:
+        raw = json.load(f)
+    if int(raw["num_of_players"]) != len(raw["players"]):
+        raise ValueError(
+            f"num_of_players ({raw['num_of_players']}) does not match number of players in array ({len(raw['players'])})"
+        )
+    game_config = {
+        "intro": raw["intro"],
+        "num_of_players": int(raw["num_of_players"]),
+        "initial_utility": float(raw["initial_utility"]),
+        "investment_threshold": int(raw["investment_threshold"]),
+        "players": [
+            Player(
+                id=player["id"],
+                player_benefit=float(player["player_benefit"]),
+                data_sets=[DataSet(**ds) for ds in player["data_sets"]],
+            )
+            for player in raw["players"]
+        ],
+    }
+    return GameConfig(**game_config)
+
+
+def get_player_shares(players: List[Player]):
+    return [player.player_benefit for player in players]
+
+
 class C(BaseConstants):
+    GAME_CONFIG: GameConfig = load_game_config()
     NAME_IN_URL = "data_sharing"
-    PLAYERS_PER_GROUP = None # Set to 4 when not developing
+    PLAYERS_PER_GROUP = GAME_CONFIG.num_of_players  # Set to 4 when not developing
     NUM_ROUNDS = 5
     DATA_POINTS = 100  # Tokens to be contributed for the public good mechanism
-    PLAYER_SHARES = [0.5, 0.4, 0.4, 0.3]  # Shares from the public good
     MULTIPLIER = 1.6  # Must match the sum of player shares
     INITIAL_UTILITY = cu(
-        100
+        float(GAME_CONFIG.initial_utility)
     )  # Benefits and costs from the public good are deducted here. Tokens that can be invested
     # to reduce contribution costs
     CONTRIBUTION_COSTS = [
@@ -48,7 +84,6 @@ class C(BaseConstants):
     ]  # DEPRECATED. TODO: Remove entirely. Costs (per data point contributed) deducted from INITIAL_UTILITY
     THRESHOLD = cu(150)  # Threshold to remove contribution costs
     MAX_INVESTMENT = cu(100)  # Maximum amount that one player can invest
-    DATA_SETS: dict[str, List[DataSet]] = load_data_sets()
 
 
 class Subsession(BaseSubsession):
@@ -82,7 +117,11 @@ class Player(BasePlayer):
     )  # Marginal costs coming from CONTRIBUTION_COSTS
 
     def get_data_sets(self):
-        data_sets = C.DATA_SETS.get(f"player {self.id_in_group}", [])
+        player = next(
+            (p for p in C.GAME_CONFIG.players if int(p.id) == self.id_in_group), None
+        )
+
+        data_sets = player.data_sets if player else []
         return [
             {
                 "name": ds.name,
@@ -109,7 +148,7 @@ def set_endowments(group: Group):
     # Set marginal costs and shares for each player
     for i, player in enumerate(group.get_players()):
         player.contribution_cost_per = C.CONTRIBUTION_COSTS[i]
-        player.public_good_share_per = C.PLAYER_SHARES[i]
+        player.public_good_share_per = get_player_shares(C.GAME_CONFIG.players)[i]
 
 
 def set_investments(group: Group):
@@ -139,7 +178,9 @@ def set_payoffs(group: Group):
 
     for i, player in enumerate(players):
 
-        player.public_good_share = C.PLAYER_SHARES[i] * group.total_contribution
+        player.public_good_share = (
+            get_player_shares(C.GAME_CONFIG.players)[i] * group.total_contribution
+        )
 
         # Calculate the player's payout
         player.payoff += -player.contribution_cost + player.public_good_share

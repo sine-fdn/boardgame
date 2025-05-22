@@ -43,14 +43,14 @@
           contribution_input.value =
             parseInt(contribution_input.value || "0") +
             parseInt(card.dataset.points);
-          costs += parseInt(card.dataset.cost) * parseInt(card.dataset.points);
+          costs += parseInt(card.dataset.cost);
           costs_input.value = costs;
           costDisplay.textContent = costs;
         } else {
           contribution_input.value =
             parseInt(contribution_input.value || "0") -
             parseInt(card.dataset.points);
-          costs -= parseInt(card.dataset.cost) * parseInt(card.dataset.points);
+          costs -= parseInt(card.dataset.cost);
           costs_input.value = costs;
           costDisplay.textContent = costs;
         }
@@ -116,7 +116,7 @@
                 {{ data_set.data_points }}
               </text>
             </svg>
-            <p class="text-center" style="font-size: 0.5rem">data points</p>
+            <p class="text-center mb-0" style="font-size: 0.5rem">data points</p>
           </div>
         </div>
 
@@ -144,7 +144,7 @@
               font-size="12"
               fill="black"
             >
-              x{{ data_set.sharing_costs }}
+              {{ data_set.sharing_costs }}
             </text>
           </svg>
           <p class="text-center" style="font-size: 0.5rem">sharing costs</p>
