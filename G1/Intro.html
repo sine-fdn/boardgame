@@ -1,83 +1,101 @@
-{% extends "global/Page.html" %}
-{% block content %}
+{% extends "global/Page.html" %} {% block content %}
 <h2>Welcome</h2>
 
-<p>A municipality has identified a data use case that requires data input from four departments (hereafter referred to as players).
-    Each department incurs costs when contributing data, and each benefits differently from the use case. </p>
-
+<p>{{C.GAME_CONFIG.intro}}</p>
 
 <p>This game simulates the scenario with the following rules:</p>
 
 <ul>
-    <li><strong>4 players</strong> participate in {{ C.NUM_ROUNDS }} rounds. You will be randomly assigned to a player role.</li>
-    <li>Each player starts with <strong>{{ C.INITIAL_UTILITY }}</strong>.</li>
-    <li>Players can contribute up to <strong>{{ C.DATA_POINTS }} Data Points</strong> per round.</li>
-    <li>Contributing one Data Point reduces your Utility Points by a specific amount, as shown below:</li>
+  <li>
+    <strong>4 players</strong> participate in {{ C.NUM_ROUNDS }} rounds. You
+    will be randomly assigned to a player role.
+  </li>
+  <li>Each player starts with <strong>{{ C.INITIAL_UTILITY }}</strong>.</li>
+  <li>
+    Players can contribute up to
+    <strong>{{ C.DATA_POINTS }} Data Points</strong> per round, by selecting
+    from four <strong>data sets</strong>.
+  </li>
+  <li>
+    Each data set has a <strong>sharing cost</strong>. This cost will be deduced
+    from the player's Untility Points.
+  </li>
 </ul>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Player</th>
-            <th>Utility Loss per Data Point shared</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for p in players_data %}
-        <tr>
-            <td>Player {{ p.id_in_group }}</td>
-            <td>{{ p.contribution_cost_per }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<p>
+  For example, if Player 2 contributes 20 Data Points, their Utility Points
+  decrease by 20. Player 4 incurs higher costs (e.g., 40 Utility Points for 20
+  Data Points) due to the additional manual work or privacy concerns associated
+  with their role.
+</p>
 
-<p>For example, if Player 2 contributes 20 Data Points, their Utility Points decrease by 20. Player 4 incurs higher costs (e.g.,
-    40 Utility Points for 20 Data Points) due to the additional manual work or privacy concerns associated with their role.</p>
-
-
-<p>After all players make their contribution decisions, all data points are summed up, and distributed among the players.
-    The sum which is distributed among the players sums up to {{ C.MULTIPLIER }}. This means that contributing one data point
-    increases the overall utility by {{ C.MULTIPLIER }}. This reflects the added value created when data is combined. However,
-    the benefit from the use case is not distributed equally. Here is the benefit per Data Point:</p>
+<p>
+  After all players make their contribution decisions, all data points are
+  summed up, and distributed among the players. The sum which is distributed
+  among the players sums up to {{ C.MULTIPLIER }}. This means that contributing
+  one data point increases the overall utility by {{ C.MULTIPLIER }}. This
+  reflects the added value created when data is combined. However, the benefit
+  from the use case is not distributed equally. Here is the benefit per Data
+  Point:
+</p>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>Player</th>
-            <th>Utility Increase from one Data Point contributed</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for p in players_data %}
-        <tr>
-            <td>Player {{ p.id_in_group }}</td>
-            <td>{{ p.public_good_share_per }}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-            <td><strong>Total</strong></td>
-            <td><strong>{{ C.MULTIPLIER }}</strong></td>
-        </tr>
-    </tbody>
+  <thead>
+    <tr>
+      <th>Player</th>
+      <th>Utility Increase from one Data Point contributed</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in players_data %}
+    <tr>
+      <td>Player {{ p.id_in_group }}</td>
+      <td>{{ p.public_good_share_per }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <td><strong>Total</strong></td>
+      <td><strong>{{ C.MULTIPLIER }}</strong></td>
+    </tr>
+  </tbody>
 </table>
 
-<p>As shown, Player 1 benefits the most because the use case aligns closely with their work, while Player 4 benefits the least.</p>
+<p>
+  As shown, Player 1 benefits the most because the use case aligns closely with
+  their work, while Player 4 benefits the least.
+</p>
 
-<p><strong>Again, your goal is to make the most out of your Utility Points over the {{ C.NUM_ROUNDS }} rounds.</strong></p>
+<p>
+  <strong
+    >Again, your goal is to make the most out of your Utility Points over the {{
+    C.NUM_ROUNDS }} rounds.</strong
+  >
+</p>
 
 <h3>Summary</h3>
-<p>In every round, you make one <strong>Contribution Decision</strong>: Decide how many Data Points to contribute to the
-    use case. Each Data Point you contribute decreases your Utility Points but increases the utility of the group. Your
-    goal is to make the most out of your Utility Points over the {{ C.NUM_ROUNDS }} rounds.</p>
+<p>
+  In every round, you make one <strong>Contribution Decision</strong>: Decide
+  how many Data Points to contribute to the use case. Each Data Point you
+  contribute decreases your Utility Points but increases the utility of the
+  group. Your goal is to make the most out of your Utility Points over the {{
+  C.NUM_ROUNDS }} rounds.
+</p>
 
 <p>The costs and benefits are summarized below:</p>
 
-<div style="text-align: center;">
-    <img src="{% static 'global/Game.png' %}" alt="Game Summary" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+<div style="text-align: center">
+  <img
+    src="{% static 'global/Game.png' %}"
+    alt="Game Summary"
+    style="
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    "
+  />
 </div>
 
 <p></p>
-{{ next_button }}
-{% endblock %}
-
+{{ next_button }} {% endblock %}

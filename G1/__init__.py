@@ -58,6 +58,13 @@ def load_game_config():
             for player in raw["players"]
         ],
     }
+    # TODO: Should DATA_POINTS also be determined in the game_config.json file?
+    for player in game_config["players"]:
+        total_data_points = sum(ds.data_points for ds in player.data_sets)
+        if total_data_points != 100:
+            raise ValueError(
+                f"Total data points for player {player.id} ({total_data_points}) is not 100"
+            )
     return GameConfig(**game_config)
 
 
@@ -67,22 +74,18 @@ def get_player_shares(players: List[Player]):
 
 class C(BaseConstants):
     GAME_CONFIG: GameConfig = load_game_config()
+    DATA_POINTS = 100  # Tokens to be contributed for the public good mechanism
     NAME_IN_URL = "data_sharing"
     PLAYERS_PER_GROUP = GAME_CONFIG.num_of_players  # Set to 4 when not developing
     NUM_ROUNDS = 5
-    DATA_POINTS = 100  # Tokens to be contributed for the public good mechanism
     MULTIPLIER = 1.6  # Must match the sum of player shares
     INITIAL_UTILITY = cu(
         float(GAME_CONFIG.initial_utility)
     )  # Benefits and costs from the public good are deducted here. Tokens that can be invested
     # to reduce contribution costs
-    CONTRIBUTION_COSTS = [
-        1,
-        1,
-        1,
-        2,
-    ]  # DEPRECATED. TODO: Remove entirely. Costs (per data point contributed) deducted from INITIAL_UTILITY
-    THRESHOLD = cu(150)  # Threshold to remove contribution costs
+    THRESHOLD = (
+        GAME_CONFIG.investment_threshold
+    )  # Threshold to remove contribution costs
     MAX_INVESTMENT = cu(100)  # Maximum amount that one player can invest
 
 
@@ -147,7 +150,6 @@ def set_endowments(group: Group):
 
     # Set marginal costs and shares for each player
     for i, player in enumerate(group.get_players()):
-        player.contribution_cost_per = C.CONTRIBUTION_COSTS[i]
         player.public_good_share_per = get_player_shares(C.GAME_CONFIG.players)[i]
 
 
