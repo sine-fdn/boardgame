@@ -87,69 +87,81 @@
         data-points="{{ data_set.data_points }}"
         data-cost="{{ data_set.sharing_costs }}"
       >
-        <p><strong>Data Set: </strong> {{ data_set.name }}</p>
+        <p style="font-size: 1.1rem"><strong>{{ data_set.name }}</strong></p>
         <div class="d-flex justify-content-between">
-          <img src="{{ static data_set.icon }}" width="40" height="40" />
+          <img
+            src="{{ static data_set.icon }}"
+            width="60"
+            height="60"
+            style="display: block"
+          />
           <div>
             <svg
-              height="40"
-              width="40"
+              height="50"
+              width="50"
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 40 40"
+              viewBox="0 0 50 50"
               style="display: block"
             >
               <circle
-                r="18"
-                cx="20"
-                cy="20"
+                r="22"
+                cx="25"
+                cy="25"
                 fill="none"
                 stroke="black"
                 stroke-width="3"
               />
               <text
-                x="20"
-                y="25"
+                x="25"
+                y="27"
                 text-anchor="middle"
-                font-size="12"
+                font-size="20"
                 fill="black"
+                alignment-baseline="middle"
+                dominant-baseline="middle"
               >
                 {{ data_set.data_points }}
               </text>
             </svg>
-            <p class="text-center mb-0" style="font-size: 0.5rem">data points</p>
+            <p class="text-center mb-0" style="font-size: 0.5rem">
+              data points
+            </p>
           </div>
         </div>
 
-        <p><strong>Description:</strong> {{ data_set.description }}</p>
+        <p class="my-3" style="font-size: 0.8rem">
+          <strong>Description:</strong> {{ data_set.description }}
+        </p>
         <div class="d-flex flex-column align-items-center">
           <svg
-            height="40"
-            width="40"
+            height="50"
+            width="50"
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 40 40"
+            viewBox="0 0 50 50"
             style="display: block"
           >
             <circle
-              r="18"
-              cx="20"
-              cy="20"
+              r="22"
+              cx="25"
+              cy="25"
               fill="none"
               stroke="red"
               stroke-width="3"
             />
             <text
-              x="20"
-              y="25"
+              x="25"
+              y="32"
               text-anchor="middle"
-              font-size="12"
+              font-size="20"
               fill="black"
+              class="sharing-costs"
             >
               {{ data_set.sharing_costs }}
             </text>
           </svg>
-          <p class="text-center" style="font-size: 0.5rem">sharing costs</p>
+          <p class="text-center" style="font-size: 0.8rem">sharing costs</p>
         </div>
-        <p>
+        <p class="my-2" style="font-size: 0.8rem">
           <strong>Cost description:</strong> {{ data_set.cost_description }}
         </p>
       </div>

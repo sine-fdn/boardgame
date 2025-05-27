@@ -120,73 +120,82 @@
         data-points=""
         data-cost=""
       >
-        <p><strong>Data Set: </strong> Name of Data Set</p>
+        <p style="font-size: 1.1rem"><strong>Environmental Data</strong></p>
         <div class="d-flex justify-content-between">
-          <img
-            src="{% static 'global/icons/environment.svg' %}"
-            width="40"
-            height="40"
-          />
-          <div>
+          <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100%;">
+            <img
+              src="{% static 'global/icons/environment.svg' %}"
+              width="60"
+              height="60"
+              style="display: block; margin: auto;"
+            />
+          </div>
+          <div class="d-flex flex-column align-items-center">
             <svg
-              height="40"
-              width="40"
+              height="50"
+              width="50"
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 40 40"
+              viewBox="0 0 50 50"
               style="display: block"
             >
               <circle
-                r="18"
-                cx="20"
-                cy="20"
+                r="22"
+                cx="25"
+                cy="25"
                 fill="none"
                 stroke="black"
                 stroke-width="3"
               />
               <text
-                x="20"
-                y="25"
+                x="25"
+                y="27"
                 text-anchor="middle"
-                font-size="12"
+                font-size="20"
                 fill="black"
                 id="data-points"
+                alignment-baseline="middle"
+                dominant-baseline="middle"
               ></text>
             </svg>
-            <p class="text-center mb-0" style="font-size: 0.5rem">
+            <p class="text-center mb-0" style="font-size: 0.8rem">
               data points
             </p>
           </div>
         </div>
 
-        <p><strong>Description:</strong> This Data Set is...</p>
+        <p class="my-3" style="font-size: 0.8rem">
+          <strong>Description:</strong> This Data Set is...
+        </p>
         <div class="d-flex flex-column align-items-center">
           <svg
-            height="40"
-            width="40"
+            height="50"
+            width="50"
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 40 40"
+            viewBox="0 0 50 50"
             style="display: block"
           >
             <circle
-              r="18"
-              cx="20"
-              cy="20"
+              r="22"
+              cx="25"
+              cy="25"
               fill="none"
               stroke="red"
               stroke-width="3"
             />
             <text
-              x="20"
-              y="25"
+              x="25"
+              y="32"
               text-anchor="middle"
-              font-size="12"
+              font-size="20"
               fill="black"
               class="sharing-costs"
             ></text>
           </svg>
-          <p class="text-center" style="font-size: 0.5rem">sharing costs</p>
+          <p class="text-center" style="font-size: 0.8rem">sharing costs</p>
         </div>
-        <p><strong>Cost description:</strong> Costs are justified by...</p>
+        <p class="my-2" style="font-size: 0.8rem">
+          <strong>Cost description:</strong> Costs are justified by...
+        </p>
       </div>
       <div class="px-3">
         <p>Player X has</p>
