@@ -48,7 +48,7 @@
     },
     {
       "id": "2",
-      "player_benefit": "0.4",
+      "player_benefit": "0.6",
       "data_sets": [
         {
           "name": "Education Data",

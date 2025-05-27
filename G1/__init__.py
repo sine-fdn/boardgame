@@ -78,7 +78,9 @@ class C(BaseConstants):
     NAME_IN_URL = "data_sharing"
     PLAYERS_PER_GROUP = GAME_CONFIG.num_of_players  # Set to 4 when not developing
     NUM_ROUNDS = 5
-    MULTIPLIER = 1.6  # Must match the sum of player shares
+    MULTIPLIER = float(
+        sum(get_player_shares(GAME_CONFIG.players))
+    )  # Must match the sum of player shares
     INITIAL_UTILITY = cu(
         float(GAME_CONFIG.initial_utility)
     )  # Benefits and costs from the public good are deducted here. Tokens that can be invested

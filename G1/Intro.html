@@ -1,101 +1,246 @@
 {% extends "global/Page.html" %} {% block content %}
-<h2>Welcome</h2>
+<style>
+  .selectable-card {
+    border-color: #ffc107;
+    margin-bottom: 10px;
+    margin-right: 5px;
+    margin-left: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    min-width: 240px;
+    max-height: 360px;
+  }
+</style>
+<script>
+  const multiplier = parseFloat("{{ C.MULTIPLIER }}");
 
-<p>{{C.GAME_CONFIG.intro}}</p>
+  function byMultiplier(value) {
+    const int = parseInt(value);
+    return int * multiplier;
+  }
 
-<p>This game simulates the scenario with the following rules:</p>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dataPoints = 10;
+    const sharingCosts = 20;
 
-<ul>
-  <li>
-    <strong>4 players</strong> participate in {{ C.NUM_ROUNDS }} rounds. You
-    will be randomly assigned to a player role.
-  </li>
-  <li>Each player starts with <strong>{{ C.INITIAL_UTILITY }}</strong>.</li>
-  <li>
-    Players can contribute up to
-    <strong>{{ C.DATA_POINTS }} Data Points</strong> per round, by selecting
-    from four <strong>data sets</strong>.
-  </li>
-  <li>
-    Each data set has a <strong>sharing cost</strong>. This cost will be deduced
-    from the player's Untility Points.
-  </li>
-</ul>
+    document.getElementById("data-points").textContent = dataPoints;
+    document.querySelectorAll(".sharing-costs").forEach((el) => {
+      el.textContent = sharingCosts;
+    });
+    const benefitRatio = 0.3;
+    const totalContribs = 120;
 
-<p>
-  For example, if Player 2 contributes 20 Data Points, their Utility Points
-  decrease by 20. Player 4 incurs higher costs (e.g., 40 Utility Points for 20
-  Data Points) due to the additional manual work or privacy concerns associated
-  with their role.
-</p>
+    document.getElementById("total-contribs").textContent = totalContribs;
+    document.getElementById("value-created").textContent =
+      byMultiplier(totalContribs);
 
-<p>
-  After all players make their contribution decisions, all data points are
-  summed up, and distributed among the players. The sum which is distributed
-  among the players sums up to {{ C.MULTIPLIER }}. This means that contributing
-  one data point increases the overall utility by {{ C.MULTIPLIER }}. This
-  reflects the added value created when data is combined. However, the benefit
-  from the use case is not distributed equally. Here is the benefit per Data
-  Point:
-</p>
+    document.getElementById("benefit-ratio").textContent = benefitRatio;
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Player</th>
-      <th>Utility Increase from one Data Point contributed</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for p in players_data %}
-    <tr>
-      <td>Player {{ p.id_in_group }}</td>
-      <td>{{ p.public_good_share_per }}</td>
-    </tr>
-    {% endfor %}
-    <tr>
-      <td><strong>Total</strong></td>
-      <td><strong>{{ C.MULTIPLIER }}</strong></td>
-    </tr>
-  </tbody>
-</table>
+    const playerReturn = Math.round(benefitRatio * byMultiplier(totalContribs));
 
-<p>
-  As shown, Player 1 benefits the most because the use case aligns closely with
-  their work, while Player 4 benefits the least.
-</p>
+    document.getElementById("benefit").textContent = playerReturn;
 
-<p>
-  <strong
-    >Again, your goal is to make the most out of your Utility Points over the {{
-    C.NUM_ROUNDS }} rounds.</strong
-  >
-</p>
+    const playerUtility = Math.round(100 - sharingCosts + playerReturn);
 
-<h3>Summary</h3>
-<p>
-  In every round, you make one <strong>Contribution Decision</strong>: Decide
-  how many Data Points to contribute to the use case. Each Data Point you
-  contribute decreases your Utility Points but increases the utility of the
-  group. Your goal is to make the most out of your Utility Points over the {{
-  C.NUM_ROUNDS }} rounds.
-</p>
+    document.getElementById("round-result").textContent = playerUtility;
+  });
+</script>
 
-<p>The costs and benefits are summarized below:</p>
+<div class="p-5">
+  <h2 class="text-center mb-5">Data Sharing: Introduction</h2>
 
-<div style="text-align: center">
-  <img
-    src="{% static 'global/Game.png' %}"
-    alt="Game Summary"
-    style="
-      width: 100%;
-      max-width: 600px;
-      height: auto;
-      border: 1px solid #ccc;
-      margin-top: 10px;
-    "
-  />
+  <p>{{C.GAME_CONFIG.intro}}</p>
+
+  <p>This game simulates the scenario with the following rules:</p>
+
+  <ul>
+    <li>
+      <strong>{{C.GAME_CONFIG.num_of_players}} players</strong> participate in
+      {{ C.NUM_ROUNDS }} rounds. You will be randomly assigned to a player role.
+    </li>
+    <li>Each player starts with <strong>{{ C.INITIAL_UTILITY }}</strong>.</li>
+    <li>
+      Players can contribute up to
+      <strong>{{ C.DATA_POINTS }} Data Points</strong> per round, by selecting
+      from four <strong>Data Sets</strong>.
+    </li>
+    <li>
+      Each Data Set has a <strong>Sharing Cost</strong>. This cost will be
+      deduced from the player's Untility Points.
+    </li>
+  </ul>
+  <p>
+    After all players make their contribution decisions, all Data Points are
+    summed up, and multiplied by a factor of
+    <strong>{{ C.MULTIPLIER }}</strong>. This reflects the added value created
+    when data is combined.
+  </p>
+  <p>
+    This sum is then distributed among all players. However, the benefit from
+    the use case is not distributed equally. Here is how the benefit is
+    distributed:
+  </p>
+  <div class="w-75 mx-auto mb-4">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Utility Increase</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in players_data %}
+        <tr>
+          <td>Player {{ p.id_in_group }}</td>
+          <td>{{ p.public_good_share_per }} x Data Points contributed</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td><strong>Total</strong></td>
+          <td>
+            <strong>{{ C.MULTIPLIER }} x total Data Points contributed</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <strong
+      >Each player's goal is to make the most out of their Utility Points over
+      the {{ C.NUM_ROUNDS }} rounds.</strong
+    >
+  </p>
+
+  <div class="bg-light rounded rounded-5 p-3 m-4">
+    <p><strong>Example</strong></p>
+    <div class="d-md-flex p-md-auto justify-content-center">
+      <div
+        class="card selectable-card border-4"
+        id="example-card"
+        data-points=""
+        data-cost=""
+      >
+        <p><strong>Data Set: </strong> Name of Data Set</p>
+        <div class="d-flex justify-content-between">
+          <img
+            src="{% static 'global/icons/environment.svg' %}"
+            width="40"
+            height="40"
+          />
+          <div>
+            <svg
+              height="40"
+              width="40"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 40 40"
+              style="display: block"
+            >
+              <circle
+                r="18"
+                cx="20"
+                cy="20"
+                fill="none"
+                stroke="black"
+                stroke-width="3"
+              />
+              <text
+                x="20"
+                y="25"
+                text-anchor="middle"
+                font-size="12"
+                fill="black"
+                id="data-points"
+              ></text>
+            </svg>
+            <p class="text-center mb-0" style="font-size: 0.5rem">
+              data points
+            </p>
+          </div>
+        </div>
+
+        <p><strong>Description:</strong> This Data Set is...</p>
+        <div class="d-flex flex-column align-items-center">
+          <svg
+            height="40"
+            width="40"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 40 40"
+            style="display: block"
+          >
+            <circle
+              r="18"
+              cx="20"
+              cy="20"
+              fill="none"
+              stroke="red"
+              stroke-width="3"
+            />
+            <text
+              x="20"
+              y="25"
+              text-anchor="middle"
+              font-size="12"
+              fill="black"
+              class="sharing-costs"
+            ></text>
+          </svg>
+          <p class="text-center" style="font-size: 0.5rem">sharing costs</p>
+        </div>
+        <p><strong>Cost description:</strong> Costs are justified by...</p>
+      </div>
+      <div class="px-3">
+        <p>Player X has</p>
+        <ul>
+          <li>100 Utility Points</li>
+          <li><span id="benefit-ratio"></span> benefit ratio</li>
+        </ul>
+        <p>Player X selects this Data Set, thereby</p>
+        <ul>
+          <li>contributing 10 Data Points</li>
+          <li>decreasing their Utility Points by 20 (Sharing Costs)</li>
+        </ul>
+        <p>
+          If the sum total of contributed Data Points is
+          <strong><span id="total-contribs"></span></strong>, there will be
+          <strong><span id="value-created"></span></strong> Data Points to
+          distribute.
+        </p>
+        <p>
+          Given Player X's benefit ratio of 0.3, they will receive
+          <strong><span id="benefit"></span></strong> Utility Points. Given the
+          Sharing Costs of <span class="sharing-costs"></span>, Player X's
+          Utility Points will be
+          <strong><span id="round-result"></span></strong> for the next round.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Summary</h3>
+  <p>
+    In every round, you make one <strong>Contribution Decision</strong>: Decide
+    how many Data Points to contribute to the use case using Data Sets. Each
+    Data Point you contribute decreases your Utility Points but increases the
+    utility of the group. Your goal is to make the most out of your Utility
+    Points over the {{ C.NUM_ROUNDS }} rounds.
+  </p>
+
+  <!-- <p>The costs and benefits are summarized below:</p>
+
+  <div style="text-align: center">
+    <img
+      src="{% static 'global/Game.png' %}"
+      alt="Game Summary"
+      style="
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        border: 1px solid #ccc;
+        margin-top: 10px;
+      "
+    />
+  </div> -->
 </div>
+<div class="text-center">{{ next_button }}</div>
 
-<p></p>
-{{ next_button }} {% endblock %}
+{% endblock %}
