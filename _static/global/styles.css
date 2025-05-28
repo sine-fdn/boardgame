@@ -1,0 +1,38 @@
+  .otree-btn-next {
+    background-color: #59ce74;
+    border-color: #59ce74;
+    color: white;
+    font-size: 16px;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-weight: bold;
+    width: 200px;
+  }
+
+  .otree-btn-next:hover {
+    background-color: #45a45b;
+    border-color: #45a45b;
+  }
+
+  .selectable-card {
+    border-color: #ffc107;
+    margin-bottom: 10px;
+    margin-right: 5px;
+    margin-left: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    min-width: 210px;
+    max-height: 360px;
+  }
+
+  .selectable-card:hover {
+    background-color: #ffc10745;
+  }
+
+  .selectable-card.selected {
+    border-color: #116d42;
+  }
+
+  .selectable-card.selected:hover {
+    background-color: #116d4243;
+  }

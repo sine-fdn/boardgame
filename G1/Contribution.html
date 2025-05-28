@@ -1,24 +1,5 @@
 {% extends "global/Page.html" %} {% block content %}
-<style>
-  .selectable-card {
-    cursor: pointer;
-    border-color: #ffc107;
-    margin-bottom: 10px;
-    margin-right: 5px;
-    margin-left: 5px;
-    padding: 15px;
-    border-radius: 10px;
-  }
-  .selectable-card:hover {
-    background-color: #ffc10745;
-  }
-  .selectable-card.selected {
-    border-color: #116d42;
-  }
-  .selectable-card.selected:hover {
-    background-color: #116d4243;
-  }
-</style>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
@@ -58,44 +39,85 @@
     });
   });
 </script>
-<div class="row g-0">
-  <h1 class="col-sm-6 col-md-8 text-left">Contribution</h1>
-  <div class="col-6 col-md-4 text-right">
-    <p><strong>Player: {{ player.id_in_group }}</strong></p>
-    <p><strong>Balance: {{ current_balance }}</strong></p>
-    <p><strong>Round: {{ round_number }}</strong> (of {{ C.NUM_ROUNDS }})</p>
+
+<div>
+  <h2 class="text-center mb-5">Contribution</h2>
+  <div class="d-flex justify-content-end mb-3">
+    <ul class="list-unstyled border p-3 rounded">
+      <li><strong>Player:</strong> {{ player.id_in_group }}</li>
+      <li><strong>Balance:</strong> {{ current_balance }}</li>
+      <li>
+        <strong>Round:</strong> {{ round_number }} (of {{ C.NUM_ROUNDS }})
+      </li>
+    </ul>
   </div>
-</div>
-{% if round_number >= 2 %} {% if cost_eliminated %}
-<p>
-  The amount invested to decrease the data sharing costs have been high enough.
-  Therefore, each players' costs have been reduced.
-</p>
-{% else %}
-<p>
-  The amount invested to decrease the data sharing costs have not been high
-  enough. Therefore, each players' costs remain the same.
-</p>
-{% endif %} {% endif %}
-<form method="post">
-  <div class="container">
-    <h2>Your Data Sets</h2>
-    <div class="row">
-      {% for data_set in data_sets %}
-      <div
-        class="col card selectable-card border-4 justify-content-between"
-        data-points="{{ data_set.data_points }}"
-        data-cost="{{ data_set.sharing_costs }}"
-      >
-        <p style="font-size: 1.1rem"><strong>{{ data_set.name }}</strong></p>
-        <div class="d-flex justify-content-between">
-          <img
-            src="{{ static data_set.icon }}"
-            width="60"
-            height="60"
-            style="display: block"
-          />
-          <div>
+  {% if round_number >= 2 %} {% if cost_eliminated %}
+  <p>
+    The amount invested to decrease the data sharing costs have been high
+    enough. Therefore, each players' costs have been reduced.
+  </p>
+  {% else %}
+  <p>
+    The amount invested to decrease the data sharing costs have not been high
+    enough. Therefore, each players' costs remain the same.
+  </p>
+  {% endif %} {% endif %}
+  <p>Pick up to four data sets:</p>
+  <form method="post">
+    <div class="container">
+      <div class="row">
+        {% for data_set in data_sets %}
+        <div
+          class="col card selectable-card border-4 justify-content-between"
+          data-points="{{ data_set.data_points }}"
+          data-cost="{{ data_set.sharing_costs }}"
+        >
+          <p style="font-size: 1.1rem"><strong>{{ data_set.name }}</strong></p>
+          <div class="d-flex justify-content-between">
+            <img
+              src="{{ static data_set.icon }}"
+              width="60"
+              height="60"
+              style="display: block"
+            />
+            <div>
+              <svg
+                height="50"
+                width="50"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 50 50"
+                style="display: block"
+              >
+                <circle
+                  r="22"
+                  cx="25"
+                  cy="25"
+                  fill="none"
+                  stroke="black"
+                  stroke-width="3"
+                />
+                <text
+                  x="25"
+                  y="27"
+                  text-anchor="middle"
+                  font-size="20"
+                  fill="black"
+                  alignment-baseline="middle"
+                  dominant-baseline="middle"
+                >
+                  {{ data_set.data_points }}
+                </text>
+              </svg>
+              <p class="text-center mb-0" style="font-size: 0.5rem">
+                data points
+              </p>
+            </div>
+          </div>
+
+          <p class="my-3" style="font-size: 0.8rem">
+            <strong>Description:</strong> {{ data_set.description }}
+          </p>
+          <div class="d-flex flex-column align-items-center">
             <svg
               height="50"
               width="50"
@@ -108,121 +130,86 @@
                 cx="25"
                 cy="25"
                 fill="none"
-                stroke="black"
+                stroke="red"
                 stroke-width="3"
               />
               <text
                 x="25"
-                y="27"
+                y="32"
                 text-anchor="middle"
                 font-size="20"
                 fill="black"
-                alignment-baseline="middle"
-                dominant-baseline="middle"
+                class="sharing-costs"
               >
-                {{ data_set.data_points }}
+                {{ data_set.sharing_costs }}
               </text>
             </svg>
-            <p class="text-center mb-0" style="font-size: 0.5rem">
-              data points
-            </p>
+            <p class="text-center" style="font-size: 0.8rem">sharing costs</p>
           </div>
+          <p class="my-2" style="font-size: 0.8rem">
+            <strong>Cost description:</strong> {{ data_set.cost_description }}
+          </p>
         </div>
-
-        <p class="my-3" style="font-size: 0.8rem">
-          <strong>Description:</strong> {{ data_set.description }}
-        </p>
-        <div class="d-flex flex-column align-items-center">
-          <svg
-            height="50"
-            width="50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 50 50"
-            style="display: block"
-          >
-            <circle
-              r="22"
-              cx="25"
-              cy="25"
-              fill="none"
-              stroke="red"
-              stroke-width="3"
-            />
-            <text
-              x="25"
-              y="32"
-              text-anchor="middle"
-              font-size="20"
-              fill="black"
-              class="sharing-costs"
-            >
-              {{ data_set.sharing_costs }}
-            </text>
-          </svg>
-          <p class="text-center" style="font-size: 0.8rem">sharing costs</p>
-        </div>
-        <p class="my-2" style="font-size: 0.8rem">
-          <strong>Cost description:</strong> {{ data_set.cost_description }}
-        </p>
+        {% endfor %}
       </div>
-      {% endfor %}
     </div>
-  </div>
+    <p>
+      The combination of the selected data sets will cost you:
+      <span id="cost-display">0</span>
+    </p>
+    <input
+      type="hidden"
+      class="hidden-input"
+      name="contribution"
+      id="contribution"
+    />
+    <input
+      type="hidden"
+      class="hidden-input"
+      name="contribution_cost"
+      id="contribution_cost"
+    />
+    {{ next_button }}
+  </form>
   <p>
-    The combination of the selected data sets will cost you:
-    <span id="cost-display">0</span>
+    You can contribute up to {{ C.DATA_POINTS }} data points to the project.
+    Please note that each data point you contribute decreases your utility by {%
+    if cost_eliminated %} -1 {% else %} {{ contribution_effect }} {% endif %}
+    and increases the utility of all players by {{ contribution_effect_other }}.
   </p>
-  <input
-    type="hidden"
-    class="hidden-input"
-    name="contribution"
-    id="contribution"
-  />
-  <input
-    type="hidden"
-    class="hidden-input"
-    name="contribution_cost"
-    id="contribution_cost"
-  />
-  {{ next_button }}
-</form>
-<p>
-  You can contribute up to {{ C.DATA_POINTS }} data points to the project.
-  Please note that each data point you contribute decreases your utility by {%
-  if cost_eliminated %} -1 {% else %} {{ contribution_effect }} {% endif %} and
-  increases the utility of all players by {{ contribution_effect_other }}.
-</p>
 
-<strong>Reminder:</strong>
-{% if cost_eliminated %}
-<div style="text-align: center">
-  <img
-    src="{% static 'global/Game_Inv.png' %}"
-    alt="Game Summary"
-    style="
-      width: 100%;
-      max-width: 600px;
-      height: auto;
-      border: 1px solid #ccc;
-      margin-top: 10px;
-    "
-  />
-</div>
-{% else %}
-<div style="text-align: center">
-  <img
-    src="{% static 'global/Game.png' %}"
-    alt="Game Summary"
-    style="
-      width: 100%;
-      max-width: 600px;
-      height: auto;
-      border: 1px solid #ccc;
-      margin-top: 10px;
-    "
-  />
-</div>
-{% endif %}
+  <strong>Reminder:</strong>
+  {% if cost_eliminated %}
+  <div style="text-align: center">
+    <img
+      src="{% static 'global/Game_Inv.png' %}"
+      alt="Game Summary"
+      style="
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        border: 1px solid #ccc;
+        margin-top: 10px;
+      "
+    />
+  </div>
+  {% else %}
+  <div style="text-align: center">
+    <img
+      src="{% static 'global/Game.png' %}"
+      alt="Game Summary"
+      style="
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        border: 1px solid #ccc;
+        margin-top: 10px;
+      "
+    />
+  </div>
+  {% endif %}
 
-<div style="text-align: center"></div>
+  <div style="text-align: center"></div>
+</div>
+
 {% endblock %}

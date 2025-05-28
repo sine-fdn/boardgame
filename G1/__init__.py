@@ -404,7 +404,6 @@ class Summary(Page):
 page_sequence = [
     EndowmentWaitPage,
     Intro,
-    Verification,
     CommsWaitPage,
     Communication,
     Investment,
