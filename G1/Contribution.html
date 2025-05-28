@@ -10,6 +10,8 @@
     const costDisplay = document.getElementById("cost-display");
     let costs = 0;
 
+    const contributionDisplay = document.getElementById("contribution-display");
+
     cards.forEach((card) => {
       card.addEventListener("click", function (e) {
         if (e.target.tagName === "INPUT") return;
@@ -27,6 +29,7 @@
           costs += parseInt(card.dataset.cost);
           costs_input.value = costs;
           costDisplay.textContent = costs;
+          contributionDisplay.textContent = contribution_input.value;
         } else {
           contribution_input.value =
             parseInt(contribution_input.value || "0") -
@@ -34,6 +37,7 @@
           costs -= parseInt(card.dataset.cost);
           costs_input.value = costs;
           costDisplay.textContent = costs;
+          contributionDisplay.textContent = contribution_input.value;
         }
       });
     });
@@ -42,13 +46,11 @@
 
 <div>
   <h2 class="text-center mb-5">Contribution</h2>
-  <div class="d-flex justify-content-end mb-3">
-    <ul class="list-unstyled border p-3 rounded">
+  <div class="bg-light rounded rounded-5 p-4 m-4">
+    <ul class="d-flex justify-content-between list-unstyled m-0">
       <li><strong>Player:</strong> {{ player.id_in_group }}</li>
       <li><strong>Balance:</strong> {{ current_balance }}</li>
-      <li>
-        <strong>Round:</strong> {{ round_number }} (of {{ C.NUM_ROUNDS }})
-      </li>
+      <li><strong>Round:</strong> {{ round_number }}/{{ C.NUM_ROUNDS }}</li>
     </ul>
   </div>
   {% if round_number >= 2 %} {% if cost_eliminated %}
@@ -62,7 +64,7 @@
     enough. Therefore, each players' costs remain the same.
   </p>
   {% endif %} {% endif %}
-  <p>Pick up to four data sets:</p>
+  <p class="text-center mb-4">Pick up to four data sets:</p>
   <form method="post">
     <div class="container">
       <div class="row">
@@ -153,9 +155,10 @@
         {% endfor %}
       </div>
     </div>
-    <p>
-      The combination of the selected data sets will cost you:
-      <span id="cost-display">0</span>
+    <p class="text-center my-4">
+      The combination of the selected data sets will contribute
+      <strong><span id="contribution-display">0</span></strong> and cost you
+      <strong><span id="cost-display">0</span></strong>
     </p>
     <input
       type="hidden"
@@ -169,16 +172,10 @@
       name="contribution_cost"
       id="contribution_cost"
     />
-    {{ next_button }}
+    <div class="text-center">{{ next_button }}</div>
   </form>
-  <p>
-    You can contribute up to {{ C.DATA_POINTS }} data points to the project.
-    Please note that each data point you contribute decreases your utility by {%
-    if cost_eliminated %} -1 {% else %} {{ contribution_effect }} {% endif %}
-    and increases the utility of all players by {{ contribution_effect_other }}.
-  </p>
 
-  <strong>Reminder:</strong>
+  <!-- <strong>Reminder:</strong>
   {% if cost_eliminated %}
   <div style="text-align: center">
     <img
@@ -207,9 +204,7 @@
       "
     />
   </div>
-  {% endif %}
-
-  <div style="text-align: center"></div>
+  {% endif %} -->
 </div>
 
 {% endblock %}

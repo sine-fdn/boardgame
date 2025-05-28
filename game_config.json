@@ -31,8 +31,8 @@
           "icon": "global/icons/weather.svg",
           "data_points": 25,
           "description": "Data about weather patterns and forecasts.",
-          "initial_sharing_costs": 15,
-          "post_invest_sharing_costs": 0,
+          "initial_sharing_costs": 30,
+          "post_invest_sharing_costs": 10,
           "cost_description": "Privacy concerns and data security."
         },
         {

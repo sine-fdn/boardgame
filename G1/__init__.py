@@ -354,6 +354,8 @@ class Results(Page):
             "players_data": players_data,
             "round_number": player.round_number,
             "cost_eliminated": player.session.vars.get("cost_eliminated", False),
+            "current_balance": player.participant.vars.get("current_balance", 0),
+            "total_value": round(group.total_contribution * C.MULTIPLIER),
         }
 
 

@@ -1,29 +1,65 @@
-{% extends "global/Page.html" %}
-{% block content %}
-<h2>Data Sharing Costs</h2>
+{% extends "global/Page.html" %} {% block content %}
+<h2 class="text-center mb-5">Data Sharing Costs</h2>
 
-<p>You are <strong>Player {{ player.id_in_group }}</strong>, and this is <strong>Round {{ round_number }} of {{ C.NUM_ROUNDS }}</strong>. Your current balance is <strong>{{ current_balance }}</strong>.</p>
+<div class="bg-light rounded rounded-5 p-4 m-4">
+  <ul class="d-flex justify-content-between list-unstyled m-0">
+    <li><strong>Player:</strong> {{ player.id_in_group }}</li>
+    <li><strong>Balance:</strong> {{ current_balance }}</li>
+    <li><strong>Round:</strong> {{ round_number }}/{{ C.NUM_ROUNDS }}</li>
+  </ul>
+</div>
 
-<p>The players incur different data sharing costs per Data Point contributed to the data-sharing project, as shown in the graphic below. These costs represent factors such as <strong>data privacy concerns</strong> or <strong>manual effort</strong>. </p>
+<p>
+  The players incur different data sharing costs per Data Point contributed to
+  the data-sharing project, as shown in the graphic below. These costs represent
+  factors such as <strong>data privacy concerns</strong> or
+  <strong>manual effort</strong>.
+</p>
 
-<p>You now have the opportunity to reduce Player 4's data sharing costs. This investment simulates activities like <strong>automating processes</strong> or <strong>addressing privacy concerns</strong>. Any investment you make will be deducted from your Utility Points and <strong>will not carry over</strong> to the next round if the threshold is not met.</p>
+<p>
+  You now have the opportunity to reduce Player 4's data sharing costs. This
+  investment simulates activities like <strong>automating processes</strong> or
+  <strong>addressing privacy concerns</strong>. Any investment you make will be
+  deducted from your Utility Points and <strong>will not carry over</strong> to
+  the next round if the threshold is not met.
+</p>
 
 <h3>Threshold to Reduce Costs</h3>
-<p>If the group invests more than <strong>{{ C.THRESHOLD }}</strong>, Player 4's data sharing cost is reduced to <strong>-1 Utility Point per Data Point shared</strong>. However, if the total investment does not meet the threshold in this round, the Utility Points you invested will still be subtracted from your balance, and the group will start fresh in the next round with a new opportunity to reach the threshold.</p>
+<p>
+  If the group invests more than <strong>{{ C.THRESHOLD }}</strong>, Player 4's
+  data sharing cost is reduced to
+  <strong>-1 Utility Point per Data Point shared</strong>. However, if the total
+  investment does not meet the threshold in this round, the Utility Points you
+  invested will still be subtracted from your balance, and the group will start
+  fresh in the next round with a new opportunity to reach the threshold.
+</p>
 
-<p>You can invest up to <strong>{{ C.MAX_INVESTMENT }}</strong> in this round.</p>
+<p>
+  You can invest up to <strong>{{ C.MAX_INVESTMENT }}</strong> in this round.
+</p>
 
-<div style="margin-bottom: 20px;">
-    {{ formfield 'investment' }}
-</div>
+<div style="margin-bottom: 20px">{{ formfield 'investment' }}</div>
 
 {{ next_button }}
 
 <h3>Reminder</h3>
-<p>The following graphic summarizes the costs and benefits of the data-sharing project:</p>
+<p>
+  The following graphic summarizes the costs and benefits of the data-sharing
+  project:
+</p>
 
-<div style="text-align: center;">
-    <img src="{% static 'global/Game.png' %}" alt="Game Summary" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+<div style="text-align: center">
+  <img
+    src="{% static 'global/Game.png' %}"
+    alt="Game Summary"
+    style="
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    "
+  />
 </div>
 
 {% endblock %}
