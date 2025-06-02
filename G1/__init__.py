@@ -109,7 +109,7 @@ class Player(BasePlayer):
     investment = models.CurrencyField(
         min=0,
         max=C.MAX_INVESTMENT,
-        label="How much would you like to invest to decrease the data sharing costs of Player 4?",
+        label="How much would you like to invest to decrease these data sharing costs?",
     )
     public_good_share = models.CurrencyField()  # Total amount paid out
     public_good_share_per = models.FloatField(
@@ -276,10 +276,36 @@ class Investment(Page):
                     "contribution_effect_other": f"{C.MULTIPLIER - p.public_good_share_per:.2f}",
                 }
             )
+        data_sets = []
+        for p in C.GAME_CONFIG.players:
+            filtered_data_sets = [
+                {
+                    "name": d.name,
+                    "icon": d.icon,
+                    "data_points": d.data_points,
+                    "description": d.description,
+                    "initial_sharing_costs": d.initial_sharing_costs,
+                    "post_invest_sharing_costs": d.post_invest_sharing_costs,
+                    "diff_sharing_costs": d.initial_sharing_costs
+                    - d.post_invest_sharing_costs,
+                    "cost_description": d.cost_description,
+                }
+                for d in p.data_sets
+                if d.initial_sharing_costs > d.post_invest_sharing_costs
+            ]
+            if filtered_data_sets:
+                data_sets.append(
+                    {
+                        "player_id": int(p.id),
+                        "data_sets": filtered_data_sets,
+                    }
+                )
+
         return {
             "players_data": players_data,
             "current_balance": current_balance,
             "round_number": player.round_number,
+            "data_sets_per_player": data_sets,
         }
 
 

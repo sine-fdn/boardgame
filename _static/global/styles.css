@@ -17,11 +17,12 @@
   .selectable-card {
     border-color: #ffc107;
     margin-bottom: 10px;
+    margin-left: 5px;
     margin-right: 5px;
-    margin-left: 20px;
     padding: 15px;
     border-radius: 10px;
     min-width: 210px;
+    max-width: 270px;
     max-height: 360px;
   }
 
