@@ -113,3 +113,14 @@
     }
 
   }
+
+  .example-text-col {
+    max-width: 600px;
+    width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    .example-text-col {
+      max-width: 100%;
+    }
+  }
