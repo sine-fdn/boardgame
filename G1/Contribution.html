@@ -44,10 +44,12 @@
   });
 </script>
 
+{{ formfield_errors 'contribution' }}
+
 <div>
   <h2 class="text-center mb-5">Contribution</h2>
-  <div class="bg-light rounded rounded-5 p-4 m-4">
-    <ul class="d-flex justify-content-between list-unstyled m-0">
+  <div class="bg-light rounded rounded-5 p-4 m-4 ps-5">
+    <ul class="d-sm-flex justify-content-between list-unstyled m-0">
       <li><strong>Player:</strong> {{ player.id_in_group }}</li>
       <li><strong>Balance:</strong> {{ current_balance }}</li>
       <li><strong>Round:</strong> {{ round_number }}/{{ C.NUM_ROUNDS }}</li>
@@ -55,22 +57,20 @@
   </div>
   {% if round_number >= 2 %} {% if cost_eliminated %}
   <p>
-    The amount invested to decrease the data sharing costs have been high
-    enough. Therefore, each players' costs have been reduced.
+    Thanks to the investment made in the previous round, the sharing costs of some Data Sets have been reduced.
   </p>
   {% else %}
   <p>
-    The amount invested to decrease the data sharing costs have not been high
-    enough. Therefore, each players' costs remain the same.
+    The amount invested in the previous round was not enough to reduce the sharing costs of the relevant Data Sets.
   </p>
   {% endif %} {% endif %}
-  <p class="text-center mb-4">Pick up to four data sets:</p>
+  <p class="text-center mb-4">Select <strong>at least one</strong>  and <strong>up to four</strong> data sets:</p>
   <form method="post">
-    <div class="container">
-      <div class="row">
+    <div class="container d-flex justify-content-center flex-column flex-md-row align-items-center w-100">
+      <div class="row"></div>
         {% for data_set in data_sets %}
         <div
-          class="col card selectable-card border-4 justify-content-between"
+          class="col card card-common selectable-card border-4 justify-content-between"
           data-points="{{ data_set.data_points }}"
           data-cost="{{ data_set.sharing_costs }}"
         >
@@ -146,7 +146,7 @@
                 {{ data_set.sharing_costs }}
               </text>
             </svg>
-            <p class="text-center" style="font-size: 0.8rem">sharing costs</p>
+            <p class="text-center" style="font-size: 0.8rem">sharing costs {% if round_number >= 2 %} {% if cost_eliminated %} (reduced) {% endif %} {% endif %}</p>
           </div>
           <p class="my-2" style="font-size: 0.8rem">
             <strong>Cost description:</strong> {{ data_set.cost_description }}
@@ -172,39 +172,9 @@
       name="contribution_cost"
       id="contribution_cost"
     />
-    <div class="text-center">{{ next_button }}</div>
+    <div class="text-center mt-3">{{ next_button }}</div>
   </form>
 
-  <!-- <strong>Reminder:</strong>
-  {% if cost_eliminated %}
-  <div style="text-align: center">
-    <img
-      src="{% static 'global/Game_Inv.png' %}"
-      alt="Game Summary"
-      style="
-        width: 100%;
-        max-width: 600px;
-        height: auto;
-        border: 1px solid #ccc;
-        margin-top: 10px;
-      "
-    />
-  </div>
-  {% else %}
-  <div style="text-align: center">
-    <img
-      src="{% static 'global/Game.png' %}"
-      alt="Game Summary"
-      style="
-        width: 100%;
-        max-width: 600px;
-        height: auto;
-        border: 1px solid #ccc;
-        margin-top: 10px;
-      "
-    />
-  </div>
-  {% endif %} -->
 </div>
 
 {% endblock %}

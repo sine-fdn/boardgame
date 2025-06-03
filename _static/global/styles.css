@@ -1,4 +1,10 @@
+  .otree-body {
+    max-width: 1140px;
+  }
+
   .otree-btn-next {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none;
     background-color: #59ce74;
     border-color: #59ce74;
     color: white;
@@ -14,7 +20,28 @@
     border-color: #45a45b;
   }
 
-  .selectable-card {
+  .otree-btn-next:focus,
+  .otree-btn-next:active {
+    background-color: #357a43;
+    border-color: #357a43;
+  }
+
+  .otree-btn-next:inactive {
+    background-color: #357a43;
+    border-color: #357a43;
+  }
+
+  button.otree-btn-next::-moz-focus-inner {
+    border: 0;
+  }
+
+  body,
+  .otree-btn-next {
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .selectable-card,
+  .non-selectable-card {
     border-color: #ffc107;
     margin-bottom: 10px;
     margin-left: 5px;
@@ -36,4 +63,53 @@
 
   .selectable-card.selected:hover {
     background-color: #116d4243;
+  }
+
+  .wrapper {
+    width: min(900px, 100% - 3rem);
+    margin-inline: auto;
+  }
+
+  @media (max-width: 650px) {
+    th {
+      display: none;
+    }
+
+    td {
+      display: block;
+    }
+
+    td::before {
+      content: attr(data-cell) ": ";
+      font-weight: bold;
+      text-transform: capitalize
+    }
+
+
+    td[data-cell="player"]::before,
+    td[data-cell="total"]::before {
+      content: "";
+    }
+
+    td[data-cell="player"],
+    td[data-cell="total"] {
+      font-weight: bold;
+      margin-top: 1rem;
+      font-size: 1.2rem;
+    }
+
+    td[data-cell="total"] {
+      font-weight: normal;
+    }
+
+    td[data-cell="benefit ratio"]::before {
+      content: "";
+    }
+  }
+
+  @media (min-width: 1140px) {
+    .example {
+      width: 80%;
+    }
+
   }

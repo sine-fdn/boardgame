@@ -1,37 +1,48 @@
-{% extends "global/Page.html" %}
-{% block content %}
-<h2>Summary</h2>
-<p> The final balances of all players are:</p>
-<table class="table">
+{% extends "global/Page.html" %} {% block content %}
+<h2 class="text-center mb-5">Summary</h2>
+<p>The final balances of all players are:</p>
+<div class="w-75 mx-auto mb-4">
+  <table class="table mb-5">
     <thead>
-        <tr>
-            <th>Player</th>
-            <th>Final Balance</th>
-        </tr>
+      <tr>
+        <th>Player</th>
+
+        <th>Final Balance</th>
+      </tr>
     </thead>
     <tbody>
-        {% for p in players_data %}
-        <tr>
-            <td>Player {{ p.id_in_group }}</td>
-            <td>{{ p.current_balance }}</td>
-        </tr>
-        {% endfor %}
+      {% for p in players_data %}
+      <tr>
+        <td data-cell="player">
+          Player {{ p.id_in_group }} {% if p.id_in_group == player.id_in_group
+          %} (You) {% endif %}
+        </td>
+
+        <td data-cell="final balance">{{ p.current_balance }}</td>
+      </tr>
+      {% endfor %}
     </tbody>
-</table>
-<p>The sum of all final balances is {{ total_current_balance }}. This represents <strong>{{ percentage_of_target }}% of the optimal result</strong>
-    if all players had played the optimal strategy.</p>
+  </table>
+</div>
+<p>
+  The sum of all final balances is <strong>{{ total_current_balance }}</strong>.
+  This represents
+  <strong>{{ percentage_of_target }}% of the optimal result</strong> if all
+  players had played the optimal strategy.
+</p>
 
 <p>Thank you for your participation! Now, lets turn to your data usecase.</p>
-<div style="text-align: center;">
-    <img src="{% static 'global/Template.png' %}" alt="Game Summary" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #ccc; margin-top: 10px;">
-</div>
+
 <p>Consider the following questions:</p>
 <ul>
-    <li>What is your data usecase?</li>
-    <li>Who are the relevant "Players"?</li>
-    <li>How do they benefit from the usecase?</li>
-    <li>What do they need to contribute?</li>
-    <li>What are their data sharing costs? (How do they contribute the data, what work is needed to prepare the data, privacy, etc.)</li>
-    <li>...</li>
+  <li>What is your data usecase?</li>
+  <li>Who are the relevant "Players"?</li>
+  <li>How do they benefit from the usecase?</li>
+  <li>What do they need to contribute?</li>
+  <li>
+    What are their data sharing costs? (How do they contribute the data, what
+    work is needed to prepare the data, privacy, etc.)
+  </li>
+  <li>...</li>
 </ul>
 {% endblock %}

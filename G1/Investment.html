@@ -1,15 +1,15 @@
 {% extends "global/Page.html" %} {% block content %}
 <h2 class="text-center mb-5">Data Sharing Costs Reduction</h2>
 
-<div class="bg-light rounded rounded-5 p-4 m-4">
-  <ul class="d-flex justify-content-between list-unstyled m-0">
+<div class="bg-light rounded rounded-5 p-4 m-4 ps-5">
+  <ul class="d-sm-flex justify-content-between list-unstyled m-0">
     <li><strong>Player:</strong> {{ player.id_in_group }}</li>
     <li><strong>Balance:</strong> {{ current_balance }}</li>
     <li><strong>Round:</strong> {{ round_number }}/{{ C.NUM_ROUNDS }}</li>
   </ul>
 </div>
 
-<p class="text-center">
+<p class="mt-5">
   You now have the opportunity to reduce the Sharing Costs of several Data Sets.
   This investment simulates activities like
   <strong>automating processes</strong> or
@@ -20,7 +20,7 @@
   met.
 </p>
 
-<p class="text-center">
+<p class="mb-5">
   If the group invests more than <strong>{{ C.THRESHOLD }}</strong>, the Sharing
   Costs of the following Data Sets will be reduced by the amount indicated
   below. However, if the total investment does not meet the threshold in this
@@ -37,12 +37,9 @@
       {% endif %}</strong
     >
   </p>
-  <div class="row">
+  <div class="row justify-content-center">
     {% for data_set in p.data_sets %}
-    <div
-      class="col card selectable-card border-4 justify-content-between"
-      style="pointer-events: none"
-    >
+    <div class="col card non-selectable-card border-4 justify-content-between">
       <p style="font-size: 1.1rem"><strong>{{ data_set.name }}</strong></p>
       <div class="d-flex justify-content-between">
         <img
@@ -133,13 +130,13 @@
 </div>
 {% endfor %}
 
-<p class="text-center mt-4">
+<p class="text-center mt-5">
   How much would you like to invest to decrease data sharing costs (max 100
   Utility Points)?
 </p>
 <div style="margin-bottom: 20px" class="d-flex justify-content-center">
   {{ form.investment }} {{ formfield_errors 'investment' }}
 </div>
-<div class="text-center">{{ next_button }}</div>
+<div class="text-center mt-5">{{ next_button }}</div>
 
 {% endblock %}
