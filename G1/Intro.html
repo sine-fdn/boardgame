@@ -85,7 +85,9 @@
         {% for p in players_data %}
         <tr>
           <td data-cell="player">Player {{ p.id_in_group }}</td>
-          <td data-cell="benefit ratio">{{ p.public_good_share_per }} x Data Points contributed</td>
+          <td data-cell="benefit ratio">
+            {{ p.public_good_share_per }} x Data Points contributed
+          </td>
         </tr>
         {% endfor %}
         <tr>
@@ -106,7 +108,9 @@
 
   <div class="bg-light rounded rounded-5 p-3 m-4 example">
     <p><strong>Example</strong></p>
-    <div class="d-md-flex p-md-auto justify-content-center">
+    <div
+      class="d-flex flex-md-row flex-column p-md-auto justify-content-center align-items-center"
+    >
       <div
         class="card non-selectable-card border-4"
         id="example-card"
@@ -193,7 +197,7 @@
           <strong>Cost description:</strong> Costs are justified by...
         </p>
       </div>
-      <div class="px-3" style="max-width: 600px">
+      <div class="px-3 w-100" style="max-width: 600px">
         <p>Player X has</p>
         <ul>
           <li>100 Utility Points</li>
