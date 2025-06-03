@@ -57,20 +57,27 @@
   </div>
   {% if round_number >= 2 %} {% if cost_eliminated %}
   <p>
-    Thanks to the investment made in the previous round, the sharing costs of some Data Sets have been reduced.
+    Thanks to the investment made in the previous round, the sharing costs of
+    some Data Sets have been reduced.
   </p>
   {% else %}
   <p>
-    The amount invested in the previous round was not enough to reduce the sharing costs of the relevant Data Sets.
+    The amount invested in the previous round was not enough to reduce the
+    sharing costs of the relevant Data Sets.
   </p>
   {% endif %} {% endif %}
-  <p class="text-center mb-4">Select <strong>at least one</strong>  and <strong>up to four</strong> data sets:</p>
+  <p class="text-center mb-4">
+    Select <strong>at least one</strong> and <strong>up to four</strong> data
+    sets:
+  </p>
   <form method="post">
-    <div class="container d-flex justify-content-center flex-column flex-md-row align-items-center w-100">
-      <div class="row"></div>
-        {% for data_set in data_sets %}
+    <div
+      class="row g-2 justify-content-center flex-column flex-md-row align-items-center w-100"
+    >
+      {% for data_set in data_sets %}
+      <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-center mb-4">
         <div
-          class="col card card-common selectable-card border-4 justify-content-between"
+          class="card selectable-card border-4 justify-content-between"
           data-points="{{ data_set.data_points }}"
           data-cost="{{ data_set.sharing_costs }}"
         >
@@ -146,14 +153,18 @@
                 {{ data_set.sharing_costs }}
               </text>
             </svg>
-            <p class="text-center" style="font-size: 0.8rem">sharing costs {% if round_number >= 2 %} {% if cost_eliminated %} (reduced) {% endif %} {% endif %}</p>
+            <p class="text-center" style="font-size: 0.8rem">
+              sharing costs {% if round_number >= 2 %} {% if cost_eliminated %}
+              (reduced) {% endif %} {% endif %}
+            </p>
           </div>
           <p class="my-2" style="font-size: 0.8rem">
             <strong>Cost description:</strong> {{ data_set.cost_description }}
           </p>
         </div>
-        {% endfor %}
       </div>
+        {% endfor %}
+    </div>
     </div>
     <p class="text-center my-4">
       The combination of the selected data sets will contribute
@@ -174,7 +185,6 @@
     />
     <div class="text-center mt-3">{{ next_button }}</div>
   </form>
-
 </div>
 
 {% endblock %}

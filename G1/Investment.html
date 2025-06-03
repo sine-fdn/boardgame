@@ -39,91 +39,98 @@
   </p>
   <div class="row justify-content-center">
     {% for data_set in p.data_sets %}
-    <div class="col card non-selectable-card border-4 justify-content-between">
-      <p style="font-size: 1.1rem"><strong>{{ data_set.name }}</strong></p>
-      <div class="d-flex justify-content-between">
-        <img
-          src="{{ static data_set.icon }}"
-          width="60"
-          height="60"
-          style="display: block"
-        />
-        <div>
-          <svg
-            height="50"
-            width="50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 50 50"
-            style="display: block"
-          >
-            <circle
-              r="22"
-              cx="25"
-              cy="25"
-              fill="none"
-              stroke="black"
-              stroke-width="3"
+    <div class="col-12 col-md-6 col-lg-3 mb-3 justify-content-center">
+      <div class="d-flex justify-content-center">
+        <div class="card non-selectable-card border-4 justify-content-between">
+          <p style="font-size: 1.1rem"><strong>{{ data_set.name }}</strong></p>
+          <div class="d-flex justify-content-between">
+            <img
+              src="{{ static data_set.icon }}"
+              width="60"
+              height="60"
+              style="display: block"
             />
-            <text
-              x="25"
-              y="27"
-              text-anchor="middle"
-              font-size="20"
-              fill="black"
-              alignment-baseline="middle"
-              dominant-baseline="middle"
+            <div>
+              <svg
+                height="50"
+                width="50"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 50 50"
+                style="display: block"
+              >
+                <circle
+                  r="22"
+                  cx="25"
+                  cy="25"
+                  fill="none"
+                  stroke="black"
+                  stroke-width="3"
+                />
+                <text
+                  x="25"
+                  y="27"
+                  text-anchor="middle"
+                  font-size="20"
+                  fill="black"
+                  alignment-baseline="middle"
+                  dominant-baseline="middle"
+                >
+                  {% if p.player_id == player.id_in_group %} {{
+                  data_set.data_points }} {% else %} ? {% endif %}
+                </text>
+              </svg>
+              <p class="text-center mb-0" style="font-size: 0.5rem">
+                data points
+              </p>
+            </div>
+          </div>
+
+          <p class="my-3" style="font-size: 0.8rem">
+            <strong>Description:</strong> {{ data_set.description }}
+          </p>
+          <div class="d-flex flex-column align-items-center">
+            <p class="text-center mb-1" style="font-size: 0.8rem">
+              sharing costs <strong>reduced</strong> by
+            </p>
+            <svg
+              height="50"
+              width="50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 50 50"
+              style="display: block"
             >
-              {% if p.player_id == player.id_in_group %} {{ data_set.data_points
-              }} {% else %} ? {% endif %}
-            </text>
-          </svg>
-          <p class="text-center mb-0" style="font-size: 0.5rem">data points</p>
+              <circle
+                r="22"
+                cx="25"
+                cy="25"
+                fill="none"
+                stroke="red"
+                stroke-width="3"
+                stroke-dasharray="6,4"
+              />
+              <text
+                x="25"
+                y="32"
+                text-anchor="middle"
+                font-size="20"
+                fill="black"
+                class="sharing-costs"
+              >
+                {{ data_set.diff_sharing_costs }}
+              </text>
+            </svg>
+            {% if p.player_id == player.id_in_group %}
+            <p class="text-center mb-1" style="font-size: 0.8rem">
+              initial cost:
+              <strong>{{ data_set.initial_sharing_costs }}</strong>
+            </p>
+            {% endif %}
+          </div>
+          <p class="my-2" style="font-size: 0.8rem">
+            <strong>Cost description:</strong> {{ data_set.cost_description }}
+          </p>
         </div>
       </div>
-
-      <p class="my-3" style="font-size: 0.8rem">
-        <strong>Description:</strong> {{ data_set.description }}
-      </p>
-      <div class="d-flex flex-column align-items-center">
-        <p class="text-center mb-1" style="font-size: 0.8rem">
-          sharing costs <strong>reduced</strong> by
-        </p>
-        <svg
-          height="50"
-          width="50"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 50 50"
-          style="display: block"
-        >
-          <circle
-            r="22"
-            cx="25"
-            cy="25"
-            fill="none"
-            stroke="red"
-            stroke-width="3"
-            stroke-dasharray="6,4"
-          />
-          <text
-            x="25"
-            y="32"
-            text-anchor="middle"
-            font-size="20"
-            fill="black"
-            class="sharing-costs"
-          >
-            {{ data_set.diff_sharing_costs }}
-          </text>
-        </svg>
-        {% if p.player_id == player.id_in_group %}
-        <p class="text-center mb-1" style="font-size: 0.8rem">
-          initial cost: <strong>{{ data_set.initial_sharing_costs }}</strong>
-        </p>
-        {% endif %}
-      </div>
-      <p class="my-2" style="font-size: 0.8rem">
-        <strong>Cost description:</strong> {{ data_set.cost_description }}
-      </p>
     </div>
     {% endfor %}
   </div>
