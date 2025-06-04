@@ -3,41 +3,29 @@
   }
 
   .otree-btn-next {
-    -webkit-tap-highlight-color: transparent !important;
-    -webkit-touch-callout: none;
-    background-color: #59ce74;
-    border-color: #59ce74;
+    background-color: #4080ff;
+    border: none;
     color: white;
     font-size: 16px;
     border-radius: 25px;
     padding: 10px 20px;
     font-weight: bold;
     width: 200px;
+
   }
 
-  .otree-btn-next:hover {
-    background-color: #45a45b;
-    border-color: #45a45b;
-  }
 
-  .otree-btn-next:focus,
-  .otree-btn-next:active {
-    background-color: #357a43;
-    border-color: #357a43;
-  }
-
-  .otree-btn-next:inactive {
-    background-color: #357a43;
-    border-color: #357a43;
+  button.otree-btn-next::-moz-focus-inner {
+    border: 0;
   }
 
   button.otree-btn-next::-moz-focus-inner {
     border: 0;
   }
 
-  body,
-  .otree-btn-next {
-    -webkit-tap-highlight-color: transparent !important;
+  body {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-touch-callout: none;
   }
 
   .selectable-card,
