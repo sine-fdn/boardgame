@@ -1,4 +1,14 @@
 from os import environ
+from urllib.parse import urlparse
+import os
+
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv()
+except ImportError:
+    pass
+
 
 SESSION_CONFIGS = [
     dict(
@@ -41,3 +51,6 @@ DEMO_PAGE_INTRO_HTML = """ """
 SECRET_KEY = "9993749924114"
 
 DEBUG = False
+
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
