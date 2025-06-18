@@ -42,9 +42,9 @@ REAL_WORLD_CURRENCY_CODE = "EUR"
 USE_POINTS = True
 POINTS_CUSTOM_NAME = "Utility Points"
 
-ADMIN_USERNAME = "admin"
-# for security, best to set admin password in an environment variable
-ADMIN_PASSWORD = environ.get("OTREE_ADMIN_PASSWORD")
+ADMIN_USERNAME = os.environ.get("OTREE_ADMIN_USERNAME")
+
+ADMIN_PASSWORD = os.environ.get("OTREE_ADMIN_PASSWORD")
 
 DEMO_PAGE_INTRO_HTML = """ """
 
@@ -54,3 +54,5 @@ DEBUG = False
 
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
+
+AUTH_LEVEL = "STUDY"
