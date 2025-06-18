@@ -112,3 +112,22 @@
       max-width: 100%;
     }
   }
+
+  .otree-chat__btn-send {
+    background-color: #4080ff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-weight: bold;
+    width: 200px;
+  }
+
+  .otree-chat__btn-send:hover {
+    background-color: #3060cc;
+  }
+
+  .otree-chat__btn-send::-moz-focus-inner {
+    border: 0;
+  }

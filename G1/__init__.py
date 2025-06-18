@@ -247,7 +247,7 @@ class CommsWaitPage(WaitPage):
 
 class Communication(Page):
     form_model = "player"
-    timeout_seconds = 120  # 2 minutes timer
+    timeout_seconds = 1000  # 2 minutes timer
 
     @staticmethod
     def is_displayed(player: Player):
