@@ -127,6 +127,7 @@ class Player(BasePlayer):
         )
 
         data_sets = player.data_sets if player else []
+
         return [
             {
                 "name": ds.name,
@@ -138,6 +139,7 @@ class Player(BasePlayer):
                     if self.session.vars.get("cost_eliminated", False)
                     else ds.initial_sharing_costs
                 ),
+                "reduced_costs": ds.initial_sharing_costs > ds.post_invest_sharing_costs,
                 "cost_description": ds.cost_description,
             }
             for ds in data_sets
