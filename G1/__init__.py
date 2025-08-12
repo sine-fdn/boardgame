@@ -121,6 +121,12 @@ class Player(BasePlayer):
         initial=0.00
     )  # Marginal costs coming from CONTRIBUTION_COSTS
 
+    def get_sharing_costs(self, ds: DataSet):
+        if self.session.vars.get("cost_eliminated", False):
+            return ds.post_invest_sharing_costs
+        else:
+            return ds.initial_sharing_costs
+
     def get_data_sets(self):
         player = next(
             (p for p in C.GAME_CONFIG.players if int(p.id) == self.id_in_group), None
@@ -134,12 +140,8 @@ class Player(BasePlayer):
                 "icon": ds.icon,
                 "data_points": ds.data_points,
                 "description": ds.description,
-                "sharing_costs": (
-                    ds.post_invest_sharing_costs
-                    if self.session.vars.get("cost_eliminated", False)
-                    else ds.initial_sharing_costs
-                ),
-                "reduced_costs": ds.initial_sharing_costs > ds.post_invest_sharing_costs,
+                "sharing_costs": self.get_sharing_costs(ds),
+                "reduced_costs": ds.initial_sharing_costs > self.get_sharing_costs(ds),
                 "cost_description": ds.cost_description,
             }
             for ds in data_sets
