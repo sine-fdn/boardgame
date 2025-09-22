@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 64 64">
+  <!-- ClipPath: begrenzt die grünen Linien auf das Rechteck -->
+  <defs>
+    <clipPath id="clip-box">
+      <rect x="8" y="8" width="48" height="48" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <!-- Rahmen -->
+  <rect x="8" y="8" width="48" height="48" rx="8" fill="#E8F6F3" stroke="#444" stroke-width="1.8"/>
+
+  <!-- Linien: durch ClipPath wird alles abgeschnitten -->
+  <g clip-path="url(#clip-box)">
+    <path d="M32 20c6 8 6 16 0 24" fill="none" stroke="#117A65" stroke-width="2"/>
+    <path d="M40 26c4 6 4 12 0 18" fill="none" stroke="#16A085" stroke-width="2" opacity=".7"/>
+    <path d="M24 26c-4 6-4 12 0 18" fill="none" stroke="#16A085" stroke-width="2" opacity=".7"/>
+    <path d="M20 46h24" stroke="#117A65" stroke-width="2" opacity=".5"/>
+  </g>
+</svg>

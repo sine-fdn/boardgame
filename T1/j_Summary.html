@@ -1,0 +1,66 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+<style>
+  .wrap { max-width: 900px; margin: 0 auto; }
+  .pill {
+    display:inline-block; padding:4px 10px; border-radius:999px;
+    background:#eef2f7; border:1px solid #e3e8ef; font-size:.85rem; margin-right:6px;
+  }
+  .card-soft {
+    border:1px solid #e9ecef; border-radius:12px; padding:14px; background:#fff;
+  }
+  .rank-table { width:100%; border-collapse: collapse; }
+  .rank-table th, .rank-table td {
+    padding:10px 12px; border-bottom:1px solid #e9ecef; text-align:left;
+  }
+  .rank-table th { background:#f8f9fa; }
+  .metrics { display:flex; gap:16px; flex-wrap:wrap; }
+  .metric { border:1px solid #e9ecef; border-radius:10px; padding:10px 12px; background:#fff; }
+  .metric strong { display:block; font-size:1.05rem; }
+</style>
+
+<div class="bg-light rounded rounded-5 p-4 m-4 example wrap">
+
+  <h2 class="text-center mb-3">Danke für eure Teilnahme! 🎉</h2>
+  <p class="mb-3">
+    Ihr habt euch gemeinsam durch verschiedene Use Cases gearbeitet. Hier kommen eure Ergebnisse:
+  </p>
+
+
+  <!-- Ranking -->
+  <div class="card-soft mt-3">
+    <h3 class="mb-2">Ranking der Abteilungen</h3>
+    <table class="rank-table">
+      <thead>
+        <tr>
+          <th style="width:56px;">Platz</th>
+          <th>Abteilung</th>
+          <th class="text-end">Punktestand</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in players_ranking %}
+          <tr>
+            <td><strong>{{ forloop.counter }}</strong></td>
+            <td>{{ p.dept }}</td>
+            <td class="text-end"><strong>{{ p.current_balance }}</strong></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </br><p>Ihr habt insgesamt {{ total_current_balance }} zusammen erreicht. Das optimale Gruppenergebnis wäre {{ optimum_net_value }} gewesen.</p>
+</div>
+  <!-- Reflexionsfragen -->
+  <div class="card-soft mt-3">
+    <h3 class="mb-2">Reflexion – Übertrag in eure Praxis</h3>
+    <ol class="mb-0">
+      <li>Was waren die größten Hürden, um das optimale Gruppenergebnis zu erreichen?</li>
+      <li>Welche Entscheidungen würdet ihr in eurem Arbeitsalltag genauso treffen und wo würdet ihr anders vorgehen?</li>
+      <li>Wer sind die wichtigsten Partner, mit denen ihr Daten sinnvoll bündeln könntet, damit der gemeinsame Nutzen steigt?</li>
+      <li>Wo entstehen bei euch die höchsten Kosten (technisch, rechtlich, organisatorisch) für das Teilen von Daten?</li>
+      <li>Welche Datensätze aus eurem Arbeitsbereich wären mit <em>Standardisierung</em> und <em>Verschlüsselung</em> heute schon leichter teilbar?</li>
+    </ol>
+  </div>
+</div>
+{% endblock %}

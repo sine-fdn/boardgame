@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 64 64">
+  <!-- subtle violet background -->
+  <rect x="8" y="8" width="48" height="48" rx="8" ry="8" fill="#F5F0FF" stroke="#444" stroke-width="1.8"/>
+  <!-- people outlines -->
+  <circle cx="24" cy="28" r="5" fill="none" stroke="#6C5CE7" stroke-width="2"/>
+  <path d="M16 42c0-5 4-9 8-9s8 4 8 9" fill="none" stroke="#6C5CE7" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="40" cy="24" r="4" fill="none" stroke="#6C5CE7" stroke-width="2"/>
+  <path d="M34 36c0-4 3-7 6-7s6 3 6 7" fill="none" stroke="#6C5CE7" stroke-width="2" stroke-linecap="round"/>
+  <!-- baseline -->
+  <line x1="14" y1="48" x2="50" y2="48" stroke="#6C5CE7" stroke-width="2" opacity=".6"/>
+  <!-- bars -->
+  <rect x="18" y="40" width="4" height="8" fill="#6C5CE7" opacity=".75"/>
+  <rect x="26" y="36" width="4" height="12" fill="#6C5CE7" opacity=".75"/>
+  <rect x="34" y="32" width="4" height="16" fill="#6C5CE7" opacity=".75"/>
+  <rect x="42" y="38" width="4" height="10" fill="#6C5CE7" opacity=".75"/>
+</svg>

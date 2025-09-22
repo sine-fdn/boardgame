@@ -1,0 +1,186 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+<style>
+  .selectable-card {
+    cursor: pointer;
+    transition: box-shadow .15s ease, transform .05s;
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .selectable-card.selected {
+    box-shadow: 0 0 0 3px #19875455;
+    transform: translateY(-1px);
+  }
+  .selectable-card:focus {
+    outline: 3px solid #0d6efd55;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cards = document.querySelectorAll(".selectable-card");
+    const savingDisplay = document.getElementById("saving-display");
+    const nextBtn = document.querySelector(".otree-btn-next, button[type='submit'], .btn-primary");
+    const MAX_SEL = 4;
+
+    function parse10(v) { return parseInt(v, 10) || 0; }
+
+    function recompute() {
+      let sumSaving = 0;
+      const selected = document.querySelectorAll(".selectable-card.selected");
+      selected.forEach(c => {
+        const before = parse10(c.dataset.costBefore);
+        const after  = parse10(c.dataset.costAfter);
+        sumSaving += before - after;
+      });
+      savingDisplay.textContent = sumSaving;
+      if(nextBtn) { nextBtn.disabled = false; }
+    }
+
+    cards.forEach(card => {
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("role", "button");
+      card.addEventListener("keydown", e => {
+        if (e.key === " " || e.key === "Enter") { e.preventDefault(); card.click(); }
+      });
+
+      card.addEventListener("click", e => {
+        if (e.target.tagName === "INPUT") return;
+        const alreadySelected = document.querySelectorAll(".selectable-card.selected").length;
+        if (!card.classList.contains("selected") && alreadySelected >= MAX_SEL) {
+          card.animate([{ transform:'translateX(0)' }, { transform:'translateX(-2px)' }, { transform:'translateX(0)' }], { duration: 120 });
+          return;
+        }
+        card.classList.toggle("selected");
+        recompute();
+      });
+    });
+
+    if (nextBtn) nextBtn.disabled = false;
+    recompute();
+  });
+</script>
+
+<div class="bg-light rounded rounded-5 p-4 m-4 example" style="width:100%; margin:auto;">
+
+  <h3 class="text-center mb-4"> Mögliche Investition in gemeinsame Standards und Verschlüsselung</h3>
+
+  <div class="d-sm-flex justify-content-between list-unstyled m-0">
+      <li>
+        <strong>
+        {% if player.id_in_group == 1 %}🌿 Amt für Umwelt
+        {% elif player.id_in_group == 2 %}❤ Amt für Soziales
+        {% elif player.id_in_group == 3 %}🚦 Amt für Verkehr
+        {% elif player.id_in_group == 4 %}🛡 Amt für Sicherheit
+        {% else %}Dein Amt{% endif %}</strong>
+      </li>
+      <li><strong>Kontostand:</strong> {{ current_balance }}</li>
+      <li><strong>Runde:</strong> {{ round_number }}/{{ C.NUM_ROUNDS }}</li>
+    </div></br>
+
+        <p>
+        Die Bereitstellung der Daten für den digitalen Zwilling ist sehr aufwendig und daher teuer.
+        Ihr habt nun die Möglichkeit, gemeinsam in <strong>Standards</strong> und
+        <strong>Verschlüsselungstechnologien</strong> zu investieren.
+        Dafür müssen eure vier Abteilungen zusammen insgesamt <strong>{{ C.THRESHOLD }} Punkte</strong> aufbringen.
+      </p>
+
+      <p>
+        Wird dieser Betrag erreicht, sinken die Bereitstellungskosten vieler Datensätze deutlich,
+        teils sogar sehr stark. Die Einsparungen fallen je nach Abteilung jedoch unterschiedlich aus.
+      </p>
+
+      <p>
+        Unten seht ihr, welche Auswirkungen eine erfolgreiche Investition auf eure Kosten hätte.
+        Wenn ihr auf die Datensätze klickt, wird euch angezeigt,
+        wie hoch die Gesamtersparnis für eure Abteilung wäre.
+      </p>
+        <form method="post">
+      <div class="row g-2 justify-content-center flex-column flex-md-row align-items-center w-100">
+        {% for data_set in data_sets %}
+        <div class="col-12 col-md-5 col-lg-3 d-flex justify-content-center mb-4">
+          <div
+            class="card selectable-card border-4 justify-content-between"
+            data-points="{{ data_set.data_points }}"
+            data-cost-before="{{ data_set.sharing_costs }}"
+            data-cost-after="{{ data_set.post_invest_costs }}"
+          >
+            <!-- Name -->
+            <p style="font-size:1.1rem;"><strong>{{ data_set.name }}</strong></p>
+
+            <!-- Icon & Punkte -->
+            <div class="d-flex justify-content-between">
+              <img src="{{ static data_set.icon }}" width="60" height="60" alt="" />
+              <div>
+                <svg height="50" width="50" viewBox="0 0 50 50">
+                  <circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/>
+                  <text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20" fill="black">
+                    {{ data_set.data_points }}
+                  </text>
+                </svg>
+                <p class="text-center mb-0" style="font-size:.8rem">Punkte</p>
+              </div>
+            </div>
+
+            <!-- Beschreibung -->
+            <p class="my-3" style="font-size:.8rem">
+              <strong>Beschreibung:</strong> {{ data_set.description }}
+            </p>
+
+            <!-- Kosten vorher & nachher -->
+            <div class="d-flex justify-content-between">
+              <div class="text-center">
+                <svg height="50" width="50" viewBox="0 0 50 50">
+                    <circle r="22" cx="25" cy="25" fill="none" stroke="red" stroke-width="3"/>
+                    <text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20" fill="black">
+                      {{ data_set.sharing_costs }}
+                    </text>
+                  </svg>
+                  <p class="text-center" style="font-size:.8rem">Kosten vorher</p>
+              </div>
+              <div class="text-center">
+                <svg height="50" width="50" viewBox="0 0 50 50">
+                  <circle r="22" cx="25" cy="25" fill="none" stroke="green" stroke-width="3"/>
+                  <text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20" fill="black">
+                    {{ data_set.post_invest_costs }}
+                  </text>
+                </svg>
+                <p class="text-center" style="font-size:.8rem">Kosten nachher</p>
+              </div>
+            </div>
+
+            <!-- Begründung -->
+            <p class="my-2" style="font-size:.8rem">
+              <strong>Begründung:</strong> {{ data_set.cost_description }}
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Einsparung und Investitionsbetrag -->
+      <p class="text-center my-4">
+        Deine mögliche Einsparung bei erfolgreicher Investition:
+        <strong><span id="saving-display">0</span></strong> Punkte.
+      </p>
+
+      <div>
+              <p>
+        Nur wenn der volle Betrag zusammenkommt, gilt das Projekt als erfolgreich
+        und die Kosten für das Teilen der Daten verringern sich.
+        Wird der Schwellenwert nicht erreicht, sind die investierten Punkte verloren.
+        Stimmt euch also gut ab, wer wie viel investiert!
+      </p>
+        <p>Du kannst <strong>maximal {{C.MAX_INVESTMENT}}</strong> investieren. Wie viel willst du in gemeinsame Standards und Verschlüsselung investieren?</p>
+       <p> {{ form.investment }} {{ formfield_errors 'investment' }}</p>
+      </div>
+
+      <div class="text-center mt-3">
+        {{ next_button }}
+      </div>
+    </form>
+  </div>
+{% endblock %}

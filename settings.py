@@ -12,8 +12,8 @@ except ImportError:
 
 SESSION_CONFIGS = [
     dict(
-        name="cooperation_with_the_future",
-        app_sequence=["G1"],
+        name="data_sharing_game",
+        app_sequence=["T1"],  # T1 = with the opportunity to decrease data sharing costs
         num_demo_participants=None,
     ),
 ]
@@ -35,23 +35,22 @@ SESSION_FIELDS = []
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = "de"
 
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = "EUR"
 USE_POINTS = True
-POINTS_CUSTOM_NAME = "Utility Points"
+POINTS_CUSTOM_NAME = "Punkte"
 
-ADMIN_USERNAME = os.environ.get("OTREE_ADMIN_USERNAME")
+ADMIN_USERNAME = "admin"
 
-ADMIN_PASSWORD = os.environ.get("OTREE_ADMIN_PASSWORD")
+ADMIN_PASSWORD = "admin"
 
 DEMO_PAGE_INTRO_HTML = """ """
 
 SECRET_KEY = "9993749924114"
 
 DEBUG = False
-
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 

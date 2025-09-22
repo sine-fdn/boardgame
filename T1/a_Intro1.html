@@ -1,0 +1,43 @@
+{% extends "global/Page.html" %} {% block content %}
+
+<div class="bg-light rounded rounded-5 p-4 m-4 example">
+  <h2 class="text-center mb-4">Willkommen in der Stadt der Zukunft</h2>
+
+  <p>
+    Unsere Stadtverwaltung steht vor großen Herausforderungen: Klimawandel, demografische Veränderungen, wachsende Mobilitätsbedürfnisse und die Sicherheit im Alltag. Für wirksame Maßnahmen braucht es jedoch nicht nur gute Ideen, sondern vor allem belastbare Analysen. Diese Analysen können erst dann entstehen, wenn alle relevanten Daten von Umwelt über Verkehr bis hin zu Sozialem und Sicherheit zusammengetragen und gemeinsam genutzt werden können.
+  </p>
+
+  <p>
+    Die gemeinsame Nutzung von Daten ist nicht immer einfach:
+  </p>
+  <ul>
+    <li>Es verursacht Aufwand, die Daten nutzbar zu machen.</li>
+    <li>Nicht alle profitieren im gleichen Maß von den gemeinsamen Ergebnissen.</li>
+    <li>Manche Abteilungen haben hohe Kosten, während andere besonders stark von den Erkenntnissen profitieren.</li>
+  </ul>
+
+  <p>
+    In diesem Spiel schlüpft ihr jeweils in die Rolle eines der vier Ämter unserer Stadtverwaltung:
+  </p>
+  <ul>
+    <li>🌿 <strong>Amt für Umwelt:</strong> Schützt Klima und Natur und sorgt für eine gesunde Lebensumwelt.</li>
+    <li>🚦 <strong>Amt für Verkehr:</strong> Plant und steuert die Mobilität.</li>
+    <li>❤️ <strong>Amt für Soziales:</strong> Sorgt dafür, dass die Bedürfnisse der Menschen berücksichtigt werden.</li>
+    <li>🛡 <strong>Amt für Sicherheit:</strong> Gewährleistet Sicherheit im öffentlichen Raum.</li>
+  </ul>
+
+  <p>
+    <strong>Euer Ziel:</strong> Über {{ C.NUM_ROUNDS }} Runden hinweg entscheidet ihr, welche Datensätze ihr teilt
+    und wie viel Aufwand ihr dafür aufbringt. Gemeinsam macht ihr die Zukunft der Stadt transparenter und gewinnt
+    wertvolle Einsichten. Gleichzeitig profitiert jedes Amt unterschiedlich – deshalb geht es darum, die Stadt
+    insgesamt voranzubringen und gleichzeitig den Nutzen für das eigene Amt möglichst hoch zu halten.
+  </p>
+
+  <div class="text-center mt-4">
+    {{ next_button }}
+  </div>
+</div>
+
+{% endblock %}
+
+

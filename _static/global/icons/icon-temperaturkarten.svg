@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 64 64">
+  <!-- subtle warm background -->
+  <rect x="8" y="8" width="48" height="48" rx="8" ry="8" fill="#FFF4E6" stroke="#444" stroke-width="1.8"/>
+  <!-- grid -->
+  <path d="M8 28h48M8 44h48M24 8v48M40 8v48" fill="none" stroke="#E67E22" stroke-width="1.2" opacity=".35"/>
+  <!-- thermometer -->
+  <line x1="48" y1="18" x2="48" y2="34" stroke="#D35400" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="48" cy="38" r="5" fill="none" stroke="#D35400" stroke-width="2"/>
+  <circle cx="48" cy="38" r="3" fill="#E67E22"/>
+  <!-- heat waves -->
+  <path d="M16 18c4-3 8 3 12 0M16 22c4-3 8 3 12 0" fill="none" stroke="#E67E22" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+</svg>

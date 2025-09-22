@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 64 64">
+  <!-- subtle red-tinted background -->
+  <rect x="8" y="8" width="48" height="48" rx="8" ry="8" fill="#FFF0F0" stroke="#444" stroke-width="1.8"/>
+  <!-- siren body -->
+  <rect x="24" y="28" width="16" height="12" rx="3" ry="3" fill="none" stroke="#C0392B" stroke-width="2"/>
+  <rect x="22" y="40" width="20" height="4" rx="1" ry="1" fill="#C0392B"/>
+  <!-- top bulb -->
+  <path d="M28 28v-6c0-3 2-5 4-5s4 2 4 5v6" fill="none" stroke="#E74C3C" stroke-width="2"/>
+  <!-- rays -->
+  <path d="M32 14v4M20 18l3 3M44 18l-3 3M18 28h4M46 28h-4" stroke="#E74C3C" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+  <!-- medical cross -->
+  <path d="M32 32v6M29 35h6" stroke="#C0392B" stroke-width="2" stroke-linecap="round"/>
+</svg>

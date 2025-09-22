@@ -1,0 +1,74 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+<style>
+  .result-wrap { width: 100%; margin: 0 auto; }
+  .pill {
+    display:inline-block; padding:2px 8px; border-radius:999px;
+    background:#eef2f7; border:1px solid #e3e8ef; font-size:.85rem;
+  }
+  .row-card {
+    display:flex; gap:12px; align-items:center; justify-content:space-between;
+    padding:10px 12px; border:1px solid #e9ecef; border-radius:10px;
+  }
+  .row-card strong { font-weight:600; }
+  @media (max-width:640px){
+    .row-card{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+
+<div class="bg-light rounded rounded-5 p-4 m-4 example">
+  <h2 class="text-center mb-4">Der Wert für die einzelnen Abteilungen</h2>
+
+  <p>
+    Der Gesamtwert dieses Use Cases ergibt sich aus den Beiträgen aller Abteilungen,
+    multipliziert mit dem Faktor <strong>{{ C.MULTIPLIER }}</strong>.
+    Jede Abteilung erhält den gleichen Anteil am Gesamtwert, die
+    <strong>Kosten</strong> unterscheiden sich aber – dadurch fällt das Ergebnis
+    für jede Abteilung unterschiedlich aus.
+  </p>
+</div>
+
+<div class="bg-light rounded rounded-5 p-4 m-4 example">
+  <div class="result-wrap">
+
+    <!-- Zusammenfassung -->
+    <div id="summary" class="mb-2 pill">
+      Beiträge gesamt: <strong>{{ total_contribution }}</strong> × Faktor: <strong>{{ C.MULTIPLIER }}</strong>
+      → Gesamtwert: <strong>{{ total_value }}</strong> geteilt durch {{ C.PLAYERS_PER_GROUP }}
+      Abteilungen → Anteil pro Abteilung: <strong>{{ anteil_pro_amt }}</strong>
+
+    </div>
+
+    <!-- Ergebnis pro Abteilung -->
+    <div id="results" style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
+      {% for p in players_data %}
+        <div class="row-card">
+          <div style="flex:1; min-width:140px;">
+            <strong>
+              {% if p.id_in_group == 1 %}🌿 Umwelt
+              {% elif p.id_in_group == 2 %}❤️ Soziales
+              {% elif p.id_in_group == 3 %}🚦 Verkehr
+              {% elif p.id_in_group == 4 %}🛡 Sicherheit
+              {% else %}Amt {{ p.id_in_group }}{% endif %}
+              {% if p.id_in_group == player.id_in_group %}<em> (Du)</em>{% endif %}
+            </strong>
+          </div>
+          <div style="flex:1;">Anteil: <strong>{{ p.public_good_share }}</strong></div>
+          <div style="flex:1;">Kosten: <strong>-{{ p.contribution_cost }}</strong></div>
+          <div style="flex:1; text-align:right;">Ergebnis: <strong>{{ p.ergebnis }}</strong></div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <p class="text-center mt-3 mb-0">
+      Neuer Kontostand deines Amts: <strong>{{ player.participant.vars.current_balance }}</strong>
+    </p>
+
+    <div class="text-center mt-4">
+      {{ next_button }}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

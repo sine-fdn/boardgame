@@ -1,0 +1,69 @@
+{% extends "global/Page.html" %} {% block content %}
+<div class="bg-light rounded rounded-5 p-4 m-4 example" style="max-width:900px; margin:auto;">
+  <h2 class="text-center mb-4">Zusammenfassung</h2>
+
+  <p>Ihr habt nun gesehen, wie das Spiel funktioniert:</p>
+  <ul>
+    <li>Jede Abteilung besitzt Datensätze, die einen <strong>Wert</strong> für die gemeinsame Analyse haben, aber auch <strong>Kosten</strong> verursachen.</li>
+    <li>Werden Daten zusammengelegt, entsteht ein <strong>Gesamtwert</strong>, der mehr wert ist als die Summe seiner Teile.</li>
+    <li>Dieser Gesamtwert wird <strong>in gleichen Teilen</strong> an alle Abteilungen verteilt.</li>
+  </ul>
+
+  <p><strong> Du spielst für alle Runde die Rolle des
+        {% if player.id_in_group == 1 %}🌿 Amts für Umwelt.
+        {% elif player.id_in_group == 2 %}❤ Amts für Soziales.
+        {% elif player.id_in_group == 3 %}🚦 Amts für Verkehr.
+        {% elif player.id_in_group == 4 %}🛡 Amts für Sicherheit.
+        {% else %}Dein Amt{% endif %}</strong></p>
+
+  <p><strong>Wahl pro Runde:</strong> Du kannst in jeder Runde aus <strong>vier Datensätzen</strong> wählen. Du kannst <strong>keine</strong>, <strong>einige</strong> oder <strong>alle</strong> Datensatz beisteuern.</p>
+
+  <p>
+    <strong>Das Ziel:</strong> Jede Abteilung startet mit <strong>100 Punkten</strong>. Wer nach {{ C.NUM_ROUNDS }} Runden die meisten Punkte hat, gewinnt.
+  </p>
+
+  </div>
+
+<div class="bg-light rounded rounded-5 p-4 m-4 example">
+    <p><strong>Unser Beispiel noch einmal: Hitzewellen in der Stadt</strong></p>
+    <ul>
+      <li>🌿 <strong>Umwelt:</strong> Beitrag 12 Punkte, Kosten 8 Punkte</li>
+      <li>🚦 <strong>Verkehr:</strong> Beitrag 10 Punkte, Kosten 5 Punkte</li>
+      <li>❤️ <strong>Soziales:</strong> Beitrag 8 Punkte, Kosten 6 Punkte</li>
+      <li>🛡 <strong>Sicherheit:</strong> kein Beitrag, keine Kosten</li>
+    </ul>
+
+
+  <div class="mt-3">
+    <p>
+      <strong>Beiträge gesamt:</strong> 30 Punkte<br>
+      <strong>Faktor:</strong> 2,0 → <strong>Gesamtwert:</strong> 60 Punkte<br>
+      <strong>Anteil pro Abteilung:</strong> 15 Punkte
+    </p>
+  </div>
+
+  <div class="mt-4">
+    <h5>Kontostände nach dieser Runde</h5>
+    <ul>
+      <li>🌿 Umwelt: 100 − 8 + 15 = <strong>107 Punkte</strong></li>
+      <li>🚦 Verkehr: 100 − 5 + 15 = <strong>110 Punkte</strong></li>
+      <li>❤️ Soziales: 100 − 6 + 15 = <strong>109 Punkte</strong></li>
+      <li>🛡 Sicherheit: 100 − 0 + 15 = <strong>115 Punkte</strong></li>
+    </ul>
+  </div>
+
+  <div class="mt-3">
+    <p class="mb-0">
+      Damit wird klar: Auch wenn alle denselben Anteil am Gesamtwert erhalten, unterscheiden sich die Endstände –
+      denn die Aufwände für die Datensätze sind je Abteilung unterschiedlich. In den Runden wählt ihr deshalb
+      bewusst aus, welche Datensätze ihr teilt.
+    </p>
+  </div>
+
+  <div class="text-center mt-4">
+    {{ next_button }}
+  </div>
+</div>
+{% endblock %}
+
+

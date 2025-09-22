@@ -1,0 +1,165 @@
+{% extends "global/Page.html" %} {% block content %}
+
+<style>
+  /* Hilfsklasse: Icon linksbündig ohne Einrückung */
+  .card-icon {
+    display: block;
+    width: 60px; height: 60px;
+    margin: 0;            /* wichtig: kein margin:auto */
+    padding: 0;
+  }
+  .cards-row {
+    display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between;
+  }
+  .example-card {
+    min-height:300px; flex:1 1 220px; background:#fafafa;
+  }
+</style>
+
+<div class="bg-light rounded rounded-5 p-4 m-4 example">
+  <h2 class="text-center mb-4">Der Wert von geteilten Daten</h2>
+
+  <p>
+    Wenn Daten für einen gemeinsamen Use Case zusammengeführt werden, entstehen neue Einsichten:
+    Die Summe der Daten ist mehr wert als die Einzelteile. Deshalb wird der Wert des Use Cases berechnet,
+    indem die Gesamtsumme der beigetragenen Datenpunkte mit einem Faktor von 2 multipliziert wird.
+  </p>
+</div>
+
+<div class="bg-light rounded rounded-5 p-4 m-4 example">
+  <p><strong>Beispiel-Use-Case: Hitzewellen in der Stadt</strong></p>
+
+  <p>
+    🌿 Umwelt, 🚦 Verkehr und ❤️ Soziales liefern Daten.
+    🛡 Sicherheit beteiligt sich diesmal nicht, da die individuellen Kosten hoch und der kollektive Nutzen gering wären.
+  </p>
+
+  <div class="cards-row">
+
+    <!-- Umwelt -->
+    <div class="card non-selectable-card border-4 example-card" style="border-color:darkolivegreen;">
+      <p style="font-size:1.1rem"><strong>Temperaturkarten</strong></p>
+      <div class="d-flex justify-content-between">
+        <img src="{% static 'global/icons/icon-temperaturkarten.svg' %}" class="card-icon" alt="Temperaturkarten" />
+        <div class="d-flex flex-column align-items-center">
+          <svg height="50" width="50" viewBox="0 0 50 50">
+            <circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/>
+            <text x="25" y="27" text-anchor="middle" dominant-baseline="middle" font-size="20">12</text>
+          </svg>
+          <p class="text-center mb-0" style="font-size:.8rem;">Punkte</p>
+        </div>
+      </div>
+      <p class="my-3" style="font-size:.8rem;"><strong>Beschreibung:</strong> Messungen der Oberflächentemperatur.</p>
+      <div class="d-flex flex-column align-items-center">
+        <svg height="50" width="50" viewBox="0 0 50 50">
+          <circle r="22" cx="25" cy="25" fill="none" stroke="red" stroke-width="3"/>
+          <text x="25" y="32" text-anchor="middle" font-size="20">8</text>
+        </svg>
+        <p class="text-center" style="font-size:.8rem;">Kosten</p>
+      </div>
+      <p class="my-2" style="font-size:.8rem;"><strong>Begründung:</strong> Aufwendige Erhebung, da Messstationen kalibriert und Daten konsolidiert werden müssen.</p>
+    </div>
+
+    <!-- Verkehr -->
+    <div class="card non-selectable-card border-4 example-card" style="border-color:darkolivegreen;">
+      <p style="font-size:1.1rem"><strong>Beschattungsdaten</strong></p>
+      <div class="d-flex justify-content-between">
+        <img src="{% static 'global/icons/icon-beschattung.svg' %}" class="card-icon" alt="Beschattungsdaten" />
+        <div class="d-flex flex-column align-items-center">
+          <svg height="50" width="50" viewBox="0 0 50 50">
+            <circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/>
+            <text x="25" y="27" text-anchor="middle" dominant-baseline="middle" font-size="20">10</text>
+          </svg>
+          <p class="text-center mb-0" style="font-size:.8rem;">Punkte</p>
+        </div>
+      </div>
+      <p class="my-3" style="font-size:.8rem;"><strong>Beschreibung:</strong> Daten zur Beschattung an Haltestellen.</p>
+      <div class="d-flex flex-column align-items-center">
+        <svg height="50" width="50" viewBox="0 0 50 50">
+          <circle r="22" cx="25" cy="25" fill="none" stroke="red" stroke-width="3"/>
+          <text x="25" y="32" text-anchor="middle" font-size="20">5</text>
+        </svg>
+        <p class="text-center" style="font-size:.8rem;">Kosten</p>
+      </div>
+      <p class="my-2" style="font-size:.8rem;"><strong>Begründung:</strong> Vorhandene Betriebsdaten müssen nur zusammengeführt werden.</p>
+    </div>
+
+    <!-- Soziales -->
+    <div class="card non-selectable-card border-4 example-card" style="border-color:darkolivegreen;">
+      <p style="font-size:1.1rem"><strong>Altersstruktur</strong></p>
+      <div class="d-flex justify-content-between">
+        <img src="{% static 'global/icons/icon-altersstruktur.svg' %}" class="card-icon" alt="Altersstruktur" />
+        <div class="d-flex flex-column align-items-center">
+          <svg height="50" width="50" viewBox="0 0 50 50">
+            <circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/>
+            <text x="25" y="27" text-anchor="middle" dominant-baseline="middle" font-size="20">8</text>
+          </svg>
+          <p class="text-center mb-0" style="font-size:.8rem;">Punkte</p>
+        </div>
+      </div>
+      <p class="my-3" style="font-size:.8rem;"><strong>Beschreibung:</strong> Informationen zur Altersstruktur.</p>
+      <div class="d-flex flex-column align-items-center">
+        <svg height="50" width="50" viewBox="0 0 50 50">
+          <circle r="22" cx="25" cy="25" fill="none" stroke="red" stroke-width="3"/>
+          <text x="25" y="32" text-anchor="middle" font-size="20">6</text>
+        </svg>
+        <p class="text-center" style="font-size:.8rem;">Kosten</p>
+      </div>
+      <p class="my-2" style="font-size:.8rem;"><strong>Begründung:</strong> Personenbezogene Daten müssen anonymisiert und sorgfältig aufbereitet werden.</p>
+    </div>
+
+    <!-- Sicherheit (nicht geliefert) -->
+    <div class="card non-selectable-card border-4 example-card" style="border-color:darkred;">
+      <p style="font-size:1.1rem"><strong>Notfalleinsätze</strong></p>
+      <div class="d-flex justify-content-between">
+        <img src="{% static 'global/icons/icon-notfalleinsaetze.svg' %}" class="card-icon" alt="Notfalleinsätze" style="opacity:.6;" />
+        <div class="d-flex flex-column align-items-center" style="opacity:.6;">
+          <svg height="50" width="50" viewBox="0 0 50 50">
+            <circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/>
+            <text x="25" y="27" text-anchor="middle" dominant-baseline="middle" font-size="20">6</text>
+          </svg>
+          <p class="text-center mb-0" style="font-size:.8rem;">Punkte</p>
+        </div>
+      </div>
+      <p class="my-3" style="font-size:.8rem;"><strong>Beschreibung:</strong> Daten zu Notfalleinsätzen (nicht geteilt).</p>
+      <div class="d-flex flex-column align-items-center" style="opacity:.6;">
+        <svg height="50" width="50" viewBox="0 0 50 50">
+          <circle r="22" cx="25" cy="25" fill="none" stroke="red" stroke-width="3"/>
+          <text x="25" y="32" text-anchor="middle" font-size="20">10</text>
+        </svg>
+        <p class="text-center" style="font-size:.8rem;">Kosten</p>
+      </div>
+      <p class="my-2" style="font-size:.8rem; opacity:.75;"><strong>Begründung:</strong> Sehr sensibel – in dieser Runde nicht beigesteuert.</p>
+    </div>
+  </div>
+
+  <!-- Summe: Text linksbündig, Kreise zentriert -->
+  <p class="mt-4" style="text-align:left;">Der Wert des Use Cases ergibt sich aus der Summe der eingebrachten Punkte:</p>
+  <div style="display:flex; align-items:center; justify-content:center; gap:20px; font-size:28px; margin-bottom:20px;">
+    <svg viewBox="0 0 50 50" width="70" height="70"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">12</text></svg>
+    <span>+</span>
+    <svg viewBox="0 0 50 50" width="70" height="70"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">10</text></svg>
+    <span>+</span>
+    <svg viewBox="0 0 50 50" width="70" height="70"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">8</text></svg>
+    <span>=</span>
+    <svg viewBox="0 0 50 50" width="80" height="80"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">30</text></svg>
+  </div>
+
+  <p style="text-align:left;">Multipliziert mit einem Faktor:</p>
+  <div style="display:flex; align-items:center; justify-content:center; gap:20px; font-size:28px; margin-bottom:20px;">
+    <svg viewBox="0 0 50 50" width="70" height="70"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">30</text></svg>
+    <span>x</span>
+    <svg viewBox="0 0 50 50" width="70" height="70"><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">2</text></svg>
+    <span>=</span>
+    <svg viewBox="0 0 50 50" width="80" height="80"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><circle r="19" cx="25" cy="25" fill="none" stroke="black" stroke-width="2"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">60</text></svg>
+  </div>
+
+  <p style="text-align:left;">Der gesamte Wert des Use Cases beträgt <strong>60 Punkte</strong>.</p>
+
+  <div class="text-center mt-4">
+    {{ next_button }}
+  </div>
+</div>
+
+{% endblock %}
+

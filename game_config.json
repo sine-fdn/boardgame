@@ -1,92 +1,642 @@
 {
-  "intro": "A municipality has identified a data use case that requires data input from four departments (hereafter referred to as players). Each department incurs costs when contributing data, and each benefits differently from the use case.",
-  "num_of_players": 2,
+  "intro": "...",
+  "num_of_players": 4,
   "initial_utility": "100.0",
-  "investment_threshold": 100,
+  "investment_threshold": 50,
   "players": [
     {
       "id": "1",
       "player_benefit": "0.5",
-      "data_sets": [
-        {
-          "name": "Mobility Data",
-          "icon": "global/icons/transport.svg",
-          "data_points": 15,
-          "description": "Data about mobility patterns in urban areas.",
-          "initial_sharing_costs": 20,
-          "post_invest_sharing_costs": 20,
-          "cost_description": "Privacy concerns and data security."
-        },
-        {
-          "name": "Health Data",
-          "icon": "global/icons/health.svg",
-          "data_points": 25,
-          "description": "Data about health and wellness.",
-          "initial_sharing_costs": 30,
-          "post_invest_sharing_costs": 30,
-          "cost_description": "Privacy concerns and data security."
-        },
-        {
-          "name": "Weather Data",
-          "icon": "global/icons/weather.svg",
-          "data_points": 25,
-          "description": "Data about weather patterns and forecasts.",
-          "initial_sharing_costs": 30,
-          "post_invest_sharing_costs": 30,
-          "cost_description": "Privacy concerns and data security."
-        },
-        {
-          "name": "Traffic Data",
-          "icon": "global/icons/traffic.svg",
-          "data_points": 35,
-          "description": "Data about traffic patterns and congestion.",
-          "initial_sharing_costs": 25,
-          "post_invest_sharing_costs": 25,
-          "cost_description": "Privacy concerns and data security."
-        }
-      ]
+      "rounds": {
+        "1": [
+          {
+            "name": "Emissionen an Kreuzungen",
+            "icon": "global/icons/icon-umwelt-pm10-kreuzung.svg",
+            "data_points": 15,
+            "description": "Messungen und Modellierungen von Emissionsbelastung an stark befahrenen Knotenpunkten.",
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Einsatz spezieller Messgeräte sowie Validierung und Aggregation der Daten."
+          },
+          {
+            "name": "Lärmbelastung an Hauptstraßen",
+            "icon": "global/icons/icon-umwelt-laerm-hauptstrasse.svg",
+            "data_points": 15,
+            "description": "Erhebung von Dauerschallpegeln entlang der Hauptverkehrsachsen.",
+            "initial_sharing_costs": 10,
+            "post_invest_sharing_costs": 10,
+            "cost_description": "Zusammenführung von Messstellendaten und Erstellung von Karten."
+          },
+          {
+            "name": "Luftfeuchtigkeit am Stadtrand",
+            "icon": "global/icons/icon-umwelt-luftfeuchte.svg",
+            "data_points": 5,
+            "description": "Messungen der Luftfeuchtigkeit in Randlagen der Stadt.",
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Erfassung über dezentrale Sensoren, Abstimmung und Datenaufbereitung notwendig."
+          },
+          {
+            "name": "Bodenqualität im Park",
+            "icon": "global/icons/icon-umwelt-bodenqualitaet.svg",
+            "data_points": 5,
+            "description": "Analyse von Bodenproben in innerstädtischen Grünanlagen.",
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Probenahme und Laboruntersuchung, anschließend digitale Erfassung."
+          }
+        ],
+        "2": [
+          {
+            "name": "Feinstaubwerte in Randlagen",
+            "description": "Messungen in kaum bewohnten Randgebieten.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Teure Nachtmessgeräte, und hoher Harmonisierungsbedarf.",
+            "icon": "global/icons/env_feinstaub.svg"
+          },
+          {
+            "name": "Versiegelungsgrad pro Straßenblock",
+            "description": "Anteil versiegelter Flächen, relevant für Kühlmaßnahmen.",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Fernerkundungsdaten und Kartierung.",
+            "icon": "global/icons/env_versiegelung.svg"
+          },
+          {
+            "name": "Oberflächentemperaturen in Quartieren",
+            "description": "Messungen mit Wärmebildkameras, zeigen konkrete Hitzeinseln.",
+            "data_points": 20,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Wärmebilddrohnen, Auswertung und Integration der Geodaten.",
+            "icon": "global/icons/env_temperatur.svg"
+          },
+          {
+            "name": "Baumkronendichte in Straßenzügen",
+            "description": "Satellitendaten und Drohnenbilder zur Beschattung.",
+            "data_points": 15,
+            "initial_sharing_costs": 5,
+            "post_invest_sharing_costs": 5,
+            "cost_description": "Auswertung von Satellitendaten und Einspeisung ins System.",
+            "icon": "global/icons/env_baumkronen.svg"
+          }
+        ],
+        "3": [
+          {
+            "name": "Bodenversiegelung in Überschwemmungsgebieten",
+            "description": "Anteil versiegelter Flächen in hochwassergefährdeten Quartieren.",
+            "data_points": 20,
+            "initial_sharing_costs": 25,
+            "post_invest_sharing_costs": 25,
+            "cost_description": "Satellitendaten, Fernerkundung und Aufbereitung der Geo Daten.",
+            "icon": "global/icons/env_versiegelung_flut.svg"
+          },
+          {
+            "name": "Niederschlagsmessungen letzter Jahre",
+            "description": "Langzeitdaten zu Starkregenereignissen.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Zusammenführung von Wetterstationen und Validierung.",
+            "icon": "global/icons/env_niederschlag.svg"
+          },
+          {
+            "name": "Pollendichte im Frühling",
+            "description": "Allergie-Daten, ohne Bezug zu Hochwasser.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Aufwendige Laboranalysen und Erhebungen.",
+            "icon": "global/icons/env_pollendichte.svg"
+          },
+          {
+            "name": "Topographie und Geländemodelle",
+            "description": "Höhenmodelle für Überflutungs-Simulationen.",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Erstellung digitaler Höhenmodelle, hoher Rechenaufwand.",
+            "icon": "global/icons/env_topographie.svg"
+          }
+        ],
+        "4": [
+          {
+            "name": "Mikroklima-Sensoren",
+            "description": "Erfassung von Temperatur, Feuchtigkeit und Wind in urbanen Hotspots.",
+            "data_points": 20,
+            "initial_sharing_costs": 25,
+            "post_invest_sharing_costs": 10,
+            "cost_description": "Installation und Wartung eines Sensor-Netzes, Datenharmonisierung und sichere Bereitstellung.",
+            "icon": "global/icons/env_mikroklima.svg"
+          },
+          {
+            "name": "Baumwachstumsmodelle",
+            "description": "Auswertung von Satellitendaten zur Simulation von Kronenwachstum und jahreszeitlicher Beschattung.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 5,
+            "cost_description": "Aufwändiges Zusammenführen von Daten und Bereinigung.",
+            "icon": "global/icons/env_baumwachstum.svg"
+          },
+          {
+            "name": "Schattenverteilung-Simulation entlang Straßen",
+            "description": "Berechnung tageszeitlicher Schattenverläufe für Hitze- und Aufenthaltsqualität in Straßenräumen.",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 10,
+            "cost_description": "Rechenintensive Simulationen und Schutz sensibler Standortdaten.",
+            "icon": "global/icons/env_schatten.svg"
+          },
+          {
+            "name": "Vitalitätsindex für Stadtbäume",
+            "description": "Kontinuierliche Messungen von Vitalität zur bedarfsgerechten Bewässerung und Pflege.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 10,
+            "cost_description": "Weit verteilte Sensorik und Kalibrierung.",
+            "icon": "global/icons/env_bodenfeuchte_index.svg"
+          }
+        ]
+      }
     },
     {
       "id": "2",
-      "player_benefit": "0.6",
-      "data_sets": [
-        {
-          "name": "Education Data",
-          "icon": "global/icons/education.svg",
-          "data_points": 20,
-          "description": "Data about educational attainment and performance.",
-          "initial_sharing_costs": 20,
-          "post_invest_sharing_costs": 10,
-          "cost_description": "Privacy concerns and data security."
-        },
-        {
-          "name": "Environmental Data",
-          "icon": "global/icons/environment.svg",
-          "data_points": 30,
-          "description": "Data about environmental conditions and changes.",
-          "initial_sharing_costs": 25,
-          "post_invest_sharing_costs": 15,
-          "cost_description": "Privacy concerns and data security."
-        },
-        {
-          "name": "Weather Data",
-          "icon": "global/icons/weather.svg",
-          "data_points": 20,
-          "description": "Data about weather patterns and forecasts.",
-          "initial_sharing_costs": 15,
-          "post_invest_sharing_costs": 0,
-          "cost_description": "Privacy concerns and data security."
-        },
-        {
-          "name": "Traffic Data",
-          "icon": "global/icons/traffic.svg",
-          "data_points": 30,
-          "description": "Data about traffic patterns and congestion.",
-          "initial_sharing_costs": 25,
-          "post_invest_sharing_costs": 15,
-          "cost_description": "Privacy concerns and data security."
-        }
-      ]
+      "player_benefit": "0.5",
+      "rounds": {
+        "1": [
+          {
+            "name": "Sozioökonomische Daten",
+            "icon": "global/icons/icon-soziales-se-lage-fussrad.svg",
+            "data_points": 15,
+            "description": "Wirtschaftliche und soziale Daten zu Personen, die viel zu Fuß oder mit dem Rad unterwegs sind.",
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Befragungen und datenschutzgerechte Aggregation."
+          },
+          {
+            "name": "Wohngeldstatistik je Stadtteil",
+            "icon": "global/icons/icon-soziales-wohngeldstatistik.svg",
+            "data_points": 5,
+            "description": "Übersicht über bewilligte Wohngeldleistungen auf Stadtteilebene.",
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Aggregation und datenschutzgerechte Aufbereitung der Verwaltungsdaten."
+          },
+          {
+            "name": "Altersstruktur an Unfall-Hotspots",
+            "icon": "global/icons/icon-soziales-alter-hotspot.svg",
+            "data_points": 20,
+            "description": "Demografische Informationen zu Altersgruppen in Bereichen mit hoher Unfallhäufigkeit.",
+            "initial_sharing_costs": 25,
+            "post_invest_sharing_costs": 25,
+            "cost_description": "Verarbeitung kleinräumiger Bevölkerungsdaten unter Beachtung des Datenschutzes."
+          },
+          {
+            "name": "Gesprochene Sprachen in der Stadt",
+            "icon": "global/icons/icon-soziales-bibliothek-sprache.svg",
+            "data_points": 5,
+            "description": "Daten zur Sprachvielfalt basierend auf Informationen aus öffentlichen Einrichtungen.",
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Zusammenführung verschiedener Verwaltungssysteme sowie Anonymisierung der Angaben."
+          }
+        ],
+        "2": [
+          {
+            "name": "Kitas und Pflegeeinrichtungen ohne Kühlung",
+            "description": "Liste von Einrichtungen mit fehlender Klimatisierung.",
+            "data_points": 15,
+            "initial_sharing_costs": 5,
+            "post_invest_sharing_costs": 5,
+            "cost_description": "Abgleich bestehender Bestandsdaten.",
+            "icon": "global/icons/soc_einrichtungen.svg"
+          },
+          {
+            "name": "Bibliotheksnutzungen im Sommer",
+            "description": "Daten zu Bibliotheksbesucher:innen im Sommer.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "IT-Abgleich und aufwendige Anonymisierung.",
+            "icon": "global/icons/soc_bibliothek.svg"
+          },
+          {
+            "name": "Senior:innen ohne Aufzug im Hochhaus",
+            "description": "Adressen von Wohnungen in obersten Etagen ohne Aufzug – wichtig bei Hitze.",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Verwaltungsabgleich, hohe Datenbereinigung notwendig.",
+            "icon": "global/icons/soc_senioren.svg"
+          },
+          {
+            "name": "Sozioökonomische Lage in Hitzebezirken",
+            "description": "Daten zu Einkommen und Soziallagen in stark versiegelten Vierteln.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Kleinräumige Befragungen und Schutz sensibler Daten.",
+            "icon": "global/icons/soc_quartier.svg"
+          }
+        ],
+        "3": [
+          {
+            "name": "Kindergärten und Schulen in Flutnähe",
+            "description": "Einrichtungen, die bei Überflutung rasch evakuiert werden müssen.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Abgleich mit Standortdaten, Pseudonymisierung.",
+            "icon": "global/icons/soc_schulen.svg"
+          },
+          {
+            "name": "Sozioökonomische Risikofaktoren",
+            "description": "Daten, welche Haushalte besonders verletzlich sind (z.B., durch niedriges Einkommen, fehlende Versicherungen).",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Befragungen, Klassifizierung und strenge Datenschutzprüfungen.",
+            "icon": "global/icons/soc_risiko.svg"
+          },
+          {
+            "name": "Kinobesuche im Sommer",
+            "description": "Statistik über Kinobesuche.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Manuelle Befragungen und Datenaufbereitung.",
+            "icon": "global/icons/soc_kino.svg"
+          },
+          {
+            "name": "Pflegeheime in Risikogebieten",
+            "description": "Standorte von Pflegeheimen, die bei Hochwasser gefährdet sind.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Verwaltungsabgleich und Datenschutz: hoher manueller Bereinigungsaufwand.",
+            "icon": "global/icons/soc_pflegeheime.svg"
+          }
+        ],
+        "4": [
+          {
+            "name": "Bevölkerungsprofile und Betreuungsbedarf",
+            "description": "Statistische Daten zu Altersstruktur, Pflege- und Gesundheitsbedarfen.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 5,
+            "cost_description": "Zusammenführung und Pseudonymisierung aus Register- und Statistikquellen.",
+            "icon": "global/icons/soc_bevoelkerungsprofile.svg"
+          },
+          {
+            "name": "Notfallmeldungen aus Pflegeeinrichtungen",
+            "description": "Automatisierte Meldungen zu Stürzen und Notrufen.",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 5,
+            "cost_description": "Sichere Schnittstellen und Pseudonymisierung sensibler Gesundheitsdaten.",
+            "icon": "global/icons/soc_telemedizin_notfall.svg"
+          },
+          {
+            "name": "Auslastung von Sozialeinrichtungen",
+            "description": "Transparenz über freie Plätze in Notschlafstellen, Beratungsstellen und Jugendzentren.",
+            "data_points": 10,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Erhebung und sichere Bereitstellung durch verschiedene Träger.",
+            "icon": "global/icons/soc_auslastung_einrichtungen.svg"
+          },
+          {
+            "name": "Schul- und Kita-Bedarfsanalysen",
+            "description": "Projektionen zur Auslastung von Schulen und Kindertagesstätten.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 10,
+            "cost_description": "Abstimmung mit mehreren Stellen.",
+            "icon": "global/icons/soc_schule_kita_bedarf.svg"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3",
+      "player_benefit": "0.5",
+      "rounds": {
+        "1": [
+          {
+            "name": "Geschwindigkeitsmessungen an Hauptstraßen",
+            "icon": "global/icons/icon-verkehr-speed-hauptstrasse.svg",
+            "data_points": 25,
+            "description": "Ergebnisse von stationären und mobilen Messgeräten zur gefahrenen Geschwindigkeit.",
+            "initial_sharing_costs": 10,
+            "post_invest_sharing_costs": 10,
+            "cost_description": "Aufbereitung der Rohdaten und Abstimmung mit verschiedenen Messstellenbetreibern."
+          },
+          {
+            "name": "Staudaten aus Navigationssystemen",
+            "icon": "global/icons/icon-verkehr-stau-navidata.svg",
+            "data_points": 20,
+            "description": "Aggregierte Verkehrsdaten zu Stausituationen aus Navigations-Apps.",
+            "initial_sharing_costs": 25,
+            "post_invest_sharing_costs": 25,
+            "cost_description": "Lizenzgebühren und Aufwand für die pseudonymisierte Datenintegration."
+          },
+          {
+            "name": "Zählungen Fuß/Rad an Kreuzungen",
+            "icon": "global/icons/icon-verkehr-zaehlungen-kreuzung.svg",
+            "data_points": 15,
+            "description": "Erfassung der Querungen von Fußgänger:innen und Radfahrenden an wichtigen Kreuzungen.",
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Einsatz von Zählkameras oder manuellen Erhebungen sowie Datenharmonisierung."
+          },
+          {
+            "name": "Parkdauer in Nebenstraßen",
+            "icon": "global/icons/icon-verkehr-parkdauer-nebenstr.svg",
+            "data_points": 5,
+            "description": "Daten zu durchschnittlichen Parkzeiten in weniger frequentierten Wohnstraßen.",
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Auswertung von Parkraumüberwachung und manuelle Nachbereitung."
+          }
+        ],
+        "2": [
+          {
+            "name": "Beleuchtungen von Nebenstraßen",
+            "description": "Statistik über Beleuchtungen von Nebenstraßen bei Nacht.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Manuelle Erfassung und Auswertung.",
+            "icon": "global/icons/tra_parkdauer.svg"
+          },
+          {
+            "name": "ÖPNV-Auslastung bei Hitze",
+            "description": "Live-Daten zur Nutzung von Bussen und Bahnen an heißen Tagen.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Schnittstellenanbindung und Lizenzgebühren.",
+            "icon": "global/icons/tra_oepnv.svg"
+          },
+          {
+            "name": "E-Scooter-Nutzung im Winter",
+            "description": "Mobilitätsdaten über E-Scooter in der kalten Jahreszeit.",
+            "data_points": 5,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Abfragen bei Anbietern und Einspeisung in Verwaltungssystem.",
+            "icon": "global/icons/tra_escooter.svg"
+          },
+          {
+            "name": "Beschattung an Haltestellen",
+            "description": "Daten zu Schattenspendern (Dächer, Bäume) an wichtigen Haltestellen.",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Vor-Ort-Erhebung, Kartierung und Integration der Geo Daten.",
+            "icon": "global/icons/tra_haltestellen.svg"
+          }
+        ],
+        "3": [
+          {
+            "name": "Brückenstatik-Daten",
+            "description": "Prüfberichte zur Belastbarkeit und Gefährdung von Brücken bei Hochwasser.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Gutachten und Digitalisierung, hoher Aufwand.",
+            "icon": "global/icons/tra_bruecken.svg"
+          },
+          {
+            "name": "Straßensperrungen bei Hochwasser",
+            "description": "Historische Daten zu Straßenzügen, die regelmäßig gesperrt wurden.",
+            "data_points": 20,
+            "initial_sharing_costs": 25,
+            "post_invest_sharing_costs": 25,
+            "cost_description": "Polizei- und Bauamtsprotokolle, Geo-Kodierung.",
+            "icon": "global/icons/tra_sperrungen.svg"
+          },
+          {
+            "name": "ÖPNV-Evakuierungsrouten",
+            "description": "Liniennetz für Massentransport bei Evakuierungen.",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Planung und Abstimmung mit Verkehrsunternehmen.",
+            "icon": "global/icons/tra_evakuierung.svg"
+          },
+          {
+            "name": "Winterreifen-Statistik",
+            "description": "Abfragen zur Reifennutzung – ohne Bezug zu Überflutungen.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Polizeikontrollen und Verwaltungsabgleich, hoher Anonymisierungsaufwand.",
+            "icon": "global/icons/tra_winterreifen.svg"
+          }
+        ],
+        "4": [
+          {
+            "name": "Bewegungsdaten städtischer Fahrzeuge",
+            "description": "Anonymisierte Bewegungsdaten von Bussen, Bahnen und Einsatzfahrzeugen.",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 5,
+            "cost_description": "Erfassung, Pseudonymisierung und sichere Weitergabe.",
+            "icon": "global/icons/traffic_gps_traces.svg"
+          },
+          {
+            "name": "ÖPNV-Takte",
+            "description": "Fahrpläne und Haltestellenzeiten.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 5,
+            "cost_description": "Zusammenführung heterogener Systeme und Erstellung sichere Schnittstellen.",
+            "icon": "global/icons/traffic_oepnv_signalphasen.svg"
+          },
+          {
+            "name": "Historische Verkehrsdaten",
+            "description": "Archivierte Fluss- und Staudaten.",
+            "data_points": 20,
+            "initial_sharing_costs": 25,
+            "post_invest_sharing_costs": 10,
+            "cost_description": "Aggregation und Anonymisierung aus mehreren Quellen.",
+            "icon": "global/icons/traffic_verkehr_historisch.svg"
+          },
+          {
+            "name": "P+R-Auslastung",
+            "description": "Belegung von Park-and-Ride-Plätzen.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 10,
+            "cost_description": "Einzelne Sensoren, Harmonisierung und sichere Bereitstellung.",
+            "icon": "global/icons/traffic_pr_bike.svg"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "player_benefit": "0.5",
+      "rounds": {
+        "1": [
+          {
+            "name": "Rettungsdienst-Einsatzzeiten an Kreuzungen",
+            "icon": "global/icons/icon-sicherheit-einsatzzeiten-kreuzung.svg",
+            "data_points": 15,
+            "description": "Angaben zu Fahrzeiten und Erreichbarkeit bei Rettungseinsätzen an Knotenpunkten.",
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Datenexport aus Leitstellensystemen, Pseudonymisierung und Qualitätssicherung."
+          },
+          {
+            "name": "Einbruchsstatistik (Immobilien)",
+            "icon": "global/icons/icon-sicherheit-einbruch-allg.svg",
+            "data_points": 5,
+            "description": "Polizeistatistik zu Einbrüchen in privaten und gewerblichen Objekten.",
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Anonymisierung und Abstimmung verschiedener Datenquellen."
+          },
+          {
+            "name": "Unfallberichte Polizei (aggregiert)",
+            "icon": "global/icons/icon-sicherheit-unfallberichte-agg.svg",
+            "data_points": 15,
+            "description": "Zusammengefasste Unfallmeldungen mit Angaben zu Ort und Zeitpunkt.",
+            "initial_sharing_costs": 25,
+            "post_invest_sharing_costs": 25,
+            "cost_description": "Prüfung und Abstimmung zwischen Polizei und weiteren Stellen, inklusive Datenschutzmaßnahmen."
+          },
+          {
+            "name": "Unfalldaten mit Verletzungsgrad",
+            "icon": "global/icons/icon-sicherheit-verletzungsschwere.svg",
+            "data_points": 25,
+            "description": "Informationen zu Unfallereignissen mit Angaben zum Schweregrad der Verletzungen.",
+            "initial_sharing_costs": 10,
+            "post_invest_sharing_costs": 10,
+            "cost_description": "Standardisierte Aufbereitung und Anonymisierung der Einsatzberichte."
+          }
+        ],
+        "2": [
+          {
+            "name": "Diebstahlmeldungen",
+            "description": "Polizeistatistik zu Diebstählen im Einzelhandel.",
+            "data_points": 5,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Aufwändige Anonymisierung und Datenabgleich.",
+            "icon": "global/icons/sec_einbruch.svg"
+          },
+          {
+            "name": "Feuerwerksmeldungen",
+            "description": "Meldungen zu Feuerwerkseinsätzen rund um Veranstaltungen.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Export aus Leitstellenprotokollen und manuelle Übertragung.",
+            "icon": "global/icons/sec_feuerwerk.svg"
+          },
+          {
+            "name": "Hitze-Notfalleinsätze",
+            "description": "Daten zu Rettungseinsätzen bei Hitzeschlägen.",
+            "data_points": 20,
+            "initial_sharing_costs": 25,
+            "post_invest_sharing_costs": 25,
+            "cost_description": "Anonymisierung und Digitalisierung der Einsatzprotokolle, hoher Aufwand.",
+            "icon": "global/icons/sec_hitzeeinsatz.svg"
+          },
+          {
+            "name": "Kollapsmeldungen bei Großevents",
+            "description": "Protokolle von Notfällen bei Konzerten und Festivals während Hitzewellen.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Zusammenführung von Einsatzdaten und Datenschutzaufbereitung.",
+            "icon": "global/icons/sec_eventkollaps.svg"
+          }
+        ],
+        "3": [
+          {
+            "name": "Rettungsdiensteinsatz-Logs bei Hochwasser",
+            "description": "Historische Einsätze des Rettungsdienstes bei Starkregen und Überschwemmungen.",
+            "data_points": 20,
+            "initial_sharing_costs": 25,
+            "post_invest_sharing_costs": 25,
+            "cost_description": "Zusammenführung von Leitstellendaten, Pseudonymisierung, Plausibilitätsprüfung.",
+            "icon": "global/icons/sec_einsatzlogs_flut.svg"
+          },
+          {
+            "name": "Sirenen- und Warninfrastruktur",
+            "description": "Standorte und Reichweiten von Sirenen und Lautsprechern für Evakuierungswarnungen.",
+            "data_points": 10,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Bestandsaufnahme, Geo-Kodierung und Abgleich mit Gemeinden.",
+            "icon": "global/icons/sec_sirenen.svg"
+          },
+          {
+            "name": "Lärmprotokolle Sommernächte",
+            "description": "Einsatzmeldungen zu nächtlichen Ruhestörungen – ohne Bezug zu Überflutungen.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Manueller Export und Anonymisierung aus Leitstellen.",
+            "icon": "global/icons/sec_laerm.svg"
+          },
+          {
+            "name": "Evakuierungsprotokolle vergangener Jahre",
+            "description": "Abläufe, Zeitstempel und Maßnahmen aus realen Hochwasserlagen.",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 20,
+            "cost_description": "Aufbereitung, Klassifizierung und interbehördliche Abstimmung.",
+            "icon": "global/icons/sec_evakuierungsprotokolle.svg"
+          }
+        ],
+        "4": [
+          {
+            "name": "Standortdaten von Rettungsdiensten",
+            "description": "Live-Standorte und Protokolle von Feuerwehr und Rettungswagen.",
+            "data_points": 20,
+            "initial_sharing_costs": 25,
+            "post_invest_sharing_costs": 5,
+            "cost_description": "Hoher Aufwand für Verschlüsselung und Leitstellen-Synchronisation.",
+            "icon": "global/icons/sec_einsatzprotokolle.svg"
+          },
+          {
+            "name": "Evakuierungspläne für kritische Infrastrukturen",
+            "description": "Aktuelle Evakuierungsrouten und Szenarien für Krankenhäuser sowie Ver- und Entsorger.",
+            "data_points": 10,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 15,
+            "cost_description": "Abgleich sensibler Dokumente mit Topographien und sichere Bereitstellung.",
+            "icon": "global/icons/sec_evakuierungsplaene.svg"
+          },
+          {
+            "name": "Alarmstatistiken öffentlicher Gebäude",
+            "description": "Archivierte Auslöser von Alarmanlagen in städtischen Gebäuden.",
+            "data_points": 5,
+            "initial_sharing_costs": 15,
+            "post_invest_sharing_costs": 10,
+            "cost_description": "Pseudonymisierung und sichere Bereitstellung der Alarmlogs.",
+            "icon": "global/icons/sec_fehlalarm_statistiken.svg"
+          },
+          {
+            "name": "Videoanalyse an Verkehrsknoten",
+            "description": "KI-gestützte Analyse von Kameras an Kreuzungen und Plätzen.",
+            "data_points": 15,
+            "initial_sharing_costs": 20,
+            "post_invest_sharing_costs": 5,
+            "cost_description": "Implementierung von Anonymisierung und sichere Übertragung.",
+            "icon": "global/icons/sec_videoanalyse_kreuzungen.svg"
+          }
+        ]
+      }
     }
   ]
 }
+
+
