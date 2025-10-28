@@ -250,6 +250,7 @@ class g_Investment(Page):
     @staticmethod
     def vars_for_template(player: Player):
         data_sets = player.get_data_sets()
+
         total_savings = sum(ds["savings"] for ds in data_sets)
 
         return {
