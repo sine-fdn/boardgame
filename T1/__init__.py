@@ -100,6 +100,10 @@ class Player(BasePlayer):
     contribution_cost = models.CurrencyField()
     contribution_cost_per = models.FloatField(initial=0.00)
 
+    def get_savings(self, ds: DataSet):
+        print("Calculating savings for dataset:", ds.name)
+        return ds.initial_sharing_costs - ds.post_invest_sharing_costs
+
     def get_sharing_costs(self, ds: DataSet):
         if self.session.vars.get("cost_eliminated", False):
             return ds.post_invest_sharing_costs
@@ -124,6 +128,7 @@ class Player(BasePlayer):
                 "post_invest_costs": ds.post_invest_sharing_costs,
                 "reduced_costs": ds.initial_sharing_costs > self.get_sharing_costs(ds),
                 "cost_description": ds.cost_description,
+                "savings": self.get_savings(ds),
             }
             for ds in data_sets
         ]
@@ -244,6 +249,9 @@ class g_Investment(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+        data_sets = player.get_data_sets()
+        total_savings = sum(ds["savings"] for ds in data_sets)
+
         return {
             # Aktueller Kontostand des Spielers
             "current_balance": player.participant.vars.get("current_balance", 0),
@@ -260,6 +268,7 @@ class g_Investment(Page):
             # Die Datensätze des Spielers mit allen nötigen Feldern,
             # inklusive initial_sharing_costs und post_invest_sharing_costs
             "data_sets": player.get_data_sets(),
+            "total_savings": total_savings
         }
 
 class InvestmentWaitPage(WaitPage):

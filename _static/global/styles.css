@@ -28,8 +28,12 @@
     -webkit-touch-callout: none;
   }
 
+  .card.cost-reduction-card,
   .selectable-card,
   .non-selectable-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     border-color: #ffc107;
     margin-bottom: 10px;
     margin-left: 5px;
@@ -38,8 +42,13 @@
     border-radius: 10px;
     min-width: 210px;
     max-width: 270px;
-    max-height: 360px;
   }
+
+  /* Override border color for cost-reduction cards */
+  .card.cost-reduction-card {
+    border-color: #e46e00;
+  }
+
 
   .selectable-card:hover {
     background-color: #ffc10745;
