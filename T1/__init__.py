@@ -400,7 +400,7 @@ class j_Summary(Page):
 
         optimum_brutto_value = int(round(optimum_points_sum * C.MULTIPLIER))
         optimum_investment_cost = int(C.THRESHOLD)
-        optimum_net_value = optimum_brutto_value - optimum_post_costs_sum - optimum_investment_cost
+        optimum_net_value = C.INITIAL_UTILITY + optimum_brutto_value - optimum_post_costs_sum - optimum_investment_cost
 
         return {
             # Ranking & Ist
