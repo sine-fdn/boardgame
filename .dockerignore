@@ -1,3 +1,5 @@
+.env
+
 # flyctl launch added from .gitignore
 **/venv
 **/staticfiles
