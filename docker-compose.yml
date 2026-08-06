@@ -28,7 +28,7 @@ services:
       - OTREE_ADMIN_PASSWORD=${OTREE_ADMIN_PASSWORD:?OTREE_ADMIN_PASSWORD is not set (see .env.example)}
       - OTREE_SECRET_KEY=${OTREE_SECRET_KEY:?OTREE_SECRET_KEY is not set (see .env.example)}
       - OTREE_REST_KEY=${OTREE_REST_KEY:?OTREE_REST_KEY is not set (see .env.example)}
-      - DATABASE_URL
+      - DATABASE_URL=${DATABASE_URL:-postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}}
     restart: always
     logging:
       driver: json-file

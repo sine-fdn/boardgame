@@ -8,9 +8,8 @@ Two containers:
 
 - `otree` — the game itself, serving on port 8000 internally.
 - `postgres` — a bundled Postgres database, so the stack is self-contained
-  out of the box. It's optional: `otree` can be pointed at any Postgres
-  instead (see [Database](#database)), or at no database at all, in which
-  case it falls back to a SQLite file inside the container.
+  out of the box: `otree` connects to it automatically unless `DATABASE_URL`
+  is set to point elsewhere (see [Database](#database)).
 
 `otree` is pulled as a pre-built image (`ghcr.io/sine-fdn/boardgame`); it is
 not built locally by `docker-compose.yml`.
@@ -57,13 +56,13 @@ environment provides them (a local `.env` file, CI/CD secrets, systemd, ...).
 | `OTREE_ADMIN_PASSWORD` | **yes**   | –                             | secret; password for the admin interface      |
 | `OTREE_SECRET_KEY`     | **yes**   | –                             | secret; Django session/CSRF signing key       |
 | `OTREE_REST_KEY`       | **yes**   | –                             | secret; authenticates REST API callers        |
-| `DATABASE_URL`         | no        | ephemeral SQLite in-container | where oTree stores its data                   |
-| `POSTGRES_USER`        | **yes**\* | –                             | bundled Postgres container's user             |
-| `POSTGRES_PASSWORD`    | **yes**\* | –                             | secret; bundled Postgres container's password |
-| `POSTGRES_DB`          | **yes**\* | –                             | bundled Postgres container's database name    |
+| `DATABASE_URL`         | no        | built from `POSTGRES_*`, below | where oTree stores its data                   |
+| `POSTGRES_USER`        | **yes**   | –                              | bundled Postgres container's user             |
+| `POSTGRES_PASSWORD`    | **yes**   | –                              | secret; bundled Postgres container's password |
+| `POSTGRES_DB`          | **yes**   | –                              | bundled Postgres container's database name    |
 
-\* `POSTGRES_USER`/`POSTGRES_PASSWORD`/`POSTGRES_DB` are required by Compose
-even if you don't intend to use the bundled Postgres at all — see
+`POSTGRES_USER`/`POSTGRES_PASSWORD`/`POSTGRES_DB` are required by Compose
+even if `DATABASE_URL` is set explicitly to point elsewhere — see
 [Known limitations](#known-limitations).
 
 `OTREE_ADMIN_PASSWORD`, `OTREE_SECRET_KEY`, and `OTREE_REST_KEY` are
@@ -99,16 +98,11 @@ from outside that network.
 
 ## Database
 
-`DATABASE_URL` is deliberately independent of everything else in this file —
-point it at whichever database this deployment actually uses:
-
-- the bundled `postgres` service (`postgresql://<user>:<password>@postgres:5432/<db>`,
-  matching `POSTGRES_USER`/`POSTGRES_PASSWORD`/`POSTGRES_DB`),
-- an external managed database (e.g. Neon),
-- or leave it unset, and oTree falls back to a SQLite file inside the
-  container — which is lost on every restart or redeploy, since the
-  container's filesystem isn't persisted. Fine for a quick smoke test, not
-  for anything you want to keep.
+Left unset, `DATABASE_URL` defaults to the bundled `postgres` service,
+built from `POSTGRES_USER`/`POSTGRES_PASSWORD`/`POSTGRES_DB`
+(`postgresql://<user>:<password>@postgres:5432/<db>`). Set it explicitly to
+point at an external managed database (e.g. Neon) instead; that value
+always wins over the default.
 
 oTree creates its schema automatically on first startup against an empty
 database; no separate migration step is needed.
@@ -206,6 +200,10 @@ still running.
 **`oepgv-docs` can't start sessions / REST calls fail** — `OTREE_REST_KEY`
 here doesn't match the value configured in the `oepgv-docs` deployment.
 
-**Data disappeared after a restart** — `DATABASE_URL` was never set, so
-oTree was using the ephemeral in-container SQLite fallback. Point it at a
-real database.
+**Postgres logs `role "..." does not exist`** — the `postgres-data` volume
+already has data from an earlier run with different `POSTGRES_*` values;
+Postgres only creates the user/db on first init of an empty data directory,
+so changing `POSTGRES_USER`/`PASSWORD`/`DB` afterwards doesn't take effect.
+Either match the values to what's already in the volume, or wipe it with
+`docker compose down -v` (discards any data in the bundled Postgres) and
+start fresh.
