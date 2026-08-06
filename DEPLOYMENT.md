@@ -14,6 +14,18 @@ Two containers:
 `otree` is pulled as a pre-built image (`ghcr.io/sine-fdn/boardgame`); it is
 not built locally by `docker-compose.yml`.
 
+## Hosting requirements
+
+Whatever sits in front of `otree` (reverse proxy, load balancer, PaaS) must
+support WebSockets with no idle or request timeout that would cut off
+long-lived connections — wait pages and live pages depend on them staying
+open.
+
+Run exactly one instance of `otree`, with no autoscaling. oTree 5 runs with
+`workers=1` and no Redis channel layer, so a second replica breaks wait
+pages: participants connected to different instances never see each other
+arrive.
+
 ## Prerequisites
 
 - Docker Engine 20.10+ with the Compose v2 plugin (`docker compose version`)
