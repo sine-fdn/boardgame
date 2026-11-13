@@ -40,6 +40,7 @@ LANGUAGE_CODE = "de"
 # e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = "EUR"
 USE_POINTS = True
+POINTS_DECIMAL_PLACES = 0  # alle Punktwerte als ganze Zahlen
 POINTS_CUSTOM_NAME = "Punkte"
 
 ADMIN_USERNAME = environ.get("OTREE_ADMIN_USERNAME", "admin")

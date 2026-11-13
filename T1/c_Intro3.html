@@ -1,165 +1,80 @@
-{% extends "global/Page.html" %} {% block content %}
+{% extends "global/Page.html" %}
+{% load otree static %}
 
-<style>
-  /* Hilfsklasse: Icon linksbündig ohne Einrückung */
-  .card-icon {
-    display: block;
-    width: 60px; height: 60px;
-    margin: 0;            /* wichtig: kein margin:auto */
-    padding: 0;
-  }
-  .cards-row {
-    display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between;
-  }
-  .example-card {
-    min-height:300px; flex:1 1 220px; background:#fafafa;
-  }
-</style>
+{% block title %}{% endblock %}
 
-<div class="bg-light rounded rounded-5 p-4 m-4 example">
-  <h2 class="text-center mb-4">Der Wert von geteilten Daten</h2>
-
-  <p>
-    Wenn Daten für einen gemeinsamen Use Case zusammengeführt werden, entstehen neue Einsichten:
-    Die Summe der Daten ist mehr wert als die Einzelteile. Deshalb wird der Wert des Use Cases berechnet,
-    indem die Gesamtsumme der beigetragenen Datenpunkte mit einem Faktor von 2 multipliziert wird.
-  </p>
-</div>
-
-<div class="bg-light rounded rounded-5 p-4 m-4 example">
-  <p><strong>Beispiel-Use-Case: Hitzewellen in der Stadt</strong></p>
-
-  <p>
-    🌿 Umwelt, 🚦 Verkehr und ❤️ Soziales liefern Daten.
-    🛡 Sicherheit beteiligt sich diesmal nicht, da die individuellen Kosten hoch und der kollektive Nutzen gering wären.
-  </p>
-
-  <div class="cards-row">
-
-    <!-- Umwelt -->
-    <div class="card non-selectable-card border-4 example-card" style="border-color:darkolivegreen;">
-      <p style="font-size:1.1rem"><strong>Temperaturkarten</strong></p>
-      <div class="d-flex justify-content-between">
-        <img src="{% static 'global/icons/icon-temperaturkarten.svg' %}" class="card-icon" alt="Temperaturkarten" />
-        <div class="d-flex flex-column align-items-center">
-          <svg height="50" width="50" viewBox="0 0 50 50">
-            <circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/>
-            <text x="25" y="27" text-anchor="middle" dominant-baseline="middle" font-size="20">12</text>
-          </svg>
-          <p class="text-center mb-0" style="font-size:.8rem;">Punkte</p>
-        </div>
-      </div>
-      <p class="my-3" style="font-size:.8rem;"><strong>Beschreibung:</strong> Messungen der Oberflächentemperatur.</p>
-      <div class="d-flex flex-column align-items-center">
-        <svg height="50" width="50" viewBox="0 0 50 50">
-          <circle r="22" cx="25" cy="25" fill="none" stroke="red" stroke-width="3"/>
-          <text x="25" y="32" text-anchor="middle" font-size="20">8</text>
-        </svg>
-        <p class="text-center" style="font-size:.8rem;">Kosten</p>
-      </div>
-      <p class="my-2" style="font-size:.8rem;"><strong>Begründung:</strong> Aufwendige Erhebung, da Messstationen kalibriert und Daten konsolidiert werden müssen.</p>
-    </div>
-
-    <!-- Verkehr -->
-    <div class="card non-selectable-card border-4 example-card" style="border-color:darkolivegreen;">
-      <p style="font-size:1.1rem"><strong>Beschattungsdaten</strong></p>
-      <div class="d-flex justify-content-between">
-        <img src="{% static 'global/icons/icon-beschattung.svg' %}" class="card-icon" alt="Beschattungsdaten" />
-        <div class="d-flex flex-column align-items-center">
-          <svg height="50" width="50" viewBox="0 0 50 50">
-            <circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/>
-            <text x="25" y="27" text-anchor="middle" dominant-baseline="middle" font-size="20">10</text>
-          </svg>
-          <p class="text-center mb-0" style="font-size:.8rem;">Punkte</p>
-        </div>
-      </div>
-      <p class="my-3" style="font-size:.8rem;"><strong>Beschreibung:</strong> Daten zur Beschattung an Haltestellen.</p>
-      <div class="d-flex flex-column align-items-center">
-        <svg height="50" width="50" viewBox="0 0 50 50">
-          <circle r="22" cx="25" cy="25" fill="none" stroke="red" stroke-width="3"/>
-          <text x="25" y="32" text-anchor="middle" font-size="20">5</text>
-        </svg>
-        <p class="text-center" style="font-size:.8rem;">Kosten</p>
-      </div>
-      <p class="my-2" style="font-size:.8rem;"><strong>Begründung:</strong> Vorhandene Betriebsdaten müssen nur zusammengeführt werden.</p>
-    </div>
-
-    <!-- Soziales -->
-    <div class="card non-selectable-card border-4 example-card" style="border-color:darkolivegreen;">
-      <p style="font-size:1.1rem"><strong>Altersstruktur</strong></p>
-      <div class="d-flex justify-content-between">
-        <img src="{% static 'global/icons/icon-altersstruktur.svg' %}" class="card-icon" alt="Altersstruktur" />
-        <div class="d-flex flex-column align-items-center">
-          <svg height="50" width="50" viewBox="0 0 50 50">
-            <circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/>
-            <text x="25" y="27" text-anchor="middle" dominant-baseline="middle" font-size="20">8</text>
-          </svg>
-          <p class="text-center mb-0" style="font-size:.8rem;">Punkte</p>
-        </div>
-      </div>
-      <p class="my-3" style="font-size:.8rem;"><strong>Beschreibung:</strong> Informationen zur Altersstruktur.</p>
-      <div class="d-flex flex-column align-items-center">
-        <svg height="50" width="50" viewBox="0 0 50 50">
-          <circle r="22" cx="25" cy="25" fill="none" stroke="red" stroke-width="3"/>
-          <text x="25" y="32" text-anchor="middle" font-size="20">6</text>
-        </svg>
-        <p class="text-center" style="font-size:.8rem;">Kosten</p>
-      </div>
-      <p class="my-2" style="font-size:.8rem;"><strong>Begründung:</strong> Personenbezogene Daten müssen anonymisiert und sorgfältig aufbereitet werden.</p>
-    </div>
-
-    <!-- Sicherheit (nicht geliefert) -->
-    <div class="card non-selectable-card border-4 example-card" style="border-color:darkred;">
-      <p style="font-size:1.1rem"><strong>Notfalleinsätze</strong></p>
-      <div class="d-flex justify-content-between">
-        <img src="{% static 'global/icons/icon-notfalleinsaetze.svg' %}" class="card-icon" alt="Notfalleinsätze" style="opacity:.6;" />
-        <div class="d-flex flex-column align-items-center" style="opacity:.6;">
-          <svg height="50" width="50" viewBox="0 0 50 50">
-            <circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/>
-            <text x="25" y="27" text-anchor="middle" dominant-baseline="middle" font-size="20">6</text>
-          </svg>
-          <p class="text-center mb-0" style="font-size:.8rem;">Punkte</p>
-        </div>
-      </div>
-      <p class="my-3" style="font-size:.8rem;"><strong>Beschreibung:</strong> Daten zu Notfalleinsätzen (nicht geteilt).</p>
-      <div class="d-flex flex-column align-items-center" style="opacity:.6;">
-        <svg height="50" width="50" viewBox="0 0 50 50">
-          <circle r="22" cx="25" cy="25" fill="none" stroke="red" stroke-width="3"/>
-          <text x="25" y="32" text-anchor="middle" font-size="20">10</text>
-        </svg>
-        <p class="text-center" style="font-size:.8rem;">Kosten</p>
-      </div>
-      <p class="my-2" style="font-size:.8rem; opacity:.75;"><strong>Begründung:</strong> Sehr sensibel – in dieser Runde nicht beigesteuert.</p>
-    </div>
-  </div>
-
-  <!-- Summe: Text linksbündig, Kreise zentriert -->
-  <p class="mt-4" style="text-align:left;">Der Wert des Use Cases ergibt sich aus der Summe der eingebrachten Punkte:</p>
-  <div style="display:flex; align-items:center; justify-content:center; gap:20px; font-size:28px; margin-bottom:20px;">
-    <svg viewBox="0 0 50 50" width="70" height="70"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">12</text></svg>
-    <span>+</span>
-    <svg viewBox="0 0 50 50" width="70" height="70"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">10</text></svg>
-    <span>+</span>
-    <svg viewBox="0 0 50 50" width="70" height="70"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">8</text></svg>
-    <span>=</span>
-    <svg viewBox="0 0 50 50" width="80" height="80"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">30</text></svg>
-  </div>
-
-  <p style="text-align:left;">Multipliziert mit einem Faktor:</p>
-  <div style="display:flex; align-items:center; justify-content:center; gap:20px; font-size:28px; margin-bottom:20px;">
-    <svg viewBox="0 0 50 50" width="70" height="70"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">30</text></svg>
-    <span>x</span>
-    <svg viewBox="0 0 50 50" width="70" height="70"><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">2</text></svg>
-    <span>=</span>
-    <svg viewBox="0 0 50 50" width="80" height="80"><circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/><circle r="19" cx="25" cy="25" fill="none" stroke="black" stroke-width="2"/><text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20">60</text></svg>
-  </div>
-
-  <p style="text-align:left;">Der gesamte Wert des Use Cases beträgt <strong>60 Punkte</strong>.</p>
-
-  <div class="text-center mt-4">
-    {{ next_button }}
-  </div>
-</div>
-
+{% block styles %}
+<link rel="stylesheet" href="{% static 'global/anleitung.css' %}">
 {% endblock %}
 
+{% block content %}
+<div class="al-page">
+  <div class="al-top">
+    <div class="al-brand">ÖPGV-Lernspiel</div>
+    <div class="al-step">Anleitung 3 von 3</div>
+  </div>
+  <div class="al-main">
+    <div class="al-hero">
+      <h1 class="al-h1">Was das Teilen kostet</h1>
+      <p class="al-lead">Jeder Datensatz hat auch einen Aufwand: Erhebung, Aufbereitung oder Anonymisierung kosten Punkte. Den Aufwand trägt nur das Amt, das die Daten einbringt.</p>
+    </div>
+
+    <div class="al-note">Beispiel-Use-Case Hitzewellen, Fortsetzung: Der Anteil von 15 je Amt steht fest. Jetzt zieht jedes Amt seinen eigenen Aufwand ab.</div>
+
+    <div class="al-grid-4">
+      <div class="al-cost">
+        <div class="al-owner"><img src="{% static 'global/icons/amt-umwelt.svg' %}" alt=""><span>Amt für Umwelt</span></div>
+        <div class="al-ds-name">Temperaturkarten</div>
+        <div class="al-dp"><b>12</b><span class="al-unit">Datenpunkte</span></div>
+        <div class="al-effort">
+          <div class="v"><b>7</b><span class="al-unit">Aufwand</span></div>
+          <p>Aufwendige Erhebung, da Messstationen kalibriert und Daten konsolidiert werden müssen.</p>
+        </div>
+      </div>
+      <div class="al-cost">
+        <div class="al-owner"><img src="{% static 'global/icons/amt-verkehr.svg' %}" alt=""><span>Amt für Verkehr</span></div>
+        <div class="al-ds-name">Beschattungsdaten</div>
+        <div class="al-dp"><b>10</b><span class="al-unit">Datenpunkte</span></div>
+        <div class="al-effort">
+          <div class="v"><b>5</b><span class="al-unit">Aufwand</span></div>
+          <p>Vorhandene Betriebsdaten müssen nur zusammengeführt werden.</p>
+        </div>
+      </div>
+      <div class="al-cost">
+        <div class="al-owner"><img src="{% static 'global/icons/amt-soziales.svg' %}" alt=""><span>Amt für Soziales</span></div>
+        <div class="al-ds-name">Altersstruktur</div>
+        <div class="al-dp"><b>8</b><span class="al-unit">Datenpunkte</span></div>
+        <div class="al-effort">
+          <div class="v"><b>8</b><span class="al-unit">Aufwand</span></div>
+          <p>Personenbezogene Daten müssen anonymisiert und sorgfältig aufbereitet werden.</p>
+        </div>
+      </div>
+      <div class="al-cost muted">
+        <div class="al-owner"><img src="{% static 'global/icons/amt-sicherheit.svg' %}" alt=""><span>Amt für Sicherheit</span></div>
+        <div class="al-ds-name">Notfalleinsätze</div>
+        <div class="al-dp"><b>6</b><span class="al-unit">Datenpunkte</span></div>
+        <div class="al-effort">
+          <div class="v"><b>10</b><span class="al-unit">Aufwand</span></div>
+          <p>Sehr sensibel, erfordert hohen Aufwand für Anonymisierung und Freigaben.</p>
+        </div>
+        <div class="al-pill">nicht geteilt · kein Aufwand</div>
+      </div>
+    </div>
+
+    <div class="al-stack" style="gap:12px">
+      <div class="al-eyebrow">Ergebnis je Amt in dieser Runde</div>
+      <div class="al-grid-4">
+        <div class="al-result"><div class="l"><b>Amt für Umwelt</b><span>15 Anteil − 7 Aufwand</span></div><div class="r">+8</div></div>
+        <div class="al-result"><div class="l"><b>Amt für Verkehr</b><span>15 Anteil − 5 Aufwand</span></div><div class="r">+10</div></div>
+        <div class="al-result"><div class="l"><b>Amt für Soziales</b><span>15 Anteil − 8 Aufwand</span></div><div class="r">+7</div></div>
+        <div class="al-result"><div class="l"><b>Amt für Sicherheit</b><span>15 Anteil − 0 Aufwand</span></div><div class="r">+15</div></div>
+      </div>
+    </div>
+
+    <div class="al-foot split">
+      <p>Jedes Amt startet mit {{ C.INITIAL_UTILITY }} Budget. Vom Wert des Use Cases profitieren alle Ämter gleich, aber die Kosten für seine Daten trägt jedes Amt selbst. Das Ergebnis jeder Runde kommt dazu oder geht ab.</p>
+      {{ next_button }}
+    </div>
+  </div>
+</div>
+{% endblock %}

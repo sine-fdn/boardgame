@@ -15,8 +15,7 @@ class DataSet:
     icon: str
     data_points: int
     description: str
-    initial_sharing_costs: int
-    post_invest_sharing_costs: int
+    sharing_costs: int
     cost_description: str
 
 
@@ -32,7 +31,6 @@ class GameConfig:
     intro: str
     num_of_players: int
     initial_utility: float
-    investment_threshold: int
     players: List[PlayerConfig]
 
 
@@ -61,7 +59,6 @@ def load_game_config():
         intro=raw["intro"],
         num_of_players=int(raw["num_of_players"]),
         initial_utility=float(raw["initial_utility"]),
-        investment_threshold=int(raw["investment_threshold"]),
         players=players,
     )
 
@@ -78,9 +75,6 @@ class C(BaseConstants):
     NUM_ROUNDS = 4
     MULTIPLIER = float(sum(get_player_shares(GAME_CONFIG.players)))
     INITIAL_UTILITY = cu(float(GAME_CONFIG.initial_utility))
-    THRESHOLD = GAME_CONFIG.investment_threshold
-    THRESHOLD_ROUND = 4
-    MAX_INVESTMENT = cu(20)
 
 
 class Subsession(BaseSubsession):
@@ -89,26 +83,14 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     total_contribution = models.IntegerField()
-    total_investment = models.CurrencyField(initial=0)
 
 
 class Player(BasePlayer):
     contribution = models.IntegerField(min=0, max=C.DATA_POINTS, label="")
-    investment = models.CurrencyField(min=0, max=C.MAX_INVESTMENT, label="How much would you like to invest?")
     public_good_share = models.CurrencyField()
     public_good_share_per = models.FloatField(initial=0.00)
     contribution_cost = models.CurrencyField()
     contribution_cost_per = models.FloatField(initial=0.00)
-
-    def get_savings(self, ds: DataSet):
-        print("Calculating savings for dataset:", ds.name)
-        return ds.initial_sharing_costs - ds.post_invest_sharing_costs
-
-    def get_sharing_costs(self, ds: DataSet):
-        if self.session.vars.get("cost_eliminated", False):
-            return ds.post_invest_sharing_costs
-        else:
-            return ds.initial_sharing_costs
 
     def get_data_sets(self):
         player = next((p for p in C.GAME_CONFIG.players if int(p.id) == self.id_in_group), None)
@@ -124,11 +106,8 @@ class Player(BasePlayer):
                 "icon": ds.icon,
                 "data_points": ds.data_points,
                 "description": ds.description,
-                "sharing_costs": self.get_sharing_costs(ds),
-                "post_invest_costs": ds.post_invest_sharing_costs,
-                "reduced_costs": ds.initial_sharing_costs > self.get_sharing_costs(ds),
+                "sharing_costs": ds.sharing_costs,
                 "cost_description": ds.cost_description,
-                "savings": self.get_savings(ds),
             }
             for ds in data_sets
         ]
@@ -145,26 +124,6 @@ def set_endowments(group: Group):
         player.public_good_share_per = get_player_shares(C.GAME_CONFIG.players)[i]
 
 
-def set_investments(group: Group):
-    # Skip if cost_eliminated is already True
-    if group.session.vars.get("cost_eliminated", False):
-        print("Cost already eliminated. Skipping set_investments.")
-        return
-
-    players = group.get_players()
-    group.total_investment = sum(p.field_maybe_none("investment") or 0 for p in players)
-
-    for player in players:
-        current_balance = player.participant.vars.get("current_balance", 0)
-        player.participant.vars["current_balance"] = current_balance - (
-            player.field_maybe_none("investment") or 0
-        )
-
-    if group.total_investment >= C.THRESHOLD:
-        group.session.vars["cost_eliminated"] = True
-        print("Threshold met: Cost eliminated!")
-
-
 def set_payoffs(group: Group):
     players = group.get_players()
 
@@ -172,12 +131,12 @@ def set_payoffs(group: Group):
 
     for i, player in enumerate(players):
 
-        player.public_good_share = (
-            get_player_shares(C.GAME_CONFIG.players)[i] * group.total_contribution
-        )
+        # Round the share once, so share, result and balance all use the same value
+        share = cu(get_player_shares(C.GAME_CONFIG.players)[i] * group.total_contribution)
+        player.public_good_share = share
 
         # Calculate the player's payout
-        player.payoff += -player.contribution_cost + player.public_good_share
+        player.payoff += share - cu(player.contribution_cost)
 
         current_balance = player.participant.vars.get(
             "current_balance", 0
@@ -214,86 +173,13 @@ class c_Intro3(Page):
         """
         return player.round_number == 1
 
-class d_Intro4(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-         """
-         Show this page only in the first round.
-         """
-         return player.round_number == 1
-
-class e_Intro5(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-         """
-         Show this page only in the first round.
-         """
-         return player.round_number == 1
-
-class UseCaseWaitPage(WaitPage):
-    pass
-
-class f_UseCaseIntro(Page):
-    form_model = "player"
-
-class g_Investment(Page):
-    form_model = 'player'
-    form_fields = ['investment']
-
+class IntroWaitPage(WaitPage):
     @staticmethod
     def is_displayed(player: Player):
         """
-        Show this page only in the first round.
+        Wait for everyone to finish the intro before the first contribution.
         """
-        return player.round_number >= C.THRESHOLD_ROUND
-
-    @staticmethod
-    def vars_for_template(player: Player):
-        data_sets = player.get_data_sets()
-
-        total_savings = sum(ds["savings"] for ds in data_sets)
-
-        return {
-            # Aktueller Kontostand des Spielers
-            "current_balance": player.participant.vars.get("current_balance", 0),
-            # Ob in der vorherigen Runde die Investitionskosten eliminiert wurden
-            "cost_eliminated": player.session.vars.get("cost_eliminated", False),
-            # Werte aus der Public-Good-Mechanik (können im Template genutzt werden)
-            "contribution_effect": f"{-player.contribution_cost_per:.2f}",
-            "contribution_effect_other": f"{C.MULTIPLIER:.2f}",
-            # Rundenzähler
-            "round_number": player.round_number,
-            "num_rounds": C.NUM_ROUNDS,
-            # Schwellenwert für die Investition (optional für Anzeige)
-            "threshold": C.THRESHOLD,
-            # Die Datensätze des Spielers mit allen nötigen Feldern,
-            # inklusive initial_sharing_costs und post_invest_sharing_costs
-            "data_sets": player.get_data_sets(),
-            "total_savings": total_savings
-        }
-
-class InvestmentWaitPage(WaitPage):
-    after_all_players_arrive = set_investments
-
-
-class g_ThresholdExceeded(Page):
-    form_model = "player"
-
-    @staticmethod
-    def is_displayed(player: Player):
-        """
-        Show this page only in the first round.
-        """
-        return player.round_number >= C.THRESHOLD_ROUND
-
-    @staticmethod
-    def vars_for_template(player: Player):
-        group = player.group
-        return {
-            "total_investment": group.field_maybe_none("total_investment") or 0,
-            "threshold": C.THRESHOLD,
-        }
-
+        return player.round_number == 1
 
 class h_Contribution(Page):
     form_model = "player"
@@ -312,7 +198,6 @@ class h_Contribution(Page):
 
         return {
             "current_balance": player.participant.vars.get("current_balance", 0),
-            "cost_eliminated": player.session.vars.get("cost_eliminated", False),
             "contribution_effect": f"{-player.contribution_cost_per:.2f}",
             "contribution_effect_other": f"{C.MULTIPLIER:.2f}",
             "round_number": player.round_number,
@@ -338,21 +223,22 @@ class i_Results(Page):
                     "contribution": p.contribution,
                     "contribution_cost": p.contribution_cost,
                     "public_good_share": p.public_good_share,
-                    "ergebnis": p.public_good_share - p.contribution_cost,  # Ergebnis wird hier berechnet
+                    "ergebnis": p.payoff,  # gleicher Wert wie im eigenen Ergebnis-Kasten
                     "current_balance": p.participant.vars.get("current_balance", 0),
+                    "previous_balance": p.participant.vars.get("current_balance", 0) - p.payoff,
                 }
             )
 
         total_contribution = group.total_contribution
-        total_value = round(total_contribution * C.MULTIPLIER)
-        anteil_pro_amt = total_value / C.PLAYERS_PER_GROUP if C.PLAYERS_PER_GROUP else 0
+        total_value = int(cu(total_contribution * C.MULTIPLIER))  # cu rundet kaufmännisch auf ganze Punkte
+        anteil_pro_amt = int(cu(total_contribution * C.MULTIPLIER / C.PLAYERS_PER_GROUP)) if C.PLAYERS_PER_GROUP else 0
 
         return {
             "total_contribution": total_contribution,
             "players_data": players_data,
             "round_number": player.round_number,
-            "cost_eliminated": player.session.vars.get("cost_eliminated", False),
             "current_balance": player.participant.vars.get("current_balance", 0),
+            "previous_balance": player.participant.vars.get("current_balance", 0) - player.payoff,
             "total_value": total_value,
             "anteil_pro_amt": anteil_pro_amt,
         }
@@ -390,27 +276,26 @@ class j_Summary(Page):
             total_current_balance += bal
         players_ranking.sort(key=lambda x: x["current_balance"], reverse=True)
 
-        # Theoretisches Optimum (mit erfolgreichen Investitionen)
+        # Theoretisches Optimum
         # Ein Datensatz ist "teilenswert", wenn:
-        #  - kollektiv rational:  C.MULTIPLIER * Punkte >= post_cost, oder
-        #  - individuell rational: player_benefit * Punkte >= post_cost
+        #  - kollektiv rational:  C.MULTIPLIER * Punkte >= cost, oder
+        #  - individuell rational: player_benefit * Punkte >= cost
         optimum_points_sum = 0
-        optimum_post_costs_sum = 0
+        optimum_costs_sum = 0
         for pconf in C.GAME_CONFIG.players:
             benefit = float(pconf.player_benefit)
             for rnd, sets in pconf.rounds.items():
                 for ds in sets:
                     points = int(ds.data_points)
-                    post_cost = int(ds.post_invest_sharing_costs)
+                    cost = int(ds.sharing_costs)
                     group_gain = C.MULTIPLIER * points
                     indiv_gain = benefit * points
-                    if group_gain >= post_cost or indiv_gain >= post_cost:
+                    if group_gain >= cost or indiv_gain >= cost:
                         optimum_points_sum += points
-                        optimum_post_costs_sum += post_cost
+                        optimum_costs_sum += cost
 
         optimum_brutto_value = int(round(optimum_points_sum * C.MULTIPLIER))
-        optimum_investment_cost = int(C.THRESHOLD)
-        optimum_net_value = C.INITIAL_UTILITY + optimum_brutto_value - optimum_post_costs_sum - optimum_investment_cost
+        optimum_net_value = C.INITIAL_UTILITY + optimum_brutto_value - optimum_costs_sum
 
         return {
             # Ranking & Ist
@@ -420,8 +305,7 @@ class j_Summary(Page):
             # Optimum (Komponenten + Netto)
             "optimum_points_sum":         optimum_points_sum,
             "optimum_brutto_value":       optimum_brutto_value,
-            "optimum_post_costs_sum":     optimum_post_costs_sum,
-            "optimum_investment_cost":    optimum_investment_cost,
+            "optimum_costs_sum":          optimum_costs_sum,
             "optimum_net_value":          optimum_net_value,
 
             # Meta
@@ -435,13 +319,7 @@ page_sequence = [
     a_Intro1,
     b_Intro2,
     c_Intro3,
-    d_Intro4,
-    e_Intro5,
-    UseCaseWaitPage,
-    f_UseCaseIntro,
-    g_Investment,
-    InvestmentWaitPage,
-    g_ThresholdExceeded,
+    IntroWaitPage,
     h_Contribution,
     ResultsWaitPage,
     i_Results,

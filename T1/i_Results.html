@@ -1,74 +1,133 @@
 {% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'global/spiel.css' %}">
+{% endblock %}
+
 {% block content %}
+<div class="sp-page">
 
-<style>
-  .result-wrap { width: 100%; margin: 0 auto; }
-  .pill {
-    display:inline-block; padding:2px 8px; border-radius:999px;
-    background:#eef2f7; border:1px solid #e3e8ef; font-size:.85rem;
-  }
-  .row-card {
-    display:flex; gap:12px; align-items:center; justify-content:space-between;
-    padding:10px 12px; border:1px solid #e9ecef; border-radius:10px;
-  }
-  .row-card strong { font-weight:600; }
-  @media (max-width:640px){
-    .row-card{ flex-direction:column; align-items:flex-start; }
-  }
-</style>
+  <div class="sp-top">
+    <div class="sp-amt">
+      {% if player.id_in_group == 1 %}<img src="{% static 'global/icons/amt-umwelt.svg' %}" alt=""><span>Amt für Umwelt</span>
+      {% elif player.id_in_group == 2 %}<img src="{% static 'global/icons/amt-soziales.svg' %}" alt=""><span>Amt für Soziales</span>
+      {% elif player.id_in_group == 3 %}<img src="{% static 'global/icons/amt-verkehr.svg' %}" alt=""><span>Amt für Verkehr</span>
+      {% elif player.id_in_group == 4 %}<img src="{% static 'global/icons/amt-sicherheit.svg' %}" alt=""><span>Amt für Sicherheit</span>
+      {% else %}<span>Dein Amt</span>{% endif %}
+    </div>
+    <div class="sp-round">
+      <span>Runde {{ round_number }} von {{ C.NUM_ROUNDS }}</span>
+      <span class="sp-dots" id="round-dots" data-round="{{ round_number }}" data-total="{{ C.NUM_ROUNDS }}"></span>
+    </div>
+    <div class="sp-balance"><span>Dein Kontostand</span><b>{{ current_balance }}</b></div>
+  </div>
 
-<div class="bg-light rounded rounded-5 p-4 m-4 example">
-  <h2 class="text-center mb-4">Der Wert für die einzelnen Abteilungen</h2>
+  <div class="sp-main sp-res">
 
-  <p>
-    Der Gesamtwert dieses Use Cases ergibt sich aus den Beiträgen aller Abteilungen,
-    multipliziert mit dem Faktor <strong>{{ C.MULTIPLIER }}</strong>.
-    Jede Abteilung erhält den gleichen Anteil am Gesamtwert, die
-    <strong>Kosten</strong> unterscheiden sich aber – dadurch fällt das Ergebnis
-    für jede Abteilung unterschiedlich aus.
-  </p>
-</div>
-
-<div class="bg-light rounded rounded-5 p-4 m-4 example">
-  <div class="result-wrap">
-
-    <!-- Zusammenfassung -->
-    <div id="summary" class="mb-2 pill">
-      Beiträge gesamt: <strong>{{ total_contribution }}</strong> × Faktor: <strong>{{ C.MULTIPLIER }}</strong>
-      → Gesamtwert: <strong>{{ total_value }}</strong> geteilt durch {{ C.PLAYERS_PER_GROUP }}
-      Abteilungen → Anteil pro Abteilung: <strong>{{ anteil_pro_amt }}</strong>
-
+    <!-- Use Case der Runde (Titel wie in h_Contribution) -->
+    <div class="sp-uc sp-uc-res">
+      <div class="sp-uc-head">
+        <span class="sp-eyebrow">Ergebnis · Runde {{ round_number }}</span>
+        {% if round_number == 1 %}<h3>Vision Zero: Unfall-Hotspots erkennen</h3>
+        {% elif round_number == 2 %}<h3>Städtische Hitzeinseln und Kühlmaßnahmen priorisieren</h3>
+        {% elif round_number == 3 %}<h3>Überflutungsrisiko und Evakuierungsplanung</h3>
+        {% elif round_number == 4 %}<h3>Digitaler Zwilling und Entscheidungssimulation</h3>
+        {% endif %}
+      </div>
+      <p>So viel haben die vier Ämter für diesen Use Case eingebracht und so verteilt sich der Wert.</p>
     </div>
 
-    <!-- Ergebnis pro Abteilung -->
-    <div id="results" style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
-      {% for p in players_data %}
-        <div class="row-card">
-          <div style="flex:1; min-width:140px;">
-            <strong>
-              {% if p.id_in_group == 1 %}🌿 Umwelt
-              {% elif p.id_in_group == 2 %}❤️ Soziales
-              {% elif p.id_in_group == 3 %}🚦 Verkehr
-              {% elif p.id_in_group == 4 %}🛡 Sicherheit
-              {% else %}Amt {{ p.id_in_group }}{% endif %}
-              {% if p.id_in_group == player.id_in_group %}<em> (Du)</em>{% endif %}
-            </strong>
-          </div>
-          <div style="flex:1;">Anteil: <strong>{{ p.public_good_share }}</strong></div>
-          <div style="flex:1;">Kosten: <strong>-{{ p.contribution_cost }}</strong></div>
-          <div style="flex:1; text-align:right;">Ergebnis: <strong>{{ p.ergebnis }}</strong></div>
+    <!-- Flussdiagramm -->
+    <div class="sp-flow-wrap">
+      <div class="sp-eyebrow">Alle Ämter · Runde {{ round_number }}</div>
+      <div class="sp-flow">
+        <svg viewBox="0 0 1312 560" class="sp-flow-svg">
+          <defs>
+            <marker id="arrIn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#14143C"/></marker>
+            <marker id="arrOut" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#19C8CE"/></marker>
+          </defs>
+          <!-- Amt 1 Umwelt (oben links) -->
+          <line x1="304" y1="96" x2="539" y2="231" class="in"/><line x1="555" y1="203" x2="320" y2="68" class="out"/>
+          <!-- Amt 2 Soziales (oben rechts) -->
+          <line x1="992" y1="68" x2="757" y2="203" class="in"/><line x1="773" y1="231" x2="1008" y2="96" class="out"/>
+          <!-- Amt 3 Verkehr (unten links) -->
+          <line x1="320" y1="492" x2="555" y2="357" class="in"/><line x1="539" y1="329" x2="304" y2="464" class="out"/>
+          <!-- Amt 4 Sicherheit (unten rechts) -->
+          <line x1="1008" y1="464" x2="773" y2="329" class="in"/><line x1="757" y1="357" x2="992" y2="492" class="out"/>
+        </svg>
+
+        {% for p in players_data %}
+          <span class="sp-flow-lbl in pos{{ p.id_in_group }}">{{ p.contribution }} Datenpunkte</span>
+          <span class="sp-flow-lbl out pos{{ p.id_in_group }}">+{{ p.public_good_share }} Anteil</span>
+        {% endfor %}
+
+        <div class="sp-flow-center">
+          <div class="sp-eyebrow">Wert des Use Cases</div>
+          <b>{{ total_value }}</b>
+          <small>{{ total_contribution }} Datenpunkte × {{ C.MULTIPLIER|to0 }}<br>÷ {{ C.PLAYERS_PER_GROUP }} = {{ anteil_pro_amt }} je Amt</small>
         </div>
-      {% endfor %}
+
+        {% for p in players_data %}
+          <div class="sp-flow-card pos{{ p.id_in_group }}{% if p.id_in_group == player.id_in_group %} me{% endif %}">
+            <div class="sp-flow-amt">
+              {% if p.id_in_group == 1 %}<img src="{% static 'global/icons/amt-umwelt.svg' %}" alt=""><span>Umwelt</span>
+              {% elif p.id_in_group == 2 %}<img src="{% static 'global/icons/amt-soziales.svg' %}" alt=""><span>Soziales</span>
+              {% elif p.id_in_group == 3 %}<img src="{% static 'global/icons/amt-verkehr.svg' %}" alt=""><span>Verkehr</span>
+              {% elif p.id_in_group == 4 %}<img src="{% static 'global/icons/amt-sicherheit.svg' %}" alt=""><span>Sicherheit</span>
+              {% else %}<span>Amt {{ p.id_in_group }}</span>{% endif %}
+              {% if p.id_in_group == player.id_in_group %}<em>(Du)</em>{% endif %}
+            </div>
+            <dl>
+              <dt>Anteil</dt><dd>{{ p.public_good_share }}</dd>
+              <dt>− Aufwand</dt><dd>{{ p.contribution_cost }}</dd>
+              <dt class="res">= Ergebnis</dt><dd class="res">{{ p.ergebnis }}</dd>
+              <dt>Kontostand</dt><dd class="bal">{{ p.current_balance }}</dd>
+            </dl>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="sp-legend"><span><i class="in"></i>eingebrachte Datenpunkte</span><span><i class="out"></i>Anteil am Wert des Use Cases</span></div>
     </div>
 
-    <p class="text-center mt-3 mb-0">
-      Neuer Kontostand deines Amts: <strong>{{ player.participant.vars.current_balance }}</strong>
-    </p>
+    <!-- Eigene Abrechnung -->
+    <div class="sp-mine">
+      <div class="sp-mine-calc">
+        <div class="sp-eyebrow">Dein Ergebnis · Runde {{ round_number }}</div>
+        <div class="sp-mine-row">
+          <div><b>{{ player.public_good_share }}</b><span>Dein Anteil am Use Case</span></div>
+          <i>−</i>
+          <div><b>{{ player.contribution_cost }}</b><span>Dein Aufwand</span></div>
+          <i>=</i>
+          <div><b class="big">{{ player.payoff }}</b><span>Ergebnis</span></div>
+        </div>
+      </div>
+      <div class="sp-mine-bal">
+        <div class="sp-eyebrow">Dein Kontostand</div>
+        <div class="sp-mine-bal-row">
+          {% if previous_balance != None %}<span class="old">{{ previous_balance }}</span><span class="arr">→</span>{% endif %}
+          <b>{{ current_balance }}</b>
+        </div>
+      </div>
+    </div>
 
-    <div class="text-center mt-4">
+    <div class="sp-res-foot">
       {{ next_button }}
     </div>
+
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dots = document.getElementById("round-dots");
+    if (dots) {
+      const r = parseInt(dots.dataset.round, 10) || 0, t = parseInt(dots.dataset.total, 10) || 0;
+      for (let i = 1; i <= t; i++) { const d = document.createElement("i"); if (i <= r) d.className = "done"; dots.appendChild(d); }
+    }
+  });
+</script>
 
 {% endblock %}

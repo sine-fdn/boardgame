@@ -1,43 +1,59 @@
-{% extends "global/Page.html" %} {% block content %}
+{% extends "global/Page.html" %}
+{% load otree static %}
 
-<div class="bg-light rounded rounded-5 p-4 m-4 example">
-  <h2 class="text-center mb-4">Willkommen in der Stadt der Zukunft</h2>
+{% block title %}{% endblock %}
 
-  <p>
-    Unsere Stadtverwaltung steht vor großen Herausforderungen: Klimawandel, demografische Veränderungen, wachsende Mobilitätsbedürfnisse und die Sicherheit im Alltag. Für wirksame Maßnahmen braucht es jedoch nicht nur gute Ideen, sondern vor allem belastbare Analysen. Diese Analysen können erst dann entstehen, wenn alle relevanten Daten von Umwelt über Verkehr bis hin zu Sozialem und Sicherheit zusammengetragen und gemeinsam genutzt werden können.
-  </p>
-
-  <p>
-    Die gemeinsame Nutzung von Daten ist nicht immer einfach:
-  </p>
-  <ul>
-    <li>Es verursacht Aufwand, die Daten nutzbar zu machen.</li>
-    <li>Nicht alle profitieren im gleichen Maß von den gemeinsamen Ergebnissen.</li>
-    <li>Manche Abteilungen haben hohe Kosten, während andere besonders stark von den Erkenntnissen profitieren.</li>
-  </ul>
-
-  <p>
-    In diesem Spiel schlüpft ihr jeweils in die Rolle eines der vier Ämter unserer Stadtverwaltung:
-  </p>
-  <ul>
-    <li>🌿 <strong>Amt für Umwelt:</strong> Schützt Klima und Natur und sorgt für eine gesunde Lebensumwelt.</li>
-    <li>🚦 <strong>Amt für Verkehr:</strong> Plant und steuert die Mobilität.</li>
-    <li>❤️ <strong>Amt für Soziales:</strong> Sorgt dafür, dass die Bedürfnisse der Menschen berücksichtigt werden.</li>
-    <li>🛡 <strong>Amt für Sicherheit:</strong> Gewährleistet Sicherheit im öffentlichen Raum.</li>
-  </ul>
-
-  <p>
-    <strong>Euer Ziel:</strong> Über {{ C.NUM_ROUNDS }} Runden hinweg entscheidet ihr, welche Datensätze ihr teilt
-    und wie viel Aufwand ihr dafür aufbringt. Gemeinsam macht ihr die Zukunft der Stadt transparenter und gewinnt
-    wertvolle Einsichten. Gleichzeitig profitiert jedes Amt unterschiedlich – deshalb geht es darum, die Stadt
-    insgesamt voranzubringen und gleichzeitig den Nutzen für das eigene Amt möglichst hoch zu halten.
-  </p>
-
-  <div class="text-center mt-4">
-    {{ next_button }}
-  </div>
-</div>
-
+{% block styles %}
+<link rel="stylesheet" href="{% static 'global/anleitung.css' %}">
 {% endblock %}
 
+{% block content %}
+<div class="al-page">
+  <div class="al-top">
+    <div class="al-brand">ÖPGV-Lernspiel</div>
+    <div class="al-step">Anleitung 1 von 3</div>
+  </div>
+  <div class="al-main gap-l">
+    <div class="al-hero">
+      <h1 class="al-h1">Willkommen in der Stadt der Zukunft</h1>
+      <p class="al-lead">Unsere Stadt steht vor großen Herausforderungen: Klimawandel, demografischer Wandel, Mobilität, Sicherheit. Können Daten helfen, um wirksame Maßnahmen zu entwickeln?</p>
+    </div>
 
+    <div class="al-stack">
+      <div class="al-eyebrow">Ihr spielt jeweils eines der vier Ämter</div>
+      <div class="al-grid-4">
+        <div class="al-office"><img src="{% static 'global/icons/amt-umwelt.svg' %}" alt=""><span>Amt für Umwelt</span></div>
+        <div class="al-office"><img src="{% static 'global/icons/amt-soziales.svg' %}" alt=""><span>Amt für Soziales</span></div>
+        <div class="al-office"><img src="{% static 'global/icons/amt-verkehr.svg' %}" alt=""><span>Amt für Verkehr</span></div>
+        <div class="al-office"><img src="{% static 'global/icons/amt-sicherheit.svg' %}" alt=""><span>Amt für Sicherheit</span></div>
+      </div>
+    </div>
+
+    <div class="al-grid-3">
+      <div class="al-card">
+        <div class="al-eyebrow">Die Herausforderung</div>
+        <ol class="al-list">
+          <li>Zusammengeführt sind Daten mehr wert als ihre Einzelteile.</li>
+          <li>Aber Daten nutzbar zu machen verursacht auch Aufwand.</li>
+          <li>Nicht alle profitieren gleich von den Ergebnissen: Manche Ämter tragen hohe Kosten, andere ziehen den größten Nutzen.</li>
+        </ol>
+      </div>
+      <div class="al-card dark">
+        <div class="al-eyebrow">Dein Ziel</div>
+        <h3>Das Amt mit den meisten Punkten gewinnt!</h3>
+        <p>Über {{ C.NUM_ROUNDS }} Runden hinweg entscheidet ihr, welche Datensätze ihr teilt und wie viel Aufwand ihr dafür aufbringt. Gemeinsam macht ihr die Zukunft der Stadt transparenter und gewinnt wertvolle Einsichten. Gleichzeitig profitiert jedes Amt unterschiedlich. Es geht darum, die Stadt insgesamt voranzubringen und gleichzeitig den Nutzen für das eigene Amt möglichst hoch zu halten.</p>
+      </div>
+      <div class="al-card">
+        <div class="al-eyebrow">So läuft jede Runde</div>
+        <ol class="al-list">
+          <li><span><b>Use Case lesen</b><small>Jede Runde startet mit einem neuen Use Case.</small></span></li>
+          <li><span><b>Datensätze wählen</b><small>Entscheide welche Datensätze du teilst.</small></span></li>
+          <li><span><b>Ergebnis sehen</b><small>Sehe am Ende jeder Runde was die Gruppe erreicht hat, was jedes Amt bekommt und was es gekostet hat.</small></span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="al-foot">{{ next_button }}</div>
+  </div>
+</div>
+{% endblock %}

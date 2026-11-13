@@ -1,17 +1,119 @@
 {% extends "global/Page.html" %}
-{% block content %}
+{% load otree static %}
 
-<style>
-  .selectable-card{
-    cursor:pointer;
-    transition: box-shadow .15s ease, transform .05s;
-    min-height:520px;                 /* stabile Kartenhöhe */
-    display:flex; flex-direction:column;
-    justify-content:space-between;
-  }
-  .selectable-card.selected{ box-shadow:0 0 0 3px #19875455; transform: translateY(-1px); }
-  .selectable-card:focus{ outline:3px solid #0d6efd55; }
-</style>
+{% block title %}{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'global/spiel.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="sp-page">
+
+  <div class="sp-top">
+    <div class="sp-amt">
+      {% if player.id_in_group == 1 %}<img src="{% static 'global/icons/amt-umwelt.svg' %}" alt=""><span>Amt für Umwelt</span>
+      {% elif player.id_in_group == 2 %}<img src="{% static 'global/icons/amt-soziales.svg' %}" alt=""><span>Amt für Soziales</span>
+      {% elif player.id_in_group == 3 %}<img src="{% static 'global/icons/amt-verkehr.svg' %}" alt=""><span>Amt für Verkehr</span>
+      {% elif player.id_in_group == 4 %}<img src="{% static 'global/icons/amt-sicherheit.svg' %}" alt=""><span>Amt für Sicherheit</span>
+      {% else %}<span>Dein Amt</span>{% endif %}
+    </div>
+    <div class="sp-round">
+      <span>Runde {{ round_number }} von {{ C.NUM_ROUNDS }}</span>
+      <span class="sp-dots" id="round-dots" data-round="{{ round_number }}" data-total="{{ C.NUM_ROUNDS }}"></span>
+    </div>
+    <div class="sp-balance"><span>Dein Kontostand</span><b>{{ current_balance }}</b></div>
+  </div>
+
+  <div class="sp-main">
+
+    <!-- Use Case je Runde (Texte aus f_UseCaseIntro.html) -->
+    <div class="sp-uc">
+      {% if player.round_number == 1 %}
+        <div class="sp-uc-head"><span class="sp-eyebrow">Use Case · Runde 1</span><h3>Vision Zero: Unfall-Hotspots erkennen</h3></div>
+        <p>In unserer Stadt passieren nach wie vor zu viele Unfälle. Ziel ist es, <strong>Unfall-Hotspots zu erkennen</strong> und gezielt Maßnahmen für mehr Sicherheit einzuleiten – zum Beispiel sichere Querungen, Temporeduktionen oder bessere Radwege. Damit das gelingt, müssen die Abteilungen ihre Daten zusammenführen:</p>
+        <ul class="sp-uc-list">
+          <li><img src="{% static 'global/icons/amt-umwelt.svg' %}" alt=""><span><b>Umwelt</b>Wetter- und Sichtbedingungen, die Unfälle beeinflussen können.</span></li>
+          <li><img src="{% static 'global/icons/amt-verkehr.svg' %}" alt=""><span><b>Verkehr</b>Verkehrsdichte, Geschwindigkeit und Netzstruktur.</span></li>
+          <li><img src="{% static 'global/icons/amt-soziales.svg' %}" alt=""><span><b>Soziales</b>Informationen, welche Gruppen besonders betroffen sind; zum Beispiel Kinder oder ältere Menschen.</span></li>
+          <li><img src="{% static 'global/icons/amt-sicherheit.svg' %}" alt=""><span><b>Sicherheit</b>Einsatz- und Unfalldaten aus Polizei und Rettungsdiensten.</span></li>
+        </ul>
+      {% elif player.round_number == 2 %}
+        <div class="sp-uc-head"><span class="sp-eyebrow">Use Case · Runde 2</span><h3>Städtische Hitzeinseln und Kühlmaßnahmen priorisieren</h3></div>
+        <p>Hitzewellen belasten Gesundheit und Infrastruktur. Ziel ist es, <strong>Hitze-Hotspots zu erkennen</strong> und dort Maßnahmen wie <em>Baumpflanzungen, Entsiegelung, Sprühnebel</em> oder <em>schattige Wege</em> zu priorisieren. Die Abteilungen bringen dafür komplementäre Daten zusammen:</p>
+        <ul class="sp-uc-list">
+          <li><img src="{% static 'global/icons/amt-umwelt.svg' %}" alt=""><span><b>Umwelt</b>Mikroklima (Oberflächentemperaturen), Versiegelungsgrad, Grün- und Baumkronendichte.</span></li>
+          <li><img src="{% static 'global/icons/amt-verkehr.svg' %}" alt=""><span><b>Verkehr</b>Beschattung und Ausstattung an Haltestellen, Auslastung von Linien bei Hitze.</span></li>
+          <li><img src="{% static 'global/icons/amt-soziales.svg' %}" alt=""><span><b>Soziales</b>Verteilung vulnerabler Gruppen und Einrichtungen ohne Kühlung (z.&nbsp;B. Kitas, Pflegeheime).</span></li>
+          <li><img src="{% static 'global/icons/amt-sicherheit.svg' %}" alt=""><span><b>Sicherheit</b>Hitze-Notfalleinsätze und Vorfälle bei Veranstaltungen als Indikator für Belastungsschwerpunkte.</span></li>
+        </ul>
+      {% elif player.round_number == 3 %}
+        <div class="sp-uc-head"><span class="sp-eyebrow">Use Case · Runde 3</span><h3>Überflutungsrisiko und Evakuierungsplanung</h3></div>
+        <p>Starkregen und steigende Pegel gefährden Quartiere und Infrastruktur. Ziel ist es, <strong>Risikozonen zu kartieren</strong>, <strong>Schutzziele</strong> zu definieren und <strong>Evakuierungswege</strong> realistisch zu planen. Alle Ämter liefern Bausteine für das Lagebild und die Planung:</p>
+        <ul class="sp-uc-list">
+          <li><img src="{% static 'global/icons/amt-umwelt.svg' %}" alt=""><span><b>Umwelt</b>Bodenversiegelung, Niederschlagsreihen, Topographie/DEM zur Modellierung von Abflusswegen.</span></li>
+          <li><img src="{% static 'global/icons/amt-verkehr.svg' %}" alt=""><span><b>Verkehr</b>Brückenstatik, historische Sperrungen, ÖPNV-Optionen für Evakuierungen.</span></li>
+          <li><img src="{% static 'global/icons/amt-soziales.svg' %}" alt=""><span><b>Soziales</b>Pflegeheime, Schulen/Kitas und sozioökonomische Risikofaktoren in Gefährdungszonen.</span></li>
+          <li><img src="{% static 'global/icons/amt-sicherheit.svg' %}" alt=""><span><b>Sicherheit</b>Einsatzlogs bei Hochwasser, Sirenen-/Warninfrastruktur, erprobte Evakuierungsprotokolle.</span></li>
+        </ul>
+      {% elif player.round_number == 4 %}
+        <div class="sp-uc-head"><span class="sp-eyebrow">Use Case · Runde 4</span><h3>Digitaler Zwilling und Entscheidungssimulation</h3></div>
+        <p>In dieser Runde entsteht ein <strong>digitaler Zwilling</strong> unserer Stadt: ein interaktives Modell, das Daten aus allen Ämtern bündelt. Ziel ist es, <strong>Szenarien realistisch zu simulieren</strong> und <strong>Maßnahmen faktenbasiert zu priorisieren</strong> – etwa zu Luftqualität, Verkehrsfluss, Grünflächen oder Infrastruktur. Dabei geht es auch um sehr sensible Informationen:</p>
+        <ul class="sp-uc-list">
+          <li><img src="{% static 'global/icons/amt-umwelt.svg' %}" alt=""><span><b>Umwelt</b>Luftschadstoffe und Mikroklima, Versiegelung/DEM, Baumkronendichte, Pegel- und Bodenfeuchtedaten.</span></li>
+          <li><img src="{% static 'global/icons/amt-verkehr.svg' %}" alt=""><span><b>Verkehr</b>Netz- und Auslastungsdaten, Ampelphasen, Baustellen und Sperrungen, ÖPNV-Fahrten und Umleitungen.</span></li>
+          <li><img src="{% static 'global/icons/amt-soziales.svg' %}" alt=""><span><b>Soziales</b>Verteilung vulnerabler Gruppen (Kitas, Pflege, Schulen) und Bedarfe in betroffenen Quartieren.</span></li>
+          <li><img src="{% static 'global/icons/amt-sicherheit.svg' %}" alt=""><span><b>Sicherheit</b>Leitstellen-Lagedaten, Einsatzmittel und Routen, Warninfrastruktur und erprobte Protokolle.</span></li>
+        </ul>
+      {% endif %}
+    </div>
+
+    <div class="sp-prompt">Klicke auf die Datensätze, die dein Amt einbringt. Du kannst keinen, einen, zwei, drei oder alle vier auswählen.</div>
+
+    <form method="post">
+      <div class="sp-cards">
+        {% for data_set in data_sets %}
+          <div class="sp-card selectable-card" data-points="{{ data_set.data_points }}" data-cost="{{ data_set.sharing_costs }}">
+            <div class="sp-check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14143C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+            <div class="sp-card-name">{{ data_set.name }}</div>
+            <div class="sp-card-row">
+              <img src="{{ static data_set.icon }}" alt="">
+              <div class="sp-num"><b>{{ data_set.data_points }}</b><span class="sp-unit">Datenpunkte</span></div>
+            </div>
+            <div class="sp-desc">{{ data_set.description }}</div>
+            <div class="sp-effort">
+              <div class="v"><b class="sharing-costs">{{ data_set.sharing_costs }}</b><span class="sp-unit">Aufwand</span></div>
+              <p>{{ data_set.cost_description }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="sp-foot">
+        <div class="sp-sum">
+          <div>
+            <div class="l1">Deine Auswahl: <strong><span id="contribution-display">0</span> Datenpunkte</strong>, Aufwand <strong><span id="cost-display">0</span></strong>.</div>
+            <div class="l2">Was die anderen Ämter einbringen, weißt du nicht. Erst nach der Runde siehst du, wie viel am Ende bei dir vom Gesamtwert des Use Cases ankommt.</div>
+          </div>
+          <!-- Hidden Inputs für oTree-Form (unverändert) -->
+          <input type="hidden" name="contribution" id="contribution" value="0">
+          <input type="hidden" name="contribution_cost" id="contribution_cost" value="0">
+          {{ next_button }}
+        </div>
+        <div class="sp-rule">
+          <div class="sp-eyebrow">Zur Erinnerung</div>
+          <dl>
+            <div><dt>× 2</dt><dd>Die Datenpunkte aller Datensätze, die alle vier Ämter einbringen, werden addiert und zählen doppelt.</dd></div>
+            <div><dt>÷ 4</dt><dd>Davon bekommt jedes Amt ein Viertel.</dd></div>
+            <div><dt>− Aufwand</dt><dd>Den zahlst nur du, für deine Karten.</dd></div>
+            <div class="res"><dt>=</dt><dd>Dein Ergebnis dieser Runde. Es wird deinem Kontostand gutgeschrieben oder davon abgezogen.</dd></div>
+          </dl>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -23,187 +125,62 @@
     const nextBtn             = document.querySelector(".otree-btn-next, button[type='submit'], .btn-primary");
     const MAX_SEL             = 4;
 
+    // Rundenpunkte im Kopf
+    const dots = document.getElementById("round-dots");
+    if (dots) {
+      const r = parseInt(dots.dataset.round, 10) || 0, t = parseInt(dots.dataset.total, 10) || 0;
+      for (let i = 1; i <= t; i++) { const d = document.createElement("i"); if (i <= r) d.className = "done"; dots.appendChild(d); }
+    }
+
     // robustes Parsen: entfernt Tausenderpunkte, NBSP, wandelt Komma in Punkt
     function toNumber(v){
       if (v == null) return 0;
       v = String(v)
-            .replace(/\u00A0/g, ' ')     // NBSP -> Space
-            .replace(/[^\d.,\- ]+/g, '') // Fremdzeichen
+            .replace(/\u00A0/g, ' ')
+            .replace(/[^\d.,\- ]+/g, '')
             .trim()
-            .replace(/\./g, '')          // Tausenderpunkt weg
-            .replace(/,/g, '.');         // Komma -> Punkt
+            .replace(/\./g, '')
+            .replace(/,/g, '.');
       const n = parseFloat(v);
       return isNaN(n) ? 0 : n;
     }
 
     function recompute(){
       let sumPoints = 0, sumCosts = 0;
-      const selected = document.querySelectorAll(".selectable-card.selected");
-      selected.forEach(c=>{
+      document.querySelectorAll(".selectable-card.selected").forEach(c=>{
         sumPoints += toNumber(c.dataset.points);
         sumCosts  += toNumber(c.dataset.cost);
       });
-
       if (contributionInput)    contributionInput.value = sumPoints;
       if (costsInput)           costsInput.value        = sumCosts;
       if (contributionDisplay)  contributionDisplay.textContent = sumPoints;
       if (costDisplay)          costDisplay.textContent        = sumCosts;
-
-      if(nextBtn){ nextBtn.disabled = false; }   // 0 Auswahl erlaubt
+      if (nextBtn) nextBtn.disabled = false;   // 0 Auswahl erlaubt
     }
 
     cards.forEach(card=>{
       card.setAttribute("tabindex","0");
       card.setAttribute("role","button");
-
+      card.setAttribute("aria-pressed","false");
       card.addEventListener("keydown", e=>{
         if(e.key === " " || e.key === "Enter"){ e.preventDefault(); card.click(); }
       });
-
       card.addEventListener("click", e=>{
         if (e.target.tagName === "INPUT") return;
-
         const alreadySelected = document.querySelectorAll(".selectable-card.selected").length;
         if(!card.classList.contains("selected") && alreadySelected >= MAX_SEL){
-          card.animate(
-            [{transform:'translateX(0)'},{transform:'translateX(-2px)'},{transform:'translateX(0)'}],
-            {duration:120}
-          );
+          card.animate([{transform:'translateX(0)'},{transform:'translateX(-2px)'},{transform:'translateX(0)'}],{duration:120});
           return;
         }
         card.classList.toggle("selected");
+        card.setAttribute("aria-pressed", card.classList.contains("selected") ? "true" : "false");
         recompute();
       });
     });
 
-    // init
     if (nextBtn) nextBtn.disabled = false;
-    if (costsInput) costsInput.value = 0;
-    if (contributionInput) contributionInput.value = 0;
     recompute();
   });
 </script>
 
-<div>
-  <!-- Use-Case-Intro je Runde -->
-  <div class="bg-light rounded rounded-5 p-4 m-4 example" style="width:100%; margin:auto;">
-    {% if player.round_number == 1 %}
-      <h3 class="text-center mb-4">Vision Zero: Unfall-Hotspots erkennen</h3>
-      <p>
-        In unserer Stadt passieren nach wie vor zu viele Unfälle. Ziel ist es,
-        <strong>Unfall-Hotspots zu erkennen</strong> und gezielt Maßnahmen für mehr Sicherheit
-        einzuleiten – zum Beispiel sichere Querungen, Temporeduktionen oder bessere Radwege.
-      </p>
-    {% elif player.round_number == 2 %}
-      <h3 class="text-center mb-4">Städtische Hitzeinseln und Kühlmaßnahmen priorisieren</h3>
-      <p>
-        Hitzewellen belasten Gesundheit und Infrastruktur. Ziel ist es,
-        <strong>Hitze-Hotspots zu erkennen</strong> und dort Maßnahmen wie <em>Baumpflanzungen, Entsiegelung,
-        Sprühnebel</em> oder <em>schattige Wege</em> zu priorisieren.
-      </p>
-    {% elif player.round_number == 3 %}
-      <h3 class="text-center mb-4">Überflutungsrisiko und Evakuierungsplanung</h3>
-      <p>
-        Starkregen und steigende Pegel gefährden Quartiere und Infrastruktur. Ziel ist es,
-        <strong>Risikozonen zu kartieren</strong>, <strong>Schutzziele</strong> zu definieren und
-        <strong>Evakuierungswege</strong> realistisch zu planen.
-      </p>
-    {% elif player.round_number == 4 %}
-      <h3 class="text-center mb-4">Digitaler Zwilling und Entscheidungssimulation</h3>
-      <p>
-        Der digitale Zwilling unserer Stadt ist ein interaktives Modell, das Daten aus allen Ämtern bündelt.
-        Ziel ist es, <strong>Szenarien realistisch zu simulieren</strong> und <strong>Maßnahmen faktenbasiert zu priorisieren</strong> – etwa zu Luftqualität,
-        Verkehrsfluss, Grünflächen oder Infrastruktur.
-      </p>
-    {% endif %}
-  </div>
-
-  <div class="bg-light rounded rounded-5 p-4 m-4 example" style="width:100%; margin:auto;">
-    <div class="d-sm-flex justify-content-between list-unstyled m-0">
-      <li>
-        <strong>
-          {% if player.id_in_group == 1 %}🌿 Amt für Umwelt
-          {% elif player.id_in_group == 2 %}❤ Amt für Soziales
-          {% elif player.id_in_group == 3 %}🚦 Amt für Verkehr
-          {% elif player.id_in_group == 4 %}🛡 Amt für Sicherheit
-          {% else %}Dein Amt{% endif %}
-        </strong>
-      </li>
-      <li><strong>Kontostand:</strong> {{ current_balance }}</li>
-      <li><strong>Runde:</strong> {{ round_number }}/{{ C.NUM_ROUNDS }}</li>
-    </div><br/>
-
-    <p>
-      Du kannst <strong>keine</strong>, <strong>einige</strong> oder <strong>alle</strong> Datensätze beisteuern.
-      Jeder ausgewählte Datensatz steigert den gemeinsamen Wert des Use Cases (Punkte × 2) und
-      belastet gleichzeitig dein Amt mit den angegebenen Bereitstellungskosten.
-    </p>
-
-    <form method="post">
-      <div class="row g-2 justify-content-center flex-column flex-md-row align-items-center w-100">
-        {% for data_set in data_sets %}
-          <div class="col-12 col-md-5 col-lg-3 d-flex justify-content-center mb-4">
-            <div
-              class="card selectable-card border-4 justify-content-between"
-              data-points="{{ data_set.data_points }}"
-              data-cost="{{ data_set.sharing_costs }}"
-            >
-              <p style="font-size:1.1rem;"><strong>{{ data_set.name }}</strong></p>
-
-              <div class="d-flex justify-content-between">
-                <img src="{{ static data_set.icon }}" width="60" height="60" style="display:block" alt="" />
-                <div>
-                  <svg height="50" width="50" viewBox="0 0 50 50" style="display:block">
-                    <circle r="22" cx="25" cy="25" fill="none" stroke="black" stroke-width="3"/>
-                    <text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20" fill="black">
-                      {{ data_set.data_points }}
-                    </text>
-                  </svg>
-                  <p class="text-center mb-0" style="font-size:.8rem">Punkte</p>
-                </div>
-              </div>
-
-              <p class="my-3" style="font-size:.8rem">
-                <strong>Beschreibung:</strong> {{ data_set.description }}
-              </p>
-
-              <div class="d-flex flex-column align-items-center">
-                <svg height="50" width="50" viewBox="0 0 50 50" style="display:block">
-                  <circle r="22" cx="25" cy="25" fill="none" stroke="red" stroke-width="3"/>
-                  <text x="25" y="25" text-anchor="middle" dominant-baseline="middle" font-size="20" fill="black" class="sharing-costs">
-                    {{ data_set.sharing_costs }}
-                  </text>
-                </svg>
-                <p class="text-center" style="font-size:.8rem">
-                  Kosten{% if data_set.reduced_costs %} (reduziert){% endif %}
-                </p>
-              </div>
-
-              <p class="my-2" style="font-size:.8rem">
-                <strong>Begründung:</strong> {{ data_set.cost_description }}
-              </p>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-
-      <p class="text-center my-4">
-        <span>Deine aktuelle Auswahl trägt <strong><span id="contribution-display">0</span></strong> Punkte bei.</span><br/><br/>
-        <span>Diese Punkte werden im Spiel mit dem Faktor <strong>2</strong> multipliziert</span>
-        <span>und erzeugen damit den <strong>doppelten Wert</strong> für den gemeinsamen Use Case. Du erhältst ein Viertel des gesamten Wertes des Use Cases.</span><br/><br/>
-        <span>Dafür entstehen dir Kosten von <strong><span id="cost-display">0</span></strong> Punkten.</span>
-      </p>
-
-      <!-- Hidden Inputs für oTree-Form -->
-      <input type="hidden" name="contribution" id="contribution" />
-      <input type="hidden" name="contribution_cost" id="contribution_cost" />
-
-      <div class="text-center mt-3">{{ next_button }}</div>
-    </form>
-  </div>
-</div>
-
 {% endblock %}
-
-
-

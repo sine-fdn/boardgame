@@ -11,6 +11,9 @@
     padding: 10px 20px;
     font-weight: bold;
     width: 200px;
+    /* Text immer mittig, auch wenn Seiten-CSS den Button auf (inline-)flex stellt */
+    justify-content: center;
+    text-align: center;
 
   }
 
