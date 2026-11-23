@@ -4,7 +4,7 @@
 {% block title %}{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static 'global/anleitung.css' %}">
+<link rel="stylesheet" href="{% static 'global/anleitung.css' %}?v=2">
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
 
     <div class="al-example">
       <span class="al-eyebrow">Ein Beispiel</span>
-      <span>Im Spiel hat jedes Amt pro Runde vier Datensätze zur Auswahl. Hier bringt jedes Amt einen davon ein, Sicherheit diesmal keinen.</span>
+      <span>Im Spiel hat jedes Amt pro Runde vier Datensätze zur Auswahl. In diesem Beispiel bringen drei Ämt jeweils einen Datensatz ein, Sicherheit diesmal keinen.</span>
     </div>
 
     <div class="al-grid-4">
@@ -84,7 +84,7 @@
     <div class="al-grid-2">
       <div class="al-calc">
         <div class="lhs">30 × 2</div>
-        <p>Verknüpfte Daten zeigen, was kein Datensatz allein zeigt. Darum zählt die Summe doppelt.</p>
+        <p>Verknüpfte Daten zeigen, was kein Datensatz allein zeigt. Darum werden die Datenpunkte der eingebrachten Datensätze summiert und dann mit 2 multipliziert.</p>
         <div class="rhs"><b>= 60</b><span class="al-unit">Wert des Use Cases</span></div>
       </div>
       <div class="al-calc dark">
