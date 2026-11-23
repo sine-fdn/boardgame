@@ -4,7 +4,7 @@
 {% block title %}{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static 'global/spiel.css' %}">
+<link rel="stylesheet" href="{% static 'global/spiel.css' %}?v=2">
 {% endblock %}
 
 {% block content %}
@@ -80,6 +80,8 @@
               {% else %}<span>Amt {{ p.id_in_group }}</span>{% endif %}
               {% if p.id_in_group == player.id_in_group %}<em>(Du)</em>{% endif %}
             </div>
+            <!-- Ersetzt auf schmalen Bildschirmen den eingehenden Pfeil -->
+            <div class="sp-flow-in"><b>{{ p.contribution }}</b> <span>Datenpunkte eingebracht</span></div>
             <dl>
               <dt>Anteil</dt><dd>{{ p.public_good_share }}</dd>
               <dt>− Aufwand</dt><dd>{{ p.contribution_cost }}</dd>

@@ -4,7 +4,7 @@
 {% block title %}{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static 'global/spiel.css' %}">
+<link rel="stylesheet" href="{% static 'global/spiel.css' %}?v=2">
 {% endblock %}
 
 {% block content %}
@@ -71,7 +71,7 @@
     <div class="sp-prompt">Klicke auf die Datensätze, die dein Amt einbringt. Du kannst keinen, einen, zwei, drei oder alle vier auswählen.</div>
 
     <form method="post">
-      <div class="sp-cards">
+      <div class="sp-cards" lang="de">
         {% for data_set in data_sets %}
           <div class="sp-card selectable-card" data-points="{{ data_set.data_points }}" data-cost="{{ data_set.sharing_costs }}">
             <div class="sp-check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14143C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
@@ -91,14 +91,15 @@
 
       <div class="sp-foot">
         <div class="sp-sum">
-          <div>
+          <!-- Auf dem Handy wird .sp-bar (Auswahl + Weiter) unten am Bildschirm fixiert -->
+          <div class="sp-bar">
             <div class="l1">Deine Auswahl: <strong><span id="contribution-display">0</span> Datenpunkte</strong>, Aufwand <strong><span id="cost-display">0</span></strong>.</div>
-            <div class="l2">Was die anderen Ämter einbringen, weißt du nicht. Erst nach der Runde siehst du, wie viel am Ende bei dir vom Gesamtwert des Use Cases ankommt.</div>
+            {{ next_button }}
           </div>
+          <div class="l2">Was die anderen Ämter einbringen, weißt du nicht. Erst nach der Runde siehst du, wie viel am Ende bei dir vom Gesamtwert des Use Cases ankommt.</div>
           <!-- Hidden Inputs für oTree-Form (unverändert) -->
           <input type="hidden" name="contribution" id="contribution" value="0">
           <input type="hidden" name="contribution_cost" id="contribution_cost" value="0">
-          {{ next_button }}
         </div>
         <div class="sp-rule">
           <div class="sp-eyebrow">Zur Erinnerung</div>

@@ -295,7 +295,11 @@ class j_Summary(Page):
                         optimum_costs_sum += cost
 
         optimum_brutto_value = int(round(optimum_points_sum * C.MULTIPLIER))
-        optimum_net_value = C.INITIAL_UTILITY + optimum_brutto_value - optimum_costs_sum
+        # Startguthaben aller Ämter einrechnen, damit der Wert mit der Summe
+        # der Kontostände (total_current_balance) vergleichbar ist
+        optimum_net_value = (
+            C.INITIAL_UTILITY * C.PLAYERS_PER_GROUP + optimum_brutto_value - optimum_costs_sum
+        )
 
         return {
             # Ranking & Ist
